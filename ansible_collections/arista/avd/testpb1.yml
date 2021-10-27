@@ -1,0 +1,10 @@
+---
+- name: Test eos_designs
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+
+    - name: generate intended variables
+      import_role:
+        name: arista.avd.eos_designs

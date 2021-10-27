@@ -1,132 +1,150 @@
 ---
-AMS:
-  children:
-    AVD_FABRIC:
-      children:
-        AVD_SPINES:
-          hosts:
-            AVD-SPINE1:
-              ansible_host: 10.73.254.1
-            AVD-SPINE2:
-              ansible_host: 10.73.254.2
-            AVD-SPINE3:
-              ansible_host: 10.73.254.3
-            AVD-SPINE4:
-              ansible_host: 10.73.254.4
-        AVD_L3LEAFS:
-          children:
-            AVD_LEAF1:
-              hosts:
-                AVD-LEAF1A:
-                  ansible_host: 10.73.254.11
-                AVD-LEAF1B:
-                  ansible_host: 10.73.254.12
-            AVD_LEAF2:
-              hosts:
-                AVD-LEAF2A:
-                  ansible_host: 10.73.254.11
-                AVD-LEAF2B:
-                  ansible_host: 10.73.254.12
-            AVD_LEAF3:
-              hosts:
-                AVD-LEAF3A:
-                  ansible_host: 10.73.254.11
-                AVD-LEAF3B:
-                  ansible_host: 10.73.254.12
-            AVD_LEAF4:
-              hosts:
-                AVD-LEAF4A:
-                  ansible_host: 10.73.254.11
-                AVD-LEAF4B:
-                  ansible_host: 10.73.254.12
-            AVD_LEAF5:
-              hosts:
-                AVD-LEAF5A:
-                  ansible_host: 10.73.254.11
-                AVD-LEAF5B:
-                  ansible_host: 10.73.254.12
-            AVD_LEAF6:
-              hosts:
-                AVD-LEAF6A:
-                  ansible_host: 10.73.254.11
-                AVD-LEAF6B:
-                  ansible_host: 10.73.254.12
-            AVD_LEAF7:
-              hosts:
-                AVD-LEAF7A:
-                  ansible_host: 10.73.254.11
-                AVD-LEAF7B:
-                  ansible_host: 10.73.254.12
-            AVD_LEAF8:
-              hosts:
-                AVD-LEAF8A:
-                  ansible_host: 10.73.254.11
-                AVD-LEAF8B:
-                  ansible_host: 10.73.254.12
-            AVD_LEAF9:
-              hosts:
-                AVD-LEAF9A:
-                  ansible_host: 10.73.254.11
-                AVD-LEAF9B:
-                  ansible_host: 10.73.254.12
-            AVD_LEAF10:
-              hosts:
-                AVD-LEAF10A:
-                  ansible_host: 10.73.254.11
-                AVD-LEAF10B:
-                  ansible_host: 10.73.254.12
-            AVD_LEAF11:
-              hosts:
-                AVD-LEAF11A:
-                  ansible_host: 10.73.254.11
-                AVD-LEAF11B:
-                  ansible_host: 10.73.254.12
-            AVD_LEAF12:
-              hosts:
-                AVD-LEAF12A:
-                  ansible_host: 10.73.254.11
-                AVD-LEAF12B:
-                  ansible_host: 10.73.254.12
-            AVD_LEAF13:
-              hosts:
-                AVD-LEAF13A:
-                  ansible_host: 10.73.254.11
-                AVD-LEAF13B:
-                  ansible_host: 10.73.254.12
-            AVD_LEAF14:
-              hosts:
-                AVD-LEAF14A:
-                  ansible_host: 10.73.254.11
-                AVD-LEAF14B:
-                  ansible_host: 10.73.254.12
-        #Leaving this here for potential mleaf or pod leafs
-        AVD_L2LEAFS:
-          children:
-            AVD_L2LEAF1:
-              hosts:
-                AVD-AGG01:
-                  ansible_host: 10.73.254.21
-    AVD_TENANTS_NETWORKS:
-      children:
-        AVD_L3LEAFS:
-        AVD_L2LEAFS:
-    AVD_SERVERS:
-      children:
-        AVD_L3LEAFS:
-        AVD_L2LEAFS:
 
-AVD:
-    vars:
-        ansible_host: explorer
-        ansible_user: admin
-        ansible_ssh_pass: ChangeMe!@34
+all:
+  children:
+    AMS:
+      children:
+        DC1:
+          children:
+            DC1_SUPER_SPINES:
+              hosts:
+                DC1-SUPER-SPINE1:
+                  type: super-spine
+                  ansible_host: 10.6.0.1
+                  #ansible_port: 8001
+                DC1-SUPER-SPINE2:
+                  type: super-spine
+                  ansible_host: 10.6.0.2
+                  #ansible_port: 8002
+            DC1_ROUTE_SERVERS:
+              hosts:
+                DC1-RS1:
+                  type: overlay-controller
+                  ansible_port: 8003
+                DC1-RS2:
+                  type: overlay-controller
+                  ansible_port: 8004
+            DC1_POD1:
+              children:
+                DC1_POD1_SPINES:
+                  hosts:
+                    DC1-POD1-SPINE1:
+                      type: spine
+                      ansible_host: 10.6.1.1
+                      #ansible_port: 8005
+                    DC1-POD1-SPINE2:
+                      type: spine
+                      ansible_host: 10.6.1.2
+                    DC1-POD1-SPINE3:
+                      type: spine
+                      ansible_host: 10.6.1.3
+                    DC1-POD1-SPINE4:
+                      type: spine
+                      ansible_host: 10.6.1.4
+                DC1_POD1_LEAFS:
+                  hosts:
+                    DC1-POD1-LEAF1A:
+                      type: l3leaf
+                      ansible_host: 10.6.2.1
+                      #ansible_port: 8007
+                    DC1-POD1-LEAF1B:
+                      type: l3leaf
+                      ansible_host: 10.6.2.2
+                    DC1-POD1-LEAF2A:
+                      type: l3leaf
+                      ansible_host: 10.6.2.3
+                    DC1-POD1-LEAF2B:
+                      type: l3leaf
+                      ansible_host: 10.6.2.4
+                    DC1-POD1-L2LEAF1A:
+                      type: l2leaf
+                      ansible_host: 10.6.2.5
+                    DC1-POD1-LEAF3A:
+                      type: l3leaf
+                      ansible_host: 10.6.2.6
+                    DC1-POD1-LEAF3B:
+                      type: l3leaf
+                      ansible_host: 10.6.2.7
+            DC1_POD2:
+              children:
+                DC1_POD2_SPINES:
+                  hosts:
+                    DC1-POD2-SPINE1:
+                      type: spine
+                      ansible_host: 10.6.3.1
+                    DC1-POD2-SPINE2:
+                      type: spine
+                      ansible_port: 10.6.3.2
+                DC1_POD2_LEAFS:
+                  hosts:
+                    DC1-POD2-LEAF1A:
+                      type: l3leaf
+                      ansible_host: 10.6.4.1
+
+        DC2:
+          children:
+            DC2_SUPER_SPINES:
+              hosts:
+                DC2-SUPER-SPINE1:
+                  type: super-spine
+                  ansible_host: 10.6.5.1
+                DC2-SUPER-SPINE2:
+                  type: super-spine
+                  ansible_host: 10.6.5.2
+            DC2_ROUTE_SERVERS:
+              hosts:
+                DC2-RS1:
+                  type: overlay-controller
+                  ansible_port: 8018
+                DC2-RS2:
+                  type: overlay-controller
+                  ansible_port: 8019
+            DC2_POD1:
+              children:
+                DC2_POD1_SPINES:
+                  hosts:
+                    DC2-POD1-SPINE1:
+                      type: spine
+                      ansible_host: 10.6.6.1
+                    DC2-POD1-SPINE2:
+                      type: spine
+                      ansible_host: 10.6.6.2
+                    DC2-POD1-SPINE3:
+                      type: spine
+                      ansible_host: 10.6.6.3
+                    DC2-POD1-SPINE4:
+                      type: spine
+                      ansible_host: 10.6.6.4
+                DC2_POD1_LEAFS:
+                  hosts:
+                    DC2-POD1-LEAF1A:
+                      type: l3leaf
+                      ansible_port: 8022
+                    DC2-POD1-L2LEAF1A:
+                      type: l2leaf
+                      ansible_port: 8023
+
+      vars:
+        ansible_host: 10.83.28.157
         ansible_connection: httpapi
-        ansible_network_os: eos
-        # Configure privilege escalation
-        ansible_become: true
-        ansible_become_method: enable
-        # HTTPAPI configuration
-        ansible_httpapi_port: 443
+        ansible_httpapi_port: '{{ ansible_port }}'
         ansible_httpapi_host: '{{ ansible_host }}'
         ansible_httpapi_use_ssl: true
         ansible_httpapi_validate_certs: false
+        ansible_network_os: eos
+        ansible_user: admin
+        ansible_ssh_pass: arista
+        ansible_become: yes
+        ansible_become_method: enable
+
+    TENANTS_NETWORKS:
+      children:
+        DC1_POD1_LEAFS:
+        DC1_POD2_LEAFS:
+        DC2_POD1_LEAFS:
+
+    SERVERS:
+      children:
+        DC1_POD1_LEAFS:
+        DC1_POD2_LEAFS:
+        DC2_POD1_LEAFS:
