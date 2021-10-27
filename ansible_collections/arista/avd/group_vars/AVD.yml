@@ -1,0 +1,30 @@
+---
+# local users
+local_users:
+  # Username with no password configured
+  admin:
+    privilege: 15
+    role: network-admin
+    no_password: true
+
+  # Username with a password
+  demo:
+    privilege: 15
+    role: network-admin
+    sha512_password: "< Provide SHA512 HASH for password >"
+
+# OOB Management network default gateway.
+mgmt_gateway: 10.73.254.253
+# I think this could be like "10.66.0.0/16"... or just default. not sure if this is bgp or static
+mgmt_destination_networks:
+  - 10.255.2.0/24
+  - 10.255.3.0/24
+  - 0.0.0.0/0
+
+# dns servers.
+name_servers:
+  - 10.65.1.35
+
+# NTP Servers IP or DNS name, first NTP server will be prefered, and sourced from Managment VRF
+ntp_servers:
+  - explorer.lab.graingerdock4.com
