@@ -8,7 +8,7 @@ documentation_dir_name: 'documentation'
 documentation_dir: '{{ root_dir }}/{{ documentation_dir_name }}'
 
 # Fabric documentation
-fabric_dir_name: 'fabric'
+fabric_dir_name: 'AMS'
 fabric_dir: '{{ documentation_dir }}/{{ fabric_dir_name }}'
 
 # AVD configurations output
