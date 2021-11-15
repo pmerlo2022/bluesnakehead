@@ -30,14 +30,14 @@ super_spine:
       mgmt_ip: 10.6.0.2/24
       # evpn_role: none
       # evpn_route_servers: []
-    DC1-SUPER-SPINE4:
-      id: 2
+    DC1-SUPER-SPINE3:
+      id: 3
       mgmt_ip: 10.6.0.3/24
     DC1-SUPER-SPINE4:
-      id: 2
+      id: 4
       mgmt_ip: 10.6.0.4/24
     DC1-SUPER-SPINE5:
-      id: 2
+      id: 5
       mgmt_ip: 10.6.0.5/24
 
 # In DC1 we define all variables on specific node

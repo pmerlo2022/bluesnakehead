@@ -31,9 +31,9 @@ spine:
       id: 1
       # mgmt_ip: 192.168.1.5/24 Test without management IP
       #evpn_role: server
-	  evpn_role: none
+      evpn_role: none
       #Commented this out.. and put it in defaults
-	  #uplink_switch_interfaces: ['Ethernet1', 'Ethernet1']
+      #uplink_switch_interfaces: ['Ethernet1', 'Ethernet1']
       #evpn_route_servers: [ DC2-SUPER-SPINE1, DC2-POD1-SPINE1, DC2-POD1-LEAF1A ]
     DC1-POD1-SPINE2:
       id: 2
@@ -72,13 +72,13 @@ l3leaf:
     RACK1_SINGLE:
       platform: vEOS-LAB
       #Moved to defaults
-	  #uplink_interfaces: ['Ethernet1', 'Ethernet2']
+      #uplink_interfaces: ['Ethernet1', 'Ethernet2']
       #uplink_switches: ['DC1-POD1-SPINE1', 'DC1-POD1-SPINE2']
       spanning_tree_mode: none
       bgp_as: "65111.100"
       mlag: false
       evpn_role: server
-	  #let's figure out what this line means
+      #let's figure out what this line means
       evpn_route_servers: [ DC2-SUPER-SPINE1, DC2-POD1-SPINE1, DC2-POD1-LEAF1A ]
       filter:
         tenants: []
@@ -101,7 +101,7 @@ l3leaf:
     RACK2_MLAG:
       platform: vEOS-LAB
       #moved next two to defaults
-	  #uplink_interfaces: [ Ethernet1, Ethernet2, Ethernet11, Ethernet12 ]
+      #  uplink_interfaces: [ Ethernet1, Ethernet2, Ethernet11, Ethernet12 ]
       #uplink_switches: [ DC1-POD1-SPINE1, DC1-POD1-SPINE2, DC1-POD1-SPINE1, DC1-POD1-SPINE2 ]
       bgp_as: "65112.100"
       evpn_route_servers: [ DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A ]
