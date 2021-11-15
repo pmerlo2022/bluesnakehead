@@ -16,14 +16,24 @@ all:
                   type: super-spine
                   ansible_host: 10.6.0.2
                   #ansible_port: 8002
-            DC1_ROUTE_SERVERS:
-              hosts:
-                DC1-RS1:
-                  type: overlay-controller
-                  ansible_port: 8003
-                DC1-RS2:
-                  type: overlay-controller
-                  ansible_port: 8004
+                DC1-SUPER-SPINE3:
+                  type: super-spine
+                  ansible_host: 10.6.0.3
+                DC1-SUPER-SPINE4:
+                  type: super-spine
+                  ansible_host: 10.6.0.4
+                DC1-SUPER-SPINE5:
+                  type: super-spine
+                  ansible_host: 10.6.0.5
+# Commented out by csbowse 11/15/21
+#            DC1_ROUTE_SERVERS:
+#              hosts:
+#                DC1-RS1:
+#                  type: overlay-controller
+#                  ansible_port: 8003
+#                DC1-RS2:
+#                  type: overlay-controller
+#                  ansible_port: 8004
             DC1_POD1:
               children:
                 DC1_POD1_SPINES:
@@ -56,76 +66,233 @@ all:
                     DC1-POD1-LEAF2B:
                       type: l3leaf
                       ansible_host: 10.6.2.4
-                    DC1-POD1-L2LEAF1A:
-                      type: l2leaf
-                      ansible_host: 10.6.2.5
+#                    DC1-POD1-L2LEAF1A:
+#                      type: l2leaf
+#                      ansible_host: 10.6.2.X
                     DC1-POD1-LEAF3A:
                       type: l3leaf
-                      ansible_host: 10.6.2.6
+                      ansible_host: 10.6.2.5
                     DC1-POD1-LEAF3B:
                       type: l3leaf
+                      ansible_host: 10.6.2.6
+                    DC1-POD1-LEAF4A:
+                      type: l3leaf
                       ansible_host: 10.6.2.7
+                    DC1-POD1-LEAF4B:
+                      type: l3leaf
+                      ansible_host: 10.6.2.8
+                    DC1-POD1-LEAF5A:
+                      type: l3leaf
+                      ansible_host: 10.6.2.9
+                    DC1-POD1-LEAF5B:
+                      type: l3leaf
+                      ansible_host: 10.6.2.10
+                    DC1-POD1-LEAF6A:
+                      type: l3leaf
+                      ansible_host: 10.6.2.11
+                    DC1-POD1-LEAF6B:
+                      type: l3leaf
+                      ansible_host: 10.6.2.12
+                    DC1-POD1-LEAF7A:
+                      type: l3leaf
+                      ansible_host: 10.6.2.13
+                    DC1-POD1-LEAF7B:
+                      type: l3leaf
+                      ansible_host: 10.6.2.14
+                    DC1-POD1-LEAF8A:
+                      type: l3leaf
+                      ansible_host: 10.6.2.15
+                    DC1-POD1-LEAF8B:
+                      type: l3leaf
+                      ansible_host: 10.6.2.16
+                    DC1-POD1-LEAF9A:
+                      type: l3leaf
+                      ansible_host: 10.6.2.17
+                    DC1-POD1-LEAF9B:
+                      type: l3leaf
+                      ansible_host: 10.6.2.18
+                    DC1-POD1-LEAF10A:
+                      type: l3leaf
+                      ansible_host: 10.6.2.19
+                    DC1-POD1-LEAF10B:
+                      type: l3leaf
+                      ansible_host: 10.6.2.20
+                    DC1-POD1-LEAF11A:
+                      type: l3leaf
+                      ansible_host: 10.6.2.21
+                    DC1-POD1-LEAF11B:
+                      type: l3leaf
+                      ansible_host: 10.6.2.22
+                    DC1-POD1-LEAF12A:
+                      type: l3leaf
+                      ansible_host: 10.6.2.23
+                    DC1-POD1-LEAF12B:
+                      type: l3leaf
+                      ansible_host: 10.6.2.24
+                    DC1-POD1-LEAF13A:
+                      type: l3leaf
+                      ansible_host: 10.6.2.25
+                    DC1-POD1-LEAF13B:
+                      type: l3leaf
+                      ansible_host: 10.6.2.26
+                    DC1-POD1-LEAF14A:
+                      type: l3leaf
+                      ansible_host: 10.6.2.27
+                    DC1-POD1-LEAF14B:
+                      type: l3leaf
+                      ansible_host: 10.6.2.28
             DC1_POD2:
               children:
                 DC1_POD2_SPINES:
                   hosts:
                     DC1-POD2-SPINE1:
                       type: spine
-                      ansible_host: 10.6.3.1
+                      ansible_host: 10.6.33.1
                     DC1-POD2-SPINE2:
                       type: spine
-                      ansible_port: 10.6.3.2
+                      ansible_port: 10.6.33.2
+                    DC1-POD2-SPINE3:
+                      type: spine
+                      ansible_port: 10.6.33.3
+                    DC1-POD2-SPINE4:
+                      type: spine
+                      ansible_port: 10.6.33.4                      
                 DC1_POD2_LEAFS:
                   hosts:
                     DC1-POD2-LEAF1A:
                       type: l3leaf
-                      ansible_host: 10.6.4.1
-
+                      ansible_host: 10.6.34.1
+                    DC1-POD2-LEAF1B:
+                      type: l3leaf
+                      ansible_host: 10.6.34.2
+                    DC1-POD2-LEAF2A:
+                      type: l3leaf
+                      ansible_host: 10.6.34.3
+                    DC1-POD2-LEAF2B:
+                      type: l3leaf
+                      ansible_host: 10.6.34.4
+#                    DC1-POD2-L2LEAF1A:
+#                      type: l2leaf
+#                      ansible_host: 10.6.34.X
+                    DC1-POD2-LEAF3A:
+                      type: l3leaf
+                      ansible_host: 10.6.34.5
+                    DC1-POD2-LEAF3B:
+                      type: l3leaf
+                      ansible_host: 10.6.34.6
+                    DC1-POD2-LEAF4A:
+                      type: l3leaf
+                      ansible_host: 10.6.34.7
+                    DC1-POD2-LEAF4B:
+                      type: l3leaf
+                      ansible_host: 10.6.34.8
+                    DC1-POD2-LEAF5A:
+                      type: l3leaf
+                      ansible_host: 10.6.34.9
+                    DC1-POD2-LEAF5B:
+                      type: l3leaf
+                      ansible_host: 10.6.34.10
+                    DC1-POD2-LEAF6A:
+                      type: l3leaf
+                      ansible_host: 10.6.34.11
+                    DC1-POD2-LEAF6B:
+                      type: l3leaf
+                      ansible_host: 10.6.34.12
+                    DC1-POD2-LEAF7A:
+                      type: l3leaf
+                      ansible_host: 10.6.34.13
+                    DC1-POD2-LEAF7B:
+                      type: l3leaf
+                      ansible_host: 10.6.34.14
+                    DC1-POD2-LEAF8A:
+                      type: l3leaf
+                      ansible_host: 10.6.34.15
+                    DC1-POD2-LEAF8B:
+                      type: l3leaf
+                      ansible_host: 10.6.34.16
+                    DC1-POD2-LEAF9A:
+                      type: l3leaf
+                      ansible_host: 10.6.34.17
+                    DC1-POD2-LEAF9B:
+                      type: l3leaf
+                      ansible_host: 10.6.34.18
+                    DC1-POD2-LEAF10A:
+                      type: l3leaf
+                      ansible_host: 10.6.34.19
+                    DC1-POD2-LEAF10B:
+                      type: l3leaf
+                      ansible_host: 10.6.34.20
+                    DC1-POD2-LEAF11A:
+                      type: l3leaf
+                      ansible_host: 10.6.34.21
+                    DC1-POD2-LEAF11B:
+                      type: l3leaf
+                      ansible_host: 10.6.34.22
+                    DC1-POD2-LEAF12A:
+                      type: l3leaf
+                      ansible_host: 10.6.34.23
+                    DC1-POD2-LEAF12B:
+                      type: l3leaf
+                      ansible_host: 10.6.34.24
+                    DC1-POD2-LEAF13A:
+                      type: l3leaf
+                      ansible_host: 10.6.34.25
+                    DC1-POD2-LEAF13B:
+                      type: l3leaf
+                      ansible_host: 10.6.34.26
+                    DC1-POD2-LEAF14A:
+                      type: l3leaf
+                      ansible_host: 10.6.34.27
+                    DC1-POD2-LEAF14B:
+                      type: l3leaf
+                      ansible_host: 10.6.34.28
         DC2:
           children:
             DC2_SUPER_SPINES:
               hosts:
                 DC2-SUPER-SPINE1:
                   type: super-spine
-                  ansible_host: 10.6.5.1
+                  ansible_host: 10.6.64.1
                 DC2-SUPER-SPINE2:
                   type: super-spine
-                  ansible_host: 10.6.5.2
-            DC2_ROUTE_SERVERS:
-              hosts:
-                DC2-RS1:
-                  type: overlay-controller
-                  ansible_port: 8018
-                DC2-RS2:
-                  type: overlay-controller
-                  ansible_port: 8019
+                  ansible_host: 10.6.64.2
+#            DC2_ROUTE_SERVERS:
+#              hosts:
+#                DC2-RS1:
+#                  type: overlay-controller
+#                  ansible_port: 8018
+#                DC2-RS2:
+#                  type: overlay-controller
+#                  ansible_port: 8019
             DC2_POD1:
               children:
                 DC2_POD1_SPINES:
                   hosts:
                     DC2-POD1-SPINE1:
                       type: spine
-                      ansible_host: 10.6.6.1
+                      ansible_host: 10.6.65.1
                     DC2-POD1-SPINE2:
                       type: spine
-                      ansible_host: 10.6.6.2
+                      ansible_host: 10.6.65.2
                     DC2-POD1-SPINE3:
                       type: spine
-                      ansible_host: 10.6.6.3
+                      ansible_host: 10.6.65.3
                     DC2-POD1-SPINE4:
                       type: spine
-                      ansible_host: 10.6.6.4
+                      ansible_host: 10.6.65.4
                 DC2_POD1_LEAFS:
                   hosts:
                     DC2-POD1-LEAF1A:
                       type: l3leaf
-                      ansible_port: 8022
-                    DC2-POD1-L2LEAF1A:
-                      type: l2leaf
-                      ansible_port: 8023
+                      ansible_host: 10.6.66.4                    
+#                      ansible_port: 8022
+#                    DC2-POD1-L2LEAF1A:
+#                      type: l2leaf
+#                      ansible_port: 8023
 
       vars:
-        ansible_host: 10.83.28.157
+# I think this is if you are using a bastion
+#        ansible_host: 10.65.1.35
         ansible_connection: httpapi
         ansible_httpapi_port: '{{ ansible_port }}'
         ansible_httpapi_host: '{{ ansible_host }}'
