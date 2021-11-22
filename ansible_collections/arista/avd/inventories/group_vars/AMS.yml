@@ -17,11 +17,12 @@ local_users:
     privilege: 15
     role: network-admin
     no_password: true
-    sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
+    sha512_password: $6$82gqIqw8b3nibNrk$MoZO0S8QMQN8uwnR8v48dbGrL0Ec/6q36tSx8y9IsExi4L.HtmokW9rX8VehLxhg542mNTBKqxMBF.LgnCTm4.
 
 snmp_settings:
   location: true
 
+#What exactly does this do? Border, edge? It is only listed here. There are uplink ipv4 pools elsewhere
 l3_edge:
   p2p_links_ip_pools:
     pool-leaf: 11.1.0.0/24
