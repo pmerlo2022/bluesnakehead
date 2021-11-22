@@ -13,7 +13,7 @@
 
 - name: Set AVD facts
   tags: [build, provision]
-  yaml_templates_to_facts:
+  arista.avd.yaml_templates_to_facts:
     templates: "{{ templates.facts }}"
   delegate_to: localhost
   check_mode: no
@@ -21,7 +21,7 @@
 
 - name: Set AVD topology facts
   tags: [build, provision]
-  yaml_templates_to_facts:
+  arista.avd.yaml_templates_to_facts:
     templates: "{{ templates.topology_facts }}"
   delegate_to: localhost
   check_mode: no
@@ -38,7 +38,7 @@
 
 - name: Generate device configuration in structured format
   tags: [build, provision]
-  yaml_templates_to_facts:
+  arista.avd.yaml_templates_to_facts:
     root_key: structured_config
     templates: "{{ templates.structured_config }}"
   delegate_to: localhost
@@ -80,7 +80,7 @@
         mode: 0664
       changed_when: false
     - name: Generate TOC for fabric documentation
-      add_toc:
+      arista.avd.add_toc:
         md_file: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"
         skip_lines: 3
       register: toc_result

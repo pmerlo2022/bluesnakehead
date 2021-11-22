@@ -1,5 +1,6 @@
 # Play to build EOS configuration from EOS_DESIGNS
 - hosts: AMS
+  gather_facts: false
   tasks:
 
     # BUILD EOS configuration

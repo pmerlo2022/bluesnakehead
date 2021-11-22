@@ -11,12 +11,20 @@ super_spine:
   nodes:
     DC2-SUPER-SPINE1:
       id: 1
-      mgmt_ip: 192.168.1.16/24
+      mgmt_ip: 10.6.64.1/24
       evpn_role: server
       evpn_route_servers: [ DC1-RS1, DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A ]
     DC2-SUPER-SPINE2:
       id: 2
-      mgmt_ip: 192.168.1.17/24
+      mgmt_ip: 10.6.64.2/24
+      evpn_role: none
+    DC2-SUPER-SPINE3:
+      id: 3
+      mgmt_ip: 10.6.64.3/24
+      evpn_role: none
+    DC2-SUPER-SPINE4:
+      id: 4
+      mgmt_ip: 10.6.64.4/24
       evpn_role: none
 
 # In DC2 we define all variables as defaults if possible

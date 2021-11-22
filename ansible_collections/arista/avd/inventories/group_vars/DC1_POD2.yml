@@ -19,6 +19,7 @@ spine:
       - 'graceful-restart'
   nodes:
     # Spine also working as EVPN RS
+    # all spines have to be listed here.
     DC1-POD2-SPINE1:
       id: 1
       mgmt_ip: 192.168.1.13/24
@@ -27,6 +28,16 @@ spine:
     DC1-POD2-SPINE2:
       id: 2
       mgmt_ip: 192.168.1.14/24
+      evpn_route_servers: [ DC1-SUPER-SPINE2 ]
+      uplink_switch_interfaces: ['Ethernet4', 'Ethernet4']
+    DC1-POD2-SPINE3:
+      id: 3
+      mgmt_ip: 192.168.1.15/24
+      evpn_route_servers: [ DC1-SUPER-SPINE2 ]
+      uplink_switch_interfaces: ['Ethernet4', 'Ethernet4']
+    DC1-POD2-SPINE4:
+      id: 4
+      mgmt_ip: 192.168.1.16/24
       evpn_route_servers: [ DC1-SUPER-SPINE2 ]
       uplink_switch_interfaces: ['Ethernet4', 'Ethernet4']
 
@@ -54,11 +65,15 @@ l3leaf:
       spanning_tree_mode: none
       platform: vEOS-LAB
       uplink_interfaces: ['Ethernet1', 'Ethernet2']
-      uplink_switches: ['DC1-POD2-SPINE1', 'DC1-POD2-SPINE2']
+      uplink_switches: ['DC1-POD2-SPINE1', 'DC1-POD2-SPINE2', 'DC1-POD2-SPINE3']
       bgp_as: 65121
       nodes:
         DC1-POD2-LEAF1A:
           id: 1
-          mgmt_ip: 192.168.1.15/24
+          mgmt_ip: 192.168.1.17/24
+          uplink_switch_interfaces: ['Ethernet3', 'Ethernet3']
+        DC1-POD2-LEAF1B:
+          id: 2
+          mgmt_ip: 192.168.1.18/24
           uplink_switch_interfaces: ['Ethernet3', 'Ethernet3']
 
