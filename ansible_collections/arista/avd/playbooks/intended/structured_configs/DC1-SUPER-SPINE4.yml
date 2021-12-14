@@ -1,6 +1,6 @@
 router_bgp:
   as: '65100'
-  router_id: 10.4.0.4
+  router_id: 10.4.27.4
   bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
@@ -21,9 +21,9 @@ router_bgp:
     connected:
       route_map: RM-CONN-2-BGP
   neighbors:
-    172.16.11.199:
+    172.16.1.199:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65110.100'
+      remote_as: '65001.100'
       description: DC1-POD1-SPINE4_Ethernet4
 static_routes:
 - vrf: mgmt
@@ -74,17 +74,17 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.16.11.198/31
+    ip_address: 172.16.1.198/31
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     shutdown: false
-    ip_address: 10.4.0.4/32
+    ip_address: 10.4.27.4/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:
       10:
-        action: permit 10.4.0.0/24 eq 32
+        action: permit 10.4.27.0/24 eq 32
 route_maps:
   RM-CONN-2-BGP:
     sequence_numbers:

@@ -1,6 +1,6 @@
 router_bgp:
-  as: '65110.100'
-  router_id: 10.4.1.1
+  as: '65001.100'
+  router_id: 10.4.28.1
   bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
@@ -21,26 +21,26 @@ router_bgp:
     connected:
       route_map: RM-CONN-2-BGP
   neighbors:
-    172.16.11.0:
+    172.16.1.0:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65100'
       description: DC1-SUPER-SPINE1_Ethernet17/1
-    172.16.11.64:
+    172.16.1.64:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65100'
       description: DC1-SUPER-SPINE2_Ethernet17/2
-    172.16.11.128:
+    172.16.1.128:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65100'
       description: DC1-SUPER-SPINE3_Ethernet17/3
-    172.17.110.17:
+    172.17.1.17:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '64104'
-      description: DC1-POD1-LEAF4A_Ethernet1/1
-    172.17.110.25:
+      remote_as: '64105'
+      description: DC1-POD1-LEAF5A_Ethernet1/1
+    172.17.1.25:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '64104'
-      description: DC1-POD1-LEAF4B_Ethernet1/1
+      remote_as: '64105'
+      description: DC1-POD1-LEAF5B_Ethernet1/1
 static_routes:
 - vrf: mgmt
   destination_address_prefix: 0.0.0.0/0
@@ -82,7 +82,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.16.11.1/31
+    ip_address: 172.16.1.1/31
   Ethernet2:
     peer: DC1-SUPER-SPINE2
     peer_interface: Ethernet17/2
@@ -94,7 +94,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.16.11.65/31
+    ip_address: 172.16.1.65/31
   Ethernet3:
     peer: DC1-SUPER-SPINE3
     peer_interface: Ethernet17/3
@@ -106,41 +106,41 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.16.11.129/31
+    ip_address: 172.16.1.129/31
   Ethernet4:
-    peer: DC1-POD1-LEAF4A
+    peer: DC1-POD1-LEAF5A
     peer_interface: Ethernet1/1
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-POD1-LEAF4A_Ethernet1/1
+    description: P2P_LINK_TO_DC1-POD1-LEAF5A_Ethernet1/1
     mtu: 9214
     service_profile: QOS-PROFILE
     ptp:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.110.16/31
+    ip_address: 172.17.1.16/31
   Ethernet5:
-    peer: DC1-POD1-LEAF4B
+    peer: DC1-POD1-LEAF5B
     peer_interface: Ethernet1/1
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-POD1-LEAF4B_Ethernet1/1
+    description: P2P_LINK_TO_DC1-POD1-LEAF5B_Ethernet1/1
     mtu: 9214
     service_profile: QOS-PROFILE
     ptp:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.110.24/31
+    ip_address: 172.17.1.24/31
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     shutdown: false
-    ip_address: 10.4.1.1/32
+    ip_address: 10.4.28.1/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:
       10:
-        action: permit 10.4.1.0/24 eq 32
+        action: permit 10.4.28.0/24 eq 32
 route_maps:
   RM-CONN-2-BGP:
     sequence_numbers:

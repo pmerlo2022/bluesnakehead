@@ -146,12 +146,12 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet17/1 | routed | - | 172.16.11.7/31 | default | 9214 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet17/2 | routed | - | 172.16.11.71/31 | default | 9214 | false | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SUPER-SPINE3_Ethernet17/3 | routed | - | 172.16.11.135/31 | default | 9214 | false | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SUPER-SPINE4_Ethernet17/4 | routed | - | 172.16.11.199/31 | default | 9214 | false | - | - |
-| Ethernet7 | P2P_LINK_TO_DC1-POD1-LEAF4A_Ethernet1/4 | routed | - | 172.17.110.22/31 | default | 9214 | false | - | - |
-| Ethernet8 | P2P_LINK_TO_DC1-POD1-LEAF4B_Ethernet1/4 | routed | - | 172.17.110.30/31 | default | 9214 | false | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet17/1 | routed | - | 172.16.1.7/31 | default | 9214 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet17/2 | routed | - | 172.16.1.71/31 | default | 9214 | false | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SUPER-SPINE3_Ethernet17/3 | routed | - | 172.16.1.135/31 | default | 9214 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SUPER-SPINE4_Ethernet17/4 | routed | - | 172.16.1.199/31 | default | 9214 | false | - | - |
+| Ethernet7 | P2P_LINK_TO_DC1-POD1-LEAF5A_Ethernet1/4 | routed | - | 172.17.1.22/31 | default | 9214 | false | - | - |
+| Ethernet8 | P2P_LINK_TO_DC1-POD1-LEAF5B_Ethernet1/4 | routed | - | 172.17.1.30/31 | default | 9214 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -162,7 +162,7 @@ interface Ethernet1
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.16.11.7/31
+   ip address 172.16.1.7/31
    ptp enable
    service-profile QOS-PROFILE
 !
@@ -171,7 +171,7 @@ interface Ethernet2
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.16.11.71/31
+   ip address 172.16.1.71/31
    ptp enable
    service-profile QOS-PROFILE
 !
@@ -180,7 +180,7 @@ interface Ethernet3
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.16.11.135/31
+   ip address 172.16.1.135/31
    ptp enable
    service-profile QOS-PROFILE
 !
@@ -189,25 +189,25 @@ interface Ethernet4
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.16.11.199/31
+   ip address 172.16.1.199/31
    ptp enable
    service-profile QOS-PROFILE
 !
 interface Ethernet7
-   description P2P_LINK_TO_DC1-POD1-LEAF4A_Ethernet1/4
+   description P2P_LINK_TO_DC1-POD1-LEAF5A_Ethernet1/4
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.17.110.22/31
+   ip address 172.17.1.22/31
    ptp enable
    service-profile QOS-PROFILE
 !
 interface Ethernet8
-   description P2P_LINK_TO_DC1-POD1-LEAF4B_Ethernet1/4
+   description P2P_LINK_TO_DC1-POD1-LEAF5B_Ethernet1/4
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.17.110.30/31
+   ip address 172.17.1.30/31
    ptp enable
    service-profile QOS-PROFILE
 ```
@@ -220,7 +220,7 @@ interface Ethernet8
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 10.4.1.4/32 |
+| Loopback0 | EVPN_Overlay_Peering | default | 10.4.28.4/32 |
 
 #### IPv6
 
@@ -236,7 +236,7 @@ interface Ethernet8
 interface Loopback0
    description EVPN_Overlay_Peering
    no shutdown
-   ip address 10.4.1.4/32
+   ip address 10.4.28.4/32
 ```
 
 # Routing
@@ -294,7 +294,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65110.100|  10.4.1.4 |
+| 65001.100|  10.4.28.4 |
 
 | BGP Tuning |
 | ---------- |
@@ -318,12 +318,12 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 | Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
 | -------- | --------- | --- | -------------- | -------------- |
-| 172.16.11.6 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.11.70 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.11.134 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.11.198 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.17.110.23 | 64104 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.17.110.31 | 64104 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.1.6 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.1.70 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.1.134 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.1.198 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.1.23 | 64105 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.1.31 | 64105 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
@@ -335,8 +335,8 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 ```eos
 !
-router bgp 65110.100
-   router-id 10.4.1.4
+router bgp 65001.100
+   router-id 10.4.28.4
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    graceful-restart restart-time 300
@@ -346,24 +346,24 @@ router bgp 65110.100
    neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
-   neighbor 172.16.11.6 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.11.6 remote-as 65100
-   neighbor 172.16.11.6 description DC1-SUPER-SPINE1_Ethernet17/1
-   neighbor 172.16.11.70 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.11.70 remote-as 65100
-   neighbor 172.16.11.70 description DC1-SUPER-SPINE2_Ethernet17/2
-   neighbor 172.16.11.134 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.11.134 remote-as 65100
-   neighbor 172.16.11.134 description DC1-SUPER-SPINE3_Ethernet17/3
-   neighbor 172.16.11.198 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.11.198 remote-as 65100
-   neighbor 172.16.11.198 description DC1-SUPER-SPINE4_Ethernet17/4
-   neighbor 172.17.110.23 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.23 remote-as 64104
-   neighbor 172.17.110.23 description DC1-POD1-LEAF4A_Ethernet1/4
-   neighbor 172.17.110.31 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.31 remote-as 64104
-   neighbor 172.17.110.31 description DC1-POD1-LEAF4B_Ethernet1/4
+   neighbor 172.16.1.6 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.16.1.6 remote-as 65100
+   neighbor 172.16.1.6 description DC1-SUPER-SPINE1_Ethernet17/1
+   neighbor 172.16.1.70 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.16.1.70 remote-as 65100
+   neighbor 172.16.1.70 description DC1-SUPER-SPINE2_Ethernet17/2
+   neighbor 172.16.1.134 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.16.1.134 remote-as 65100
+   neighbor 172.16.1.134 description DC1-SUPER-SPINE3_Ethernet17/3
+   neighbor 172.16.1.198 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.16.1.198 remote-as 65100
+   neighbor 172.16.1.198 description DC1-SUPER-SPINE4_Ethernet17/4
+   neighbor 172.17.1.23 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.1.23 remote-as 64105
+   neighbor 172.17.1.23 description DC1-POD1-LEAF5A_Ethernet1/4
+   neighbor 172.17.1.31 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.1.31 remote-as 64105
+   neighbor 172.17.1.31 description DC1-POD1-LEAF5B_Ethernet1/4
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family ipv4
@@ -382,14 +382,14 @@ router bgp 65110.100
 
 | Sequence | Action |
 | -------- | ------ |
-| 10 | permit 10.4.1.0/24 eq 32 |
+| 10 | permit 10.4.28.0/24 eq 32 |
 
 ### Prefix-lists Device Configuration
 
 ```eos
 !
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-   seq 10 permit 10.4.1.0/24 eq 32
+   seq 10 permit 10.4.28.0/24 eq 32
 ```
 
 ## Route-maps

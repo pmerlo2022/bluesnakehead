@@ -174,8 +174,8 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet2 | routed | - | 172.16.21.64/31 | default | 9214 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet2 | routed | - | 172.16.21.66/31 | default | 9214 | false | - | - |
+| Ethernet1 | P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet2 | routed | - | 172.16.32.64/31 | default | 9214 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC2-POD1-SPINE4_Ethernet2 | routed | - | 172.16.32.66/31 | default | 9214 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -186,16 +186,16 @@ interface Ethernet1
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.16.21.64/31
+   ip address 172.16.32.64/31
    ptp enable
    service-profile QOS-PROFILE
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet2
+   description P2P_LINK_TO_DC2-POD1-SPINE4_Ethernet2
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.16.21.66/31
+   ip address 172.16.32.66/31
    ptp enable
    service-profile QOS-PROFILE
 ```
@@ -306,8 +306,8 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 | Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
 | -------- | --------- | --- | -------------- | -------------- |
-| 172.16.21.65 | 65210 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.21.67 | 65210 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.32.65 | 65002.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.32.67 | 65002.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
@@ -329,12 +329,12 @@ router bgp 65200
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
-   neighbor 172.16.21.65 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.21.65 remote-as 65210
-   neighbor 172.16.21.65 description DC2-POD1-SPINE1_Ethernet2
-   neighbor 172.16.21.67 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.21.67 remote-as 65210
-   neighbor 172.16.21.67 description DC2-POD1-SPINE2_Ethernet2
+   neighbor 172.16.32.65 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.16.32.65 remote-as 65002.100
+   neighbor 172.16.32.65 description DC2-POD1-SPINE1_Ethernet2
+   neighbor 172.16.32.67 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.16.32.67 remote-as 65002.100
+   neighbor 172.16.32.67 description DC2-POD1-SPINE4_Ethernet2
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family ipv4

@@ -174,7 +174,7 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet17/4 | P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet4 | routed | - | 172.16.11.198/31 | default | 9214 | false | - | - |
+| Ethernet17/4 | P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet4 | routed | - | 172.16.1.198/31 | default | 9214 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -185,7 +185,7 @@ interface Ethernet17/4
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.16.11.198/31
+   ip address 172.16.1.198/31
    ptp enable
    service-profile QOS-PROFILE
 ```
@@ -198,7 +198,7 @@ interface Ethernet17/4
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 10.4.0.4/32 |
+| Loopback0 | EVPN_Overlay_Peering | default | 10.4.27.4/32 |
 
 #### IPv6
 
@@ -214,7 +214,7 @@ interface Ethernet17/4
 interface Loopback0
    description EVPN_Overlay_Peering
    no shutdown
-   ip address 10.4.0.4/32
+   ip address 10.4.27.4/32
 ```
 
 # Routing
@@ -272,7 +272,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65100|  10.4.0.4 |
+| 65100|  10.4.27.4 |
 
 | BGP Tuning |
 | ---------- |
@@ -296,7 +296,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 | Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
 | -------- | --------- | --- | -------------- | -------------- |
-| 172.16.11.199 | 65110.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.1.199 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
@@ -309,7 +309,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 ```eos
 !
 router bgp 65100
-   router-id 10.4.0.4
+   router-id 10.4.27.4
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    graceful-restart restart-time 300
@@ -319,9 +319,9 @@ router bgp 65100
    neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
-   neighbor 172.16.11.199 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.11.199 remote-as 65110.100
-   neighbor 172.16.11.199 description DC1-POD1-SPINE4_Ethernet4
+   neighbor 172.16.1.199 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.16.1.199 remote-as 65001.100
+   neighbor 172.16.1.199 description DC1-POD1-SPINE4_Ethernet4
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family ipv4
@@ -340,14 +340,14 @@ router bgp 65100
 
 | Sequence | Action |
 | -------- | ------ |
-| 10 | permit 10.4.0.0/24 eq 32 |
+| 10 | permit 10.4.27.0/24 eq 32 |
 
 ### Prefix-lists Device Configuration
 
 ```eos
 !
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-   seq 10 permit 10.4.0.0/24 eq 32
+   seq 10 permit 10.4.27.0/24 eq 32
 ```
 
 ## Route-maps

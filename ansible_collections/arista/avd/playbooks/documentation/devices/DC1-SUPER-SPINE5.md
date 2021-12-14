@@ -166,7 +166,7 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 10.4.0.5/32 |
+| Loopback0 | EVPN_Overlay_Peering | default | 10.4.27.5/32 |
 
 #### IPv6
 
@@ -182,7 +182,7 @@ vlan internal order ascending range 1006 1199
 interface Loopback0
    description EVPN_Overlay_Peering
    no shutdown
-   ip address 10.4.0.5/32
+   ip address 10.4.27.5/32
 ```
 
 # Routing
@@ -240,7 +240,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65100|  10.4.0.5 |
+| 65100|  10.4.27.5 |
 
 | BGP Tuning |
 | ---------- |
@@ -271,7 +271,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 ```eos
 !
 router bgp 65100
-   router-id 10.4.0.5
+   router-id 10.4.27.5
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    graceful-restart restart-time 300
@@ -299,14 +299,14 @@ router bgp 65100
 
 | Sequence | Action |
 | -------- | ------ |
-| 10 | permit 10.4.0.0/24 eq 32 |
+| 10 | permit 10.4.27.0/24 eq 32 |
 
 ### Prefix-lists Device Configuration
 
 ```eos
 !
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-   seq 10 permit 10.4.0.0/24 eq 32
+   seq 10 permit 10.4.27.0/24 eq 32
 ```
 
 ## Route-maps

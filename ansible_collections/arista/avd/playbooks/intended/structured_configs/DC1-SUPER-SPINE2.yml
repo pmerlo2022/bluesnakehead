@@ -1,6 +1,6 @@
 router_bgp:
   as: '65100'
-  router_id: 10.4.0.2
+  router_id: 10.4.27.2
   bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
@@ -21,17 +21,9 @@ router_bgp:
     connected:
       route_map: RM-CONN-2-BGP
   neighbors:
-    172.16.12.65:
+    172.16.1.71:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65120'
-      description: DC1-POD2-SPINE1_Ethernet2
-    172.16.12.71:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65120'
-      description: DC1-POD2-SPINE4_Ethernet2
-    172.16.11.71:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65110.100'
+      remote_as: '65001.100'
       description: DC1-POD1-SPINE4_Ethernet2
 static_routes:
 - vrf: mgmt
@@ -71,30 +63,6 @@ management_api_http:
 eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli
   under platform_settings vEOS-LAB\n"
 ethernet_interfaces:
-  Ethernet3:
-    peer: DC1-POD2-SPINE1
-    peer_interface: Ethernet2
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet2
-    mtu: 9214
-    service_profile: QOS-PROFILE
-    ptp:
-      enable: true
-    type: routed
-    shutdown: false
-    ip_address: 172.16.12.64/31
-  Ethernet4:
-    peer: DC1-POD2-SPINE4
-    peer_interface: Ethernet2
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-POD2-SPINE4_Ethernet2
-    mtu: 9214
-    service_profile: QOS-PROFILE
-    ptp:
-      enable: true
-    type: routed
-    shutdown: false
-    ip_address: 172.16.12.70/31
   Ethernet17/2:
     peer: DC1-POD1-SPINE4
     peer_interface: Ethernet2
@@ -106,17 +74,17 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.16.11.70/31
+    ip_address: 172.16.1.70/31
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     shutdown: false
-    ip_address: 10.4.0.2/32
+    ip_address: 10.4.27.2/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:
       10:
-        action: permit 10.4.0.0/24 eq 32
+        action: permit 10.4.27.0/24 eq 32
 route_maps:
   RM-CONN-2-BGP:
     sequence_numbers:
