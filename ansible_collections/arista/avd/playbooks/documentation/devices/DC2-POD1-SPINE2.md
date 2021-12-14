@@ -174,15 +174,17 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet2 | routed | - | 172.16.32.3/31 | default | 9214 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_DC2-SUPER-SPINE2_Ethernet2 | routed | - | 172.16.32.67/31 | default | 9214 | false | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet1 | routed | - | 172.16.32.3/31 | default | 9214 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet2 | routed | - | 172.16.32.67/31 | default | 9214 | false | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SUPER-SPINE3_Ethernet3 | routed | - | 172.16.32.131/31 | default | 9214 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SUPER-SPINE4_Ethernet4 | routed | - | 172.16.32.195/31 | default | 9214 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet2
+   description P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet1
    no shutdown
    mtu 9214
    no switchport
@@ -191,11 +193,29 @@ interface Ethernet1
    service-profile QOS-PROFILE
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC2-SUPER-SPINE2_Ethernet2
+   description P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet2
    no shutdown
    mtu 9214
    no switchport
    ip address 172.16.32.67/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet3
+   description P2P_LINK_TO_DC1-SUPER-SPINE3_Ethernet3
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.16.32.131/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet4
+   description P2P_LINK_TO_DC1-SUPER-SPINE4_Ethernet4
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.16.32.195/31
    ptp enable
    service-profile QOS-PROFILE
 ```
@@ -306,8 +326,10 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 | Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
 | -------- | --------- | --- | -------------- | -------------- |
-| 172.16.32.2 | 65200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.32.66 | 65200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.32.2 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.32.66 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.32.130 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.32.194 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
@@ -330,11 +352,17 @@ router bgp 65002.100
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.16.32.2 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.32.2 remote-as 65200
-   neighbor 172.16.32.2 description DC2-SUPER-SPINE1_Ethernet2
+   neighbor 172.16.32.2 remote-as 65100
+   neighbor 172.16.32.2 description DC1-SUPER-SPINE1_Ethernet1
    neighbor 172.16.32.66 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.32.66 remote-as 65200
-   neighbor 172.16.32.66 description DC2-SUPER-SPINE2_Ethernet2
+   neighbor 172.16.32.66 remote-as 65100
+   neighbor 172.16.32.66 description DC1-SUPER-SPINE2_Ethernet2
+   neighbor 172.16.32.130 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.16.32.130 remote-as 65100
+   neighbor 172.16.32.130 description DC1-SUPER-SPINE3_Ethernet3
+   neighbor 172.16.32.194 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.16.32.194 remote-as 65100
+   neighbor 172.16.32.194 description DC1-SUPER-SPINE4_Ethernet4
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family ipv4
@@ -404,9 +432,6 @@ vrf instance mgmt
 
 ```eos
 !
-interface Loopback1009
-  description Loopback created from raw_eos_cli under spine defaults in DC2 POD1
-
 interface Loopback1111
   description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
 

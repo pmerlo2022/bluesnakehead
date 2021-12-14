@@ -29,14 +29,18 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65100'
       description: DC1-SUPER-SPINE2_Ethernet2
-    172.17.2.7:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65121'
-      description: DC1-POD2-LEAF1B_Ethernet1
-    172.16.2.192:
+    172.16.2.128:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65100'
-      description: DC1-SUPER-SPINE4_Ethernet4
+      description: DC1-SUPER-SPINE3_Ethernet3
+    172.17.2.17:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.1400'
+      description: DC1-POD2-LEAF14A_Ethernet1/1
+    172.17.2.25:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.1400'
+      description: DC1-POD2-LEAF14B_Ethernet1/1
 static_routes:
 - vrf: mgmt
   destination_address_prefix: 0.0.0.0/0
@@ -100,29 +104,41 @@ ethernet_interfaces:
     shutdown: false
     ip_address: 172.16.2.65/31
   Ethernet3:
-    peer: DC1-POD2-LEAF1B
-    peer_interface: Ethernet1
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-POD2-LEAF1B_Ethernet1
-    mtu: 9214
-    service_profile: QOS-PROFILE
-    ptp:
-      enable: true
-    type: routed
-    shutdown: false
-    ip_address: 172.17.2.6/31
-  Ethernet4:
-    peer: DC1-SUPER-SPINE4
-    peer_interface: Ethernet4
+    peer: DC1-SUPER-SPINE3
+    peer_interface: Ethernet3
     peer_type: super-spine
-    description: P2P_LINK_TO_DC1-SUPER-SPINE4_Ethernet4
+    description: P2P_LINK_TO_DC1-SUPER-SPINE3_Ethernet3
     mtu: 9214
     service_profile: QOS-PROFILE
     ptp:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.16.2.193/31
+    ip_address: 172.16.2.129/31
+  Ethernet4:
+    peer: DC1-POD2-LEAF14A
+    peer_interface: Ethernet1/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF14A_Ethernet1/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.16/31
+  Ethernet5:
+    peer: DC1-POD2-LEAF14B
+    peer_interface: Ethernet1/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF14B_Ethernet1/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.24/31
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering

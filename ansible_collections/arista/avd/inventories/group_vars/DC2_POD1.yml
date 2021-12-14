@@ -26,7 +26,7 @@ spine:
       mgmt_ip: 192.168.1.20/24
       evpn_role: none
       uplink_switch_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4' ]
-    DC1-POD2-SPINE2:
+    DC2-POD1-SPINE2:
       id: 2
       evpn_role: none
       mgmt_ip: 192.168.1.21/24
@@ -74,14 +74,217 @@ l3leaf:
     mlag_peer_l3_ipv4_pool: 172.19.32.0/24
     mlag_peer_ipv4_pool: 172.20.32.0/24
   node_groups:
-    # Single switch working as underlay L3 router and EVPN RS
-    RACK1_SINGLE:
-      bgp_as: 65211
+    RACK1_MLAG:
+      bgp_as: "65211.100"
+      mlag: true
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      mlag_dual_primary_detection: true
+      mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
       nodes:
         DC2-POD1-LEAF1A:
           id: 1
-          mgmt_ip: 192.168.1.22/24
-          uplink_switch_interfaces: ['Ethernet3', 'Ethernet3']
+          mgmt_ip: 192.168.1.7/24 Test without management IP
+          # Doesn't seem to be picking up defaults. Wait... this isn't a default. uplink_switch, uplink_interfaces.. but what is this?L2?
+          uplink_switch_interfaces: [ Ethernet4, Ethernet5, Ethernet6, Ethernet7 ]
+        DC2-POD1-LEAF1B:
+          id: 2
+          mgmt_ip: 192.168.1.8/24
+          uplink_switch_interfaces: [ Ethernet4, Ethernet5, Ethernet6, Ethernet7 ]
+    RACK2_MLAG:
+      bgp_as: "65211.200"
+      mlag: true
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      mlag_dual_primary_detection: true
+      mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
+      nodes:
+        DC2-POD1-LEAF2A:
+          id: 3
+          # mgmt_ip: 192.168.1.8/16 Test without management IP
+          uplink_switch_interfaces: [ Ethernet4, Ethernet5, Ethernet6, Ethernet7 ]
+        DC2-POD1-LEAF2B:
+          id: 4
+          mgmt_ip: 192.168.1.9/16
+          uplink_switch_interfaces: [ Ethernet4, Ethernet5, Ethernet6, Ethernet7 ]
+    RACK3_MLAG:
+      bgp_as: "65211.300"
+      mlag: true
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      mlag_dual_primary_detection: true
+      mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
+      nodes:
+        DC2-POD1-LEAF3A:
+          id: 3
+          # mgmt_ip: 192.168.1.8/16 Test without management IP
+          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+        DC2-POD1-LEAF3B:
+          id: 4
+          mgmt_ip: 192.168.1.11/16
+          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]
+    RACK4_MLAG:
+      bgp_as: "65211.400"
+      mlag: true
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      mlag_dual_primary_detection: true
+      mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
+      nodes:
+        DC2-POD1-LEAF4A:
+          id: 3
+          # mgmt_ip: 192.168.1.8/16 Test without management IP
+          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+        DC2-POD1-LEAF4B:
+          id: 4
+          mgmt_ip: 192.168.1.11/16
+          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]
+    RACK5_MLAG:
+      bgp_as: "65211.500"
+      mlag: true
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      mlag_dual_primary_detection: true
+      mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
+      nodes:
+        DC2-POD1-LEAF5A:
+          id: 3
+          # mgmt_ip: 192.168.1.8/16 Test without management IP
+          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+        DC2-POD1-LEAF5B:
+          id: 4
+          mgmt_ip: 192.168.1.11/16
+          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]
+    RACK6_MLAG:
+      bgp_as: "65211.600"
+      mlag: true
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      mlag_dual_primary_detection: true
+      mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
+      nodes:
+        DC2-POD1-LEAF6A:
+          id: 3
+          # mgmt_ip: 192.168.1.8/16 Test without management IP
+          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+        DC2-POD1-LEAF6B:
+          id: 4
+          mgmt_ip: 192.168.1.11/16
+          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]
+    RACK7_MLAG:
+      bgp_as: "65211.700"
+      mlag: true
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      mlag_dual_primary_detection: true
+      mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
+      nodes:
+        DC2-POD1-LEAF7A:
+          id: 3
+          # mgmt_ip: 192.168.1.8/16 Test without management IP
+          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+        DC2-POD1-LEAF7B:
+          id: 4
+          mgmt_ip: 192.168.1.11/16
+          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]
+    RACK8_MLAG:
+      bgp_as: "65211.800"
+      mlag: true
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      mlag_dual_primary_detection: true
+      mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
+      nodes:
+        DC2-POD1-LEAF8A:
+          id: 3
+          # mgmt_ip: 192.168.1.8/16 Test without management IP
+          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+        DC2-POD1-LEAF8B:
+          id: 4
+          mgmt_ip: 192.168.1.11/16
+          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ] 
+    RACK9_MLAG:
+      bgp_as: "65211.900"
+      mlag: true
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      mlag_dual_primary_detection: true
+      mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
+      nodes:
+        DC2-POD1-LEAF9A:
+          id: 3
+          # mgmt_ip: 192.168.1.8/16 Test without management IP
+          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+        DC2-POD1-LEAF9B:
+          id: 4
+          mgmt_ip: 192.168.1.11/16
+          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ] 
+    RACK10_MLAG:
+      bgp_as: "65211.1000"
+      mlag: true
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      mlag_dual_primary_detection: true
+      mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
+      nodes:
+        DC2-POD1-LEAF10A:
+          id: 3
+          # mgmt_ip: 192.168.1.8/16 Test without management IP
+          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+        DC2-POD1-LEAF10B:
+          id: 4
+          mgmt_ip: 192.168.1.11/16
+          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ] 
+    RACK11_MLAG:
+      bgp_as: "65211.1100"
+      mlag: true
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      mlag_dual_primary_detection: true
+      mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
+      nodes:
+        DC2-POD1-LEAF11A:
+          id: 3
+          # mgmt_ip: 192.168.1.8/16 Test without management IP
+          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+        DC2-POD1-LEAF11B:
+          id: 4
+          mgmt_ip: 192.168.1.11/16
+          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]                                                   
+    RACK12_MLAG:
+      bgp_as: "65211.1200"
+      mlag: true
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      mlag_dual_primary_detection: true
+      mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
+      nodes:
+        DC2-POD1-LEAF12A:
+          id: 3
+          # mgmt_ip: 192.168.1.8/16 Test without management IP
+          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+        DC2-POD1-LEAF12B:
+          id: 4
+          mgmt_ip: 192.168.1.11/16
+          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]                                                   
+    RACK13_MLAG:
+      bgp_as: "65211.1300"
+      mlag: true
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      mlag_dual_primary_detection: true
+      mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
+      nodes:
+        DC2-POD1-LEAF13A:
+          id: 3
+          # mgmt_ip: 192.168.1.8/16 Test without management IP
+          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+        DC2-POD1-LEAF13B:
+          id: 4
+          mgmt_ip: 192.168.1.11/16
+          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]                                                   
+    RACK14_MLAG:
+      bgp_as: "65211.1400"
+      mlag: true
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      mlag_dual_primary_detection: true
+      mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
+      nodes:
+        DC2-POD1-LEAF14A:
+          id: 3
+          # mgmt_ip: 192.168.1.8/16 Test without management IP
+          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+        DC2-POD1-LEAF14B:
+          id: 4
+          mgmt_ip: 192.168.1.11/16
+          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]                                                   
 
 # In DC2 we define all variables via defaults if possible
 l2leaf:

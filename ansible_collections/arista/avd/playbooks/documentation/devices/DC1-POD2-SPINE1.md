@@ -176,8 +176,9 @@ vlan internal order ascending range 1006 1199
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1 | P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet1 | routed | - | 172.16.2.1/31 | default | 9214 | false | - | - |
 | Ethernet2 | P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet2 | routed | - | 172.16.2.65/31 | default | 9214 | false | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-POD2-LEAF1B_Ethernet1 | routed | - | 172.17.2.6/31 | default | 9214 | false | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SUPER-SPINE4_Ethernet4 | routed | - | 172.16.2.193/31 | default | 9214 | false | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SUPER-SPINE3_Ethernet3 | routed | - | 172.16.2.129/31 | default | 9214 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-POD2-LEAF14A_Ethernet1/1 | routed | - | 172.17.2.16/31 | default | 9214 | false | - | - |
+| Ethernet5 | P2P_LINK_TO_DC1-POD2-LEAF14B_Ethernet1/1 | routed | - | 172.17.2.24/31 | default | 9214 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -202,20 +203,29 @@ interface Ethernet2
    service-profile QOS-PROFILE
 !
 interface Ethernet3
-   description P2P_LINK_TO_DC1-POD2-LEAF1B_Ethernet1
+   description P2P_LINK_TO_DC1-SUPER-SPINE3_Ethernet3
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.17.2.6/31
+   ip address 172.16.2.129/31
    ptp enable
    service-profile QOS-PROFILE
 !
 interface Ethernet4
-   description P2P_LINK_TO_DC1-SUPER-SPINE4_Ethernet4
+   description P2P_LINK_TO_DC1-POD2-LEAF14A_Ethernet1/1
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.16.2.193/31
+   ip address 172.17.2.16/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet5
+   description P2P_LINK_TO_DC1-POD2-LEAF14B_Ethernet1/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.2.24/31
    ptp enable
    service-profile QOS-PROFILE
 ```
@@ -328,8 +338,9 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | -------- | --------- | --- | -------------- | -------------- |
 | 172.16.2.0 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.16.2.64 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.2.192 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.17.2.7 | 65121 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.2.128 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.2.17 | 65112.1400 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.2.25 | 65112.1400 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
@@ -358,12 +369,15 @@ router bgp 65001.200
    neighbor 172.16.2.64 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.2.64 remote-as 65100
    neighbor 172.16.2.64 description DC1-SUPER-SPINE2_Ethernet2
-   neighbor 172.16.2.192 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.2.192 remote-as 65100
-   neighbor 172.16.2.192 description DC1-SUPER-SPINE4_Ethernet4
-   neighbor 172.17.2.7 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.2.7 remote-as 65121
-   neighbor 172.17.2.7 description DC1-POD2-LEAF1B_Ethernet1
+   neighbor 172.16.2.128 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.16.2.128 remote-as 65100
+   neighbor 172.16.2.128 description DC1-SUPER-SPINE3_Ethernet3
+   neighbor 172.17.2.17 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.2.17 remote-as 65112.1400
+   neighbor 172.17.2.17 description DC1-POD2-LEAF14A_Ethernet1/1
+   neighbor 172.17.2.25 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.2.25 remote-as 65112.1400
+   neighbor 172.17.2.25 description DC1-POD2-LEAF14B_Ethernet1/1
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family ipv4

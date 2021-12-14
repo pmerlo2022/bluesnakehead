@@ -21,10 +21,10 @@ router_bgp:
     connected:
       route_map: RM-CONN-2-BGP
   neighbors:
-    172.16.2.131:
+    172.16.32.135:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65001.200'
-      description: DC1-POD2-SPINE2_Ethernet3
+      remote_as: '65002.100'
+      description: DC2-POD1-SPINE4_Ethernet3
     172.16.2.135:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65001.200'
@@ -68,17 +68,17 @@ eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cl
   under platform_settings vEOS-LAB\n"
 ethernet_interfaces:
   Ethernet3:
-    peer: DC1-POD2-SPINE2
+    peer: DC2-POD1-SPINE4
     peer_interface: Ethernet3
     peer_type: spine
-    description: P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet3
+    description: P2P_LINK_TO_DC2-POD1-SPINE4_Ethernet3
     mtu: 9214
     service_profile: QOS-PROFILE
     ptp:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.16.2.130/31
+    ip_address: 172.16.32.134/31
   Ethernet17/3:
     peer: DC1-POD2-SPINE4
     peer_interface: Ethernet3
