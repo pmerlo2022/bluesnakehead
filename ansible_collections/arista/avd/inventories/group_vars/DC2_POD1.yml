@@ -10,6 +10,7 @@ spine:
     loopback_ipv4_pool: 10.4.58.0/24    
     uplink_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4', 'Ethernet5', 'Ethernet6', 'Ethernet7', 'Ethernet8', 'Ethernet9', 'Ethernet10', 'Ethernet11', 'Ethernet12', 'Ethernet13', 'Ethernet14', 'Ethernet15', 'Ethernet16']
     uplink_switches: ['DC1-SUPER-SPINE1', 'DC1-SUPER-SPINE2', 'DC1-SUPER-SPINE3', 'DC1-SUPER-SPINE4']
+    uplink_switch_interfaces: ['Ethernet17/1', 'Ethernet17/2', 'Ethernet17/3', 'Ethernet17/4', 'Ethernet18/1', 'Ethernet18/2', 'Ethernet18/3', 'Ethernet18/4', 'Ethernet19/1', 'Ethernet19/2', 'Ethernet19/3', 'Ethernet19/4', 'Ethernet20/1', 'Ethernet20/2', 'Ethernet20/3', 'Ethernet20/4',]
     max_uplink_switches: 4
     uplink_ipv4_pool: 172.16.32.0/24
     uplink_ptp:
@@ -24,22 +25,22 @@ spine:
       id: 1
       mgmt_ip: 192.168.1.20/24
       evpn_role: none
-      uplink_switch_interfaces: ['Ethernet1', 'Ethernet1']
-    DC2-POD1-SPINE2:
+      uplink_switch_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4' ]
+    DC1-POD2-SPINE2:
       id: 2
       evpn_role: none
       mgmt_ip: 192.168.1.21/24
-      uplink_switch_interfaces: ['Ethernet2', 'Ethernet2']
+      uplink_switch_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4']
     DC2-POD1-SPINE3:
       id: 3
       evpn_role: none
       mgmt_ip: 192.168.1.22/24
-      uplink_switch_interfaces: ['Ethernet2', 'Ethernet2']
+      uplink_switch_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4']
     DC2-POD1-SPINE4:
       id: 4
       evpn_role: none
       mgmt_ip: 10.6.32.4/24
-      uplink_switch_interfaces: ['Ethernet2', 'Ethernet2']
+      uplink_switch_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4']
 
 # In DC2 we define all variables via defaults
 l3leaf:
