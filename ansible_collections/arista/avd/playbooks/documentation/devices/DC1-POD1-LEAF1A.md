@@ -157,7 +157,7 @@ mlag configuration
    domain-id RACK1_MLAG
    local-interface Vlan4094
    peer-address 172.20.1.1
-   peer-address heartbeat 192.168.1.7 vrf mgmt
+   peer-address heartbeat 192.168.1.8 vrf mgmt
    peer-link Port-Channel5
    dual-primary detection delay 5 action errdisable all-interfaces
    reload-delay mlag 300
@@ -235,10 +235,50 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1/1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4 | routed | - | 172.17.1.1/31 | default | 9214 | false | - | - |
+| Ethernet1/2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5 | routed | - | 172.17.1.3/31 | default | 9214 | false | - | - |
+| Ethernet1/3 | P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet6 | routed | - | 172.17.1.5/31 | default | 9214 | false | - | - |
+| Ethernet1/4 | P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet7 | routed | - | 172.17.1.7/31 | default | 9214 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
+!
+interface Ethernet1/1
+   description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.1/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet1/2
+   description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.3/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet1/3
+   description P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet6
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.5/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet1/4
+   description P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet7
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.7/31
+   ptp enable
+   service-profile QOS-PROFILE
 !
 interface Ethernet5
    description MLAG_PEER_DC1-POD1-LEAF1B_Ethernet5
@@ -474,6 +514,11 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
 | -------- | --------- | --- | -------------- | -------------- |
 | 11.1.0.1 | 64102 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.200.1 | 65200 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.17.1.0 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.1.2 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.1.4 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.1.6 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.20.1.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
 
 ### Router BGP EVPN Address Family
@@ -519,6 +564,21 @@ router bgp 65111.100
    neighbor 11.1.0.1 local-as 64101 no-prepend replace-as
    neighbor 11.1.0.1 description DC1-POD1-LEAF1B
    neighbor 11.1.0.1 bfd
+   neighbor 172.16.200.1 peer group EVPN-OVERLAY-PEERS
+   neighbor 172.16.200.1 remote-as 65200
+   neighbor 172.16.200.1 description DC2-SUPER-SPINE1
+   neighbor 172.17.1.0 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.1.0 remote-as 65001.100
+   neighbor 172.17.1.0 description DC1-POD1-SPINE1_Ethernet4
+   neighbor 172.17.1.2 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.1.2 remote-as 65001.100
+   neighbor 172.17.1.2 description DC1-POD1-SPINE2_Ethernet5
+   neighbor 172.17.1.4 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.1.4 remote-as 65001.100
+   neighbor 172.17.1.4 description DC1-POD1-SPINE3_Ethernet6
+   neighbor 172.17.1.6 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.1.6 remote-as 65001.100
+   neighbor 172.17.1.6 description DC1-POD1-SPINE4_Ethernet7
    neighbor 172.20.1.1 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 172.20.1.1 description DC1-POD1-LEAF1B
    redistribute connected route-map RM-CONN-2-BGP

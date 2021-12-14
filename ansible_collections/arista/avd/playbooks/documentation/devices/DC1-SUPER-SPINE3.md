@@ -174,18 +174,28 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet17/3 | P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet3 | routed | - | 172.16.1.134/31 | default | 9214 | false | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet3 | routed | - | 172.16.2.130/31 | default | 9214 | false | - | - |
+| Ethernet17/3 | P2P_LINK_TO_DC1-POD2-SPINE4_Ethernet3 | routed | - | 172.16.2.134/31 | default | 9214 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
-interface Ethernet17/3
-   description P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet3
+interface Ethernet3
+   description P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet3
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.16.1.134/31
+   ip address 172.16.2.130/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet17/3
+   description P2P_LINK_TO_DC1-POD2-SPINE4_Ethernet3
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.16.2.134/31
    ptp enable
    service-profile QOS-PROFILE
 ```
@@ -296,7 +306,8 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 | Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
 | -------- | --------- | --- | -------------- | -------------- |
-| 172.16.1.135 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.2.131 | 65001.200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.2.135 | 65001.200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
@@ -319,9 +330,12 @@ router bgp 65100
    neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
-   neighbor 172.16.1.135 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.1.135 remote-as 65001.100
-   neighbor 172.16.1.135 description DC1-POD1-SPINE4_Ethernet3
+   neighbor 172.16.2.131 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.16.2.131 remote-as 65001.200
+   neighbor 172.16.2.131 description DC1-POD2-SPINE2_Ethernet3
+   neighbor 172.16.2.135 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.16.2.135 remote-as 65001.200
+   neighbor 172.16.2.135 description DC1-POD2-SPINE4_Ethernet3
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family ipv4

@@ -16,7 +16,6 @@
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
   - [Internal VLAN Allocation Policy Configuration](#internal-vlan-allocation-policy-configuration)
 - [Interfaces](#interfaces)
-  - [Ethernet Interfaces](#ethernet-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
 - [Routing](#routing)
   - [Service Routing Protocols Model](#service-routing-protocols-model)
@@ -161,47 +160,6 @@ vlan internal order ascending range 1006 1199
 
 # Interfaces
 
-## Ethernet Interfaces
-
-### Ethernet Interfaces Summary
-
-#### L2
-
-| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
-| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-
-*Inherited from Port-Channel Interface
-
-#### IPv4
-
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet1 | routed | - | 172.16.32.0/31 | default | 9214 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_DC2-POD1-SPINE4_Ethernet1 | routed | - | 172.16.32.6/31 | default | 9214 | false | - | - |
-
-### Ethernet Interfaces Device Configuration
-
-```eos
-!
-interface Ethernet1
-   description P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet1
-   no shutdown
-   mtu 9214
-   no switchport
-   ip address 172.16.32.0/31
-   ptp enable
-   service-profile QOS-PROFILE
-!
-interface Ethernet2
-   description P2P_LINK_TO_DC2-POD1-SPINE4_Ethernet1
-   no shutdown
-   mtu 9214
-   no switchport
-   ip address 172.16.32.6/31
-   ptp enable
-   service-profile QOS-PROFILE
-```
-
 ## Loopback Interfaces
 
 ### Loopback Interfaces Summary
@@ -321,8 +279,6 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
 | -------- | --------- | --- | -------------- | -------------- |
 | 10.4.1.3 | 65111.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 172.16.32.1 | 65002.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.32.7 | 65002.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
@@ -354,12 +310,6 @@ router bgp 65200
    neighbor 10.4.1.3 peer group EVPN-OVERLAY-PEERS
    neighbor 10.4.1.3 remote-as 65111.100
    neighbor 10.4.1.3 description DC1-POD1-LEAF1A
-   neighbor 172.16.32.1 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.32.1 remote-as 65002.100
-   neighbor 172.16.32.1 description DC2-POD1-SPINE1_Ethernet1
-   neighbor 172.16.32.7 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.32.7 remote-as 65002.100
-   neighbor 172.16.32.7 description DC2-POD1-SPINE4_Ethernet1
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

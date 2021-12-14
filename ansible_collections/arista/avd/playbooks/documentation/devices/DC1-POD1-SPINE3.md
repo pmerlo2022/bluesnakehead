@@ -150,6 +150,7 @@ vlan internal order ascending range 1006 1199
 | Ethernet2 | P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet17/2 | routed | - | 172.16.1.69/31 | default | 9214 | false | - | - |
 | Ethernet3 | P2P_LINK_TO_DC1-SUPER-SPINE3_Ethernet17/3 | routed | - | 172.16.1.133/31 | default | 9214 | false | - | - |
 | Ethernet4 | P2P_LINK_TO_DC1-SUPER-SPINE4_Ethernet17/4 | routed | - | 172.16.1.197/31 | default | 9214 | false | - | - |
+| Ethernet6 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet11 | routed | - | 172.17.1.28/31 | default | 9214 | false | - | - |
 | Ethernet7 | P2P_LINK_TO_DC1-POD1-LEAF14A_Ethernet1/3 | routed | - | 172.17.1.20/31 | default | 9214 | false | - | - |
 | Ethernet8 | P2P_LINK_TO_DC1-POD1-LEAF14B_Ethernet1/3 | routed | - | 172.17.1.28/31 | default | 9214 | false | - | - |
 
@@ -190,6 +191,15 @@ interface Ethernet4
    mtu 9214
    no switchport
    ip address 172.16.1.197/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet6
+   description P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet11
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.28/31
    ptp enable
    service-profile QOS-PROFILE
 !

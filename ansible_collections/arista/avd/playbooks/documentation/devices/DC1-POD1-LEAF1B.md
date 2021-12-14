@@ -1,9 +1,9 @@
-# DC1-POD1-LEAF2A
+# DC1-POD1-LEAF1B
 # Table of Contents
 <!-- toc -->
 
 - [Management](#management)
-  - [Domain-list](#domain-list)
+  - [Management Interfaces](#management-interfaces)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
@@ -51,19 +51,31 @@
 <!-- toc -->
 # Management
 
-## Domain-list
+## Management Interfaces
 
-### Domain-list:
- - structured-config.set.on.node
- - structured-config.set.under.vrf.common-vrf
+### Management Interfaces Summary
 
-### Domain-list Device Configuration
+#### IPv4
+
+| Management Interface | description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+| Management0 | oob_management | oob | mgmt | 192.168.1.8/24 | 10.6.1.1 |
+
+#### IPv6
+
+| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management0 | oob_management | oob | mgmt | -  | - |
+
+### Management Interfaces Device Configuration
 
 ```eos
 !
-ip domain-list structured-config.set.on.node
-ip domain-list structured-config.set.under.vrf.common-vrf
-!
+interface Management0
+   description oob_management
+   no shutdown
+   vrf mgmt
+   ip address 192.168.1.8/24
 ```
 
 ## Management API HTTP
@@ -118,13 +130,13 @@ username admin privilege 15 role network-admin secret sha512 $6$82gqIqw8b3nibNrk
 
 | Contact | Location | SNMP Traps | State |
 | ------- | -------- | ---------- | ----- |
-| - | AMS DC1 DC1_POD1 DC1-POD1-LEAF2A | All | Disabled |
+| - | AMS DC1 DC1_POD1 DC1-POD1-LEAF1B | All | Disabled |
 
 ### SNMP Device Configuration
 
 ```eos
 !
-snmp-server location AMS DC1 DC1_POD1 DC1-POD1-LEAF2A
+snmp-server location AMS DC1 DC1_POD1 DC1-POD1-LEAF1B
 ```
 
 # MLAG
@@ -133,7 +145,7 @@ snmp-server location AMS DC1 DC1_POD1 DC1-POD1-LEAF2A
 
 | Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
-| RACK2_MLAG | Vlan4094 | 172.20.1.5 | Port-Channel5 |
+| RACK1_MLAG | Vlan4094 | 172.20.1.0 | Port-Channel5 |
 
 Dual primary detection is enabled. The detection delay is 5 seconds.
 
@@ -142,10 +154,10 @@ Dual primary detection is enabled. The detection delay is 5 seconds.
 ```eos
 !
 mlag configuration
-   domain-id RACK2_MLAG
+   domain-id RACK1_MLAG
    local-interface Vlan4094
-   peer-address 172.20.1.5
-   peer-address heartbeat 192.168.1.9 vrf mgmt
+   peer-address 172.20.1.0
+   peer-address heartbeat False vrf mgmt
    peer-link Port-Channel5
    dual-primary detection delay 5 action errdisable all-interfaces
    reload-delay mlag 300
@@ -214,12 +226,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | MLAG_PEER_DC1-POD1-LEAF2B_Ethernet5 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet6 | MLAG_PEER_DC1-POD1-LEAF2B_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet16 | server-1_Eth1 | *access | *110 | *- | *- | 16 |
-| Ethernet17 | Set using structured_config on server adapter | *access | *110 | *- | *- | 17 |
-| Ethernet18 | server-1_Eth5 | *access | *110 | *- | *- | 18 |
-| Ethernet19 | server-1_Eth7 | *access | *110 | *- | *- | 19 |
+| Ethernet5 | MLAG_PEER_DC1-POD1-LEAF1A_Ethernet5 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet6 | MLAG_PEER_DC1-POD1-LEAF1A_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
 
 *Inherited from Port-Channel Interface
 
@@ -227,96 +235,70 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4 | routed | - | 172.17.1.17/31 | default | 9214 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5 | routed | - | 172.17.1.19/31 | default | 9214 | false | - | - |
-| Ethernet11 | P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet6 | routed | - | 172.17.1.21/31 | default | 9214 | false | - | - |
-| Ethernet12 | P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet7 | routed | - | 172.17.1.23/31 | default | 9214 | false | - | - |
+| Ethernet1/1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4 | routed | - | 172.17.1.9/31 | default | 9214 | false | - | - |
+| Ethernet1/2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5 | routed | - | 172.17.1.11/31 | default | 9214 | false | - | - |
+| Ethernet1/3 | P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet6 | routed | - | 172.17.1.13/31 | default | 9214 | false | - | - |
+| Ethernet1/4 | P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet7 | routed | - | 172.17.1.15/31 | default | 9214 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet6 | routed | - | 11.1.0.1/31 | default | 9214 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
-interface Ethernet1
+interface Ethernet1/1
    description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.17.1.17/31
+   ip address 172.17.1.9/31
    ptp enable
    service-profile QOS-PROFILE
 !
-interface Ethernet2
+interface Ethernet1/2
    description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.17.1.19/31
+   ip address 172.17.1.11/31
    ptp enable
    service-profile QOS-PROFILE
 !
-interface Ethernet5
-   description MLAG_PEER_DC1-POD1-LEAF2B_Ethernet5
-   no shutdown
-   channel-group 5 mode active
-!
-interface Ethernet6
-   description MLAG_PEER_DC1-POD1-LEAF2B_Ethernet6
-   no shutdown
-   channel-group 5 mode active
-!
-interface Ethernet11
+interface Ethernet1/3
    description P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet6
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.17.1.21/31
+   ip address 172.17.1.13/31
    ptp enable
    service-profile QOS-PROFILE
 !
-interface Ethernet12
+interface Ethernet1/4
    description P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet7
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.17.1.23/31
+   ip address 172.17.1.15/31
    ptp enable
    service-profile QOS-PROFILE
 !
-interface Ethernet16
-   description server-1_Eth1
+interface Ethernet4
+   description P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet6
    no shutdown
-   channel-group 16 mode active
-   comment
-   Comment created from raw_eos_cli under profile TENANT_A
-   EOF
-
+   mac security profile MACSEC_PROFILE
+   mtu 9214
+   no switchport
+   ip address 11.1.0.1/31
+   ptp enable
 !
-interface Ethernet17
-   description Set using structured_config on server adapter
+interface Ethernet5
+   description MLAG_PEER_DC1-POD1-LEAF1A_Ethernet5
    no shutdown
-   channel-group 17 mode active
-   comment
-   Comment created from raw_eos_cli under adapter for switch Eth17
-   EOF
-
+   channel-group 5 mode active
 !
-interface Ethernet18
-   description server-1_Eth5
+interface Ethernet6
+   description MLAG_PEER_DC1-POD1-LEAF1A_Ethernet6
    no shutdown
-   channel-group 18 mode active
-   comment
-   Comment created from raw_eos_cli under profile NESTED_TENANT_A
-   EOF
-
-!
-interface Ethernet19
-   description server-1_Eth7
-   no shutdown
-   channel-group 19 mode active
-   comment
-   Comment created from raw_eos_cli under profile NESTED_TENANT_A
-   EOF
-
+   channel-group 5 mode active
 ```
 
 ## Port-Channel Interfaces
@@ -327,18 +309,14 @@ interface Ethernet19
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_DC1-POD1-LEAF2B_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
-| Port-Channel16 | server-1_PortChannel | switched | access | 110 | - | - | - | - | 16 | - |
-| Port-Channel17 | Set using structured_config on server adapter port-channel | switched | access | 110 | - | - | - | - | 17 | - |
-| Port-Channel18 | server-1_PortChannel | switched | access | 110 | - | - | - | - | 18 | - |
-| Port-Channel19 | server-1_PortChannel | switched | access | 110 | - | - | - | - | 19 | - |
+| Port-Channel5 | MLAG_PEER_DC1-POD1-LEAF1A_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel5
-   description MLAG_PEER_DC1-POD1-LEAF2B_Po5
+   description MLAG_PEER_DC1-POD1-LEAF1A_Po5
    no shutdown
    switchport
    switchport trunk allowed vlan 2-4094
@@ -346,46 +324,6 @@ interface Port-Channel5
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
    service-profile QOS-PROFILE
-!
-interface Port-Channel16
-   description server-1_PortChannel
-   no shutdown
-   switchport
-   switchport access vlan 110
-   mlag 16
-   service-profile bar
-!
-interface Port-Channel17
-   description Set using structured_config on server adapter port-channel
-   no shutdown
-   switchport
-   switchport access vlan 110
-   mlag 17
-   service-profile foo
-!
-interface Port-Channel18
-   description server-1_PortChannel
-   no shutdown
-   switchport
-   switchport access vlan 110
-   mlag 18
-   service-profile foo
-   comment
-   Comment created from raw_eos_cli under port_channel on profile NESTED_TENANT_A
-   EOF
-
-!
-interface Port-Channel19
-   description server-1_PortChannel
-   no shutdown
-   switchport
-   switchport access vlan 110
-   mlag 19
-   service-profile foo
-   comment
-   Comment created from raw_eos_cli under adapter port_channel for switch Po19
-   EOF
-
 ```
 
 ## Loopback Interfaces
@@ -396,8 +334,8 @@ interface Port-Channel19
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 10.4.1.5/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 10.5.1.5/32 |
+| Loopback0 | EVPN_Overlay_Peering | default | 10.4.1.4/32 |
+| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 10.5.1.3/32 |
 
 #### IPv6
 
@@ -414,12 +352,12 @@ interface Port-Channel19
 interface Loopback0
    description EVPN_Overlay_Peering
    no shutdown
-   ip address 10.4.1.5/32
+   ip address 10.4.1.4/32
 !
 interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    no shutdown
-   ip address 10.5.1.5/32
+   ip address 10.5.1.3/32
 ```
 
 ## VLAN Interfaces
@@ -434,7 +372,7 @@ interface Loopback1
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan4094 |  default  |  172.20.1.4/31  |  -  |  -  |  -  |  -  |  -  |
+| Vlan4094 |  default  |  172.20.1.1/31  |  -  |  -  |  -  |  -  |  -  |
 
 
 ### VLAN Interfaces Device Configuration
@@ -446,7 +384,7 @@ interface Vlan4094
    no shutdown
    mtu 9214
    no autostate
-   ip address 172.20.1.4/31
+   ip address 172.20.1.1/31
 ```
 
 ## VXLAN Interface
@@ -459,22 +397,15 @@ interface Vlan4094
 
 #### EVPN MLAG Shared Router MAC : mlag-system-id
 
-#### VRF to VNI Mappings
-
-| VLAN | VNI |
-| ---- | --- |
-| Common_VRF | 1025 |
-
 ### VXLAN Interface Device Configuration
 
 ```eos
 !
 interface Vxlan1
-   description DC1-POD1-LEAF2A_VTEP
+   description DC1-POD1-LEAF1B_VTEP
    vxlan source-interface Loopback1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
-   vxlan vrf Common_VRF vni 1025
 ```
 
 # Routing
@@ -506,15 +437,13 @@ ip virtual-router mac-address 00:1c:73:00:dc:01
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| Common_VRF | true |
-| mgmt | false |
+| default | true|| mgmt | false |
 
 ### IP Routing Device Configuration
 
 ```eos
 !
 ip routing
-ip routing vrf Common_VRF
 no ip routing vrf mgmt
 ```
 ## IPv6 Routing
@@ -523,8 +452,7 @@ no ip routing vrf mgmt
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false || Common_VRF | false |
-| mgmt | false |
+| default | false || mgmt | false |
 
 
 ## Static Routes
@@ -548,7 +476,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65111.200|  10.4.1.5 |
+| 65111.100|  10.4.1.4 |
 
 | BGP Tuning |
 | ---------- |
@@ -585,7 +513,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote AS | 65111.200 |
+| Remote AS | 65111.100 |
 | Next-hop self | True |
 | Send community | all |
 | Maximum routes | 12000 |
@@ -594,11 +522,12 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 | Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
 | -------- | --------- | --- | -------------- | -------------- |
-| 172.17.1.16 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.17.1.18 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.17.1.20 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.17.1.22 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.20.1.5 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
+| 11.1.0.0 | 64101 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.1.8 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.1.10 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.1.12 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.1.14 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.20.1.0 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
 
 ### Router BGP EVPN Address Family
 
@@ -608,16 +537,12 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 #### Router BGP EVPN VRFs
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| Common_VRF | 10.4.1.5:1025 | connected |
-
 ### Router BGP Device Configuration
 
 ```eos
 !
-router bgp 65111.200
-   router-id 10.4.1.5
+router bgp 65111.100
+   router-id 10.4.1.4
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    graceful-restart restart-time 300
@@ -636,26 +561,31 @@ router bgp 65111.200
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
-   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65111.200
+   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65111.100
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
    neighbor MLAG-IPv4-UNDERLAY-PEER password 7 vnEaG8gMeQf3d3cN6PktXQ==
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
-   neighbor 172.17.1.16 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.1.16 remote-as 65001.100
-   neighbor 172.17.1.16 description DC1-POD1-SPINE1_Ethernet4
-   neighbor 172.17.1.18 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.1.18 remote-as 65001.100
-   neighbor 172.17.1.18 description DC1-POD1-SPINE2_Ethernet5
-   neighbor 172.17.1.20 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.1.20 remote-as 65001.100
-   neighbor 172.17.1.20 description DC1-POD1-SPINE3_Ethernet6
-   neighbor 172.17.1.22 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.1.22 remote-as 65001.100
-   neighbor 172.17.1.22 description DC1-POD1-SPINE4_Ethernet7
-   neighbor 172.20.1.5 peer group MLAG-IPv4-UNDERLAY-PEER
-   neighbor 172.20.1.5 description DC1-POD1-LEAF2B
+   neighbor 11.1.0.0 peer group IPv4-UNDERLAY-PEERS
+   neighbor 11.1.0.0 remote-as 64101
+   neighbor 11.1.0.0 local-as 64102 no-prepend replace-as
+   neighbor 11.1.0.0 description DC1-POD1-LEAF1A
+   neighbor 11.1.0.0 bfd
+   neighbor 172.17.1.8 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.1.8 remote-as 65001.100
+   neighbor 172.17.1.8 description DC1-POD1-SPINE1_Ethernet4
+   neighbor 172.17.1.10 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.1.10 remote-as 65001.100
+   neighbor 172.17.1.10 description DC1-POD1-SPINE2_Ethernet5
+   neighbor 172.17.1.12 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.1.12 remote-as 65001.100
+   neighbor 172.17.1.12 description DC1-POD1-SPINE3_Ethernet6
+   neighbor 172.17.1.14 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.1.14 remote-as 65001.100
+   neighbor 172.17.1.14 description DC1-POD1-SPINE4_Ethernet7
+   neighbor 172.20.1.0 peer group MLAG-IPv4-UNDERLAY-PEER
+   neighbor 172.20.1.0 description DC1-POD1-LEAF1A
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn
@@ -670,18 +600,6 @@ router bgp 65111.200
       no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
-   !
-   vrf Common_VRF
-      rd 10.4.1.5:1025
-      route-target import evpn 1025:1025
-      route-target export evpn 1025:1025
-      router-id 10.4.1.5
-      redistribute connected
-      !
-      comment
-      Comment created from raw_eos_cli under BGP for VRF Common_VRF
-      EOF
-
 ```
 
 # BFD
@@ -774,14 +692,11 @@ route-map RM-MLAG-PEER-IN permit 10
 
 | VRF Name | IP Routing |
 | -------- | ---------- |
-| Common_VRF | enabled |
 | mgmt | disabled |
 
 ## VRF Instances Device Configuration
 
 ```eos
-!
-vrf instance Common_VRF
 !
 vrf instance mgmt
 ```
@@ -794,8 +709,5 @@ vrf instance mgmt
 !
 interface Loopback1111
   description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
-
-interface Loopback1000
-  description Loopback created from raw_eos_cli under VRF Common_VRF
 
 ```

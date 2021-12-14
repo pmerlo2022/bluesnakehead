@@ -251,17 +251,17 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet5 | routed | - | 172.17.1.25/31 | default | 9214 | false | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4 | routed | - | 172.17.1.25/31 | default | 9214 | false | - | - |
 | Ethernet2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5 | routed | - | 172.17.1.27/31 | default | 9214 | false | - | - |
-| Ethernet11 | P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet8 | routed | - | 172.17.1.29/31 | default | 9214 | false | - | - |
-| Ethernet12 | P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet8 | routed | - | 172.17.1.31/31 | default | 9214 | false | - | - |
+| Ethernet11 | P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet6 | routed | - | 172.17.1.29/31 | default | 9214 | false | - | - |
+| Ethernet12 | P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet7 | routed | - | 172.17.1.31/31 | default | 9214 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet5
+   description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4
    no shutdown
    mtu 9214
    no switchport
@@ -289,7 +289,7 @@ interface Ethernet6
    channel-group 5 mode active
 !
 interface Ethernet11
-   description P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet8
+   description P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet6
    no shutdown
    mtu 9214
    no switchport
@@ -298,7 +298,7 @@ interface Ethernet11
    service-profile QOS-PROFILE
 !
 interface Ethernet12
-   description P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet8
+   description P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet7
    no shutdown
    mtu 9214
    no switchport
@@ -668,16 +668,16 @@ router bgp 65111.200
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor 172.17.1.24 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.1.24 remote-as 65001.100
-   neighbor 172.17.1.24 description DC1-POD1-SPINE1_Ethernet5
+   neighbor 172.17.1.24 description DC1-POD1-SPINE1_Ethernet4
    neighbor 172.17.1.26 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.1.26 remote-as 65001.100
    neighbor 172.17.1.26 description DC1-POD1-SPINE2_Ethernet5
    neighbor 172.17.1.28 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.1.28 remote-as 65001.100
-   neighbor 172.17.1.28 description DC1-POD1-SPINE3_Ethernet8
+   neighbor 172.17.1.28 description DC1-POD1-SPINE3_Ethernet6
    neighbor 172.17.1.30 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.1.30 remote-as 65001.100
-   neighbor 172.17.1.30 description DC1-POD1-SPINE4_Ethernet8
+   neighbor 172.17.1.30 description DC1-POD1-SPINE4_Ethernet7
    neighbor 172.20.1.4 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 172.20.1.4 description DC1-POD1-LEAF2A
    redistribute connected route-map RM-CONN-2-BGP
