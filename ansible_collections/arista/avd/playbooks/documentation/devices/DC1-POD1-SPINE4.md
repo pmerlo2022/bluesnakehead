@@ -146,10 +146,10 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet17/1 | routed | - | 172.16.1.7/31 | default | 9214 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet17/2 | routed | - | 172.16.1.71/31 | default | 9214 | false | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SUPER-SPINE3_Ethernet17/3 | routed | - | 172.16.1.135/31 | default | 9214 | false | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SUPER-SPINE4_Ethernet17/4 | routed | - | 172.16.1.199/31 | default | 9214 | false | - | - |
+| Ethernet1/1 | P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet17/1 | routed | - | 172.16.1.7/31 | default | 9214 | false | - | - |
+| Ethernet2/1 | P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet17/2 | routed | - | 172.16.1.15/31 | default | 9214 | false | - | - |
+| Ethernet3/1 | P2P_LINK_TO_DC1-SUPER-SPINE3_Ethernet17/3 | routed | - | 172.16.1.23/31 | default | 9214 | false | - | - |
+| Ethernet4/1 | P2P_LINK_TO_DC1-SUPER-SPINE4_Ethernet17/4 | routed | - | 172.16.1.31/31 | default | 9214 | false | - | - |
 | Ethernet7 | P2P_LINK_TO_DC2-POD1-LEAF14A_Ethernet1/4 | routed | - | 172.17.32.22/31 | default | 9214 | false | - | - |
 | Ethernet8 | P2P_LINK_TO_DC2-POD1-LEAF14B_Ethernet1/4 | routed | - | 172.17.32.30/31 | default | 9214 | false | - | - |
 
@@ -157,7 +157,7 @@ vlan internal order ascending range 1006 1199
 
 ```eos
 !
-interface Ethernet1
+interface Ethernet1/1
    description P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet17/1
    no shutdown
    mtu 9214
@@ -166,30 +166,30 @@ interface Ethernet1
    ptp enable
    service-profile QOS-PROFILE
 !
-interface Ethernet2
+interface Ethernet2/1
    description P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet17/2
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.16.1.71/31
+   ip address 172.16.1.15/31
    ptp enable
    service-profile QOS-PROFILE
 !
-interface Ethernet3
+interface Ethernet3/1
    description P2P_LINK_TO_DC1-SUPER-SPINE3_Ethernet17/3
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.16.1.135/31
+   ip address 172.16.1.23/31
    ptp enable
    service-profile QOS-PROFILE
 !
-interface Ethernet4
+interface Ethernet4/1
    description P2P_LINK_TO_DC1-SUPER-SPINE4_Ethernet17/4
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.16.1.199/31
+   ip address 172.16.1.31/31
    ptp enable
    service-profile QOS-PROFILE
 !
@@ -319,9 +319,9 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
 | -------- | --------- | --- | -------------- | -------------- |
 | 172.16.1.6 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.1.70 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.1.134 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.1.198 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.1.14 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.1.22 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.1.30 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.32.23 | 65211.1400 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.32.31 | 65211.1400 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
@@ -349,15 +349,15 @@ router bgp 65001.100
    neighbor 172.16.1.6 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.1.6 remote-as 65100
    neighbor 172.16.1.6 description DC1-SUPER-SPINE1_Ethernet17/1
-   neighbor 172.16.1.70 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.1.70 remote-as 65100
-   neighbor 172.16.1.70 description DC1-SUPER-SPINE2_Ethernet17/2
-   neighbor 172.16.1.134 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.1.134 remote-as 65100
-   neighbor 172.16.1.134 description DC1-SUPER-SPINE3_Ethernet17/3
-   neighbor 172.16.1.198 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.1.198 remote-as 65100
-   neighbor 172.16.1.198 description DC1-SUPER-SPINE4_Ethernet17/4
+   neighbor 172.16.1.14 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.16.1.14 remote-as 65100
+   neighbor 172.16.1.14 description DC1-SUPER-SPINE2_Ethernet17/2
+   neighbor 172.16.1.22 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.16.1.22 remote-as 65100
+   neighbor 172.16.1.22 description DC1-SUPER-SPINE3_Ethernet17/3
+   neighbor 172.16.1.30 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.16.1.30 remote-as 65100
+   neighbor 172.16.1.30 description DC1-SUPER-SPINE4_Ethernet17/4
    neighbor 172.17.32.23 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.32.23 remote-as 65211.1400
    neighbor 172.17.32.23 description DC2-POD1-LEAF14A_Ethernet1/4

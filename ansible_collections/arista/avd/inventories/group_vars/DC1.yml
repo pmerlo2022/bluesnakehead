@@ -11,7 +11,7 @@ bgp_peer_groups:
 
 super_spine:
   defaults:
-    platform: vEOS-LAB
+    platform: 7280R
     bgp_as: 65100
     loopback_ipv4_pool: 10.4.27.0/24
     bgp_defaults:

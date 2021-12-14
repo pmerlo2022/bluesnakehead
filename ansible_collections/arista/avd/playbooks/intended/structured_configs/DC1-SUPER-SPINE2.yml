@@ -64,8 +64,6 @@ management_api_http:
   enable_vrfs:
     mgmt: {}
   enable_https: true
-eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli
-  under platform_settings vEOS-LAB\n"
 ethernet_interfaces:
   Ethernet2:
     peer: DC2-POD1-SPINE4

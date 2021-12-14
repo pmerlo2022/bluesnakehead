@@ -101,14 +101,14 @@ custom_structured_configuration_list_merge: 'append'
 node_type_keys:
   spine:
     type: spine
-    default_evpn_role: server
+    default_evpn_role: none
     ip_addressing:
       p2p_uplinks_ip: 'ip_addressing/avd-v2-spine-p2p-uplinks-ip.j2'
       p2p_uplinks_peer_ip: 'ip_addressing/avd-v2-spine-p2p-uplinks-peer-ip.j2'
   l3leaf:
     type: l3leaf
     connected_endpoints: true
-    default_evpn_role: client
+    default_evpn_role: server
     mlag_support: true
     # is l2 a local vlan, or trunk to an l2leaf?
     network_services:

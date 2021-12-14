@@ -25,22 +25,22 @@ spine:
       id: 1
       mgmt_ip: 192.168.1.20/24
       evpn_role: none
-      uplink_switch_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4' ]
+#      uplink_switch_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4' ]
     DC2-POD1-SPINE2:
       id: 2
       evpn_role: none
       mgmt_ip: 192.168.1.21/24
-      uplink_switch_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4']
+#      uplink_switch_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4']
     DC2-POD1-SPINE3:
       id: 3
       evpn_role: none
       mgmt_ip: 192.168.1.22/24
-      uplink_switch_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4']
+#      uplink_switch_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4']
     DC2-POD1-SPINE4:
       id: 4
       evpn_role: none
       mgmt_ip: 10.6.32.4/24
-      uplink_switch_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4']
+#      uplink_switch_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4']
 
 # In DC2 we define all variables via defaults
 l3leaf:
