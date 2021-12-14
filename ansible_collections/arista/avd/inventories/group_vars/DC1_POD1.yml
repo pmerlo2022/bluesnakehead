@@ -135,12 +135,9 @@ l3leaf:
           mgmt_ip: 192.168.1.7/24 Test without management IP
           # Doesn't seem to be picking up defaults. Wait... this isn't a default. uplink_switch, uplink_interfaces.. but what is this?L2?
           uplink_switch_interfaces: [ 'Ethernet3', 'Ethernet3' ]
-#          raw_eos_cli: |
-#            interface Loopback1002
-#              description Loopback created from raw_eos_cli under node DC1-POD1-LEAF1A
         DC1-POD1-LEAF1B:
-          id: 1
-          mgmt_ip: 192.168.1.7/24
+          id: 2
+          mgmt_ip: 192.168.1.8/24
           uplink_switch_interfaces: ['Ethernet3', 'Ethernet3']
                     
     # Regular MLAG pair

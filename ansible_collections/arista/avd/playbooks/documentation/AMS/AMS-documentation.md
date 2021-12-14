@@ -20,7 +20,7 @@
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- |
 | DC1_POD1 | l3leaf | DC1-POD1-LEAF1A | 192.168.1.7/24 Test without management IP | vEOS-LAB | Provisioned |
-| DC1_POD1 | l3leaf | DC1-POD1-LEAF1B | 192.168.1.7/24 | vEOS-LAB | Provisioned |
+| DC1_POD1 | l3leaf | DC1-POD1-LEAF1B | 192.168.1.8/24 | vEOS-LAB | Provisioned |
 | DC1_POD1 | l3leaf | DC1-POD1-LEAF2A | - | vEOS-LAB | Provisioned |
 | DC1_POD1 | l3leaf | DC1-POD1-LEAF2B | 192.168.1.9/16 | vEOS-LAB | Provisioned |
 | DC1_POD1 | l3leaf | DC1-POD1-LEAF3A | - | vEOS-LAB | Provisioned |
@@ -394,12 +394,12 @@
 | DC1-POD1-SPINE4 | Ethernet4 | 172.16.1.199/31 | DC1-SUPER-SPINE4 | Ethernet17/4 | 172.16.1.198/31 |
 | DC2-POD1-SPINE1 | Ethernet1 | 172.16.32.1/31 | DC2-SUPER-SPINE1 | Ethernet1 | 172.16.32.0/31 |
 | DC2-POD1-SPINE1 | Ethernet2 | 172.16.32.65/31 | DC2-SUPER-SPINE2 | Ethernet1 | 172.16.32.64/31 |
-| DC2-POD1-SPINE2 | Ethernet1 | 172.16.32.3/31 | DC2-SUPER-SPINE1 | Ethernet2 | 172.16.32.2/31 |
-| DC2-POD1-SPINE2 | Ethernet2 | 172.16.32.67/31 | DC2-SUPER-SPINE2 | Ethernet2 | 172.16.32.66/31 |
-| DC2-POD1-SPINE3 | Ethernet1 | 172.16.32.3/31 | DC2-SUPER-SPINE1 | Ethernet2 | 172.16.32.2/31 |
-| DC2-POD1-SPINE3 | Ethernet2 | 172.16.32.67/31 | DC2-SUPER-SPINE2 | Ethernet2 | 172.16.32.66/31 |
-| DC2-POD1-SPINE4 | Ethernet1 | 172.16.32.3/31 | DC2-SUPER-SPINE1 | Ethernet2 | 172.16.32.2/31 |
-| DC2-POD1-SPINE4 | Ethernet2 | 172.16.32.67/31 | DC2-SUPER-SPINE2 | Ethernet2 | 172.16.32.66/31 |
+| DC2-POD1-SPINE2 | Ethernet1 | 172.16.32.3/31 | DC2-SUPER-SPINE1 | Ethernet2 | 172.16.32.6/31 |
+| DC2-POD1-SPINE2 | Ethernet2 | 172.16.32.67/31 | DC2-SUPER-SPINE2 | Ethernet2 | 172.16.32.70/31 |
+| DC2-POD1-SPINE3 | Ethernet1 | 172.16.32.5/31 | DC2-SUPER-SPINE1 | Ethernet2 | 172.16.32.6/31 |
+| DC2-POD1-SPINE3 | Ethernet2 | 172.16.32.69/31 | DC2-SUPER-SPINE2 | Ethernet2 | 172.16.32.70/31 |
+| DC2-POD1-SPINE4 | Ethernet1 | 172.16.32.7/31 | DC2-SUPER-SPINE1 | Ethernet2 | 172.16.32.6/31 |
+| DC2-POD1-SPINE4 | Ethernet2 | 172.16.32.71/31 | DC2-SUPER-SPINE2 | Ethernet2 | 172.16.32.70/31 |
 
 ## Loopback Interfaces (BGP EVPN Peering)
 
@@ -457,8 +457,8 @@
 | DC1 | DC1-SUPER-SPINE5 | 10.4.27.5/32 |
 | DC2_POD1 | DC2-POD1-SPINE1 | 10.4.58.1/32 |
 | DC2_POD1 | DC2-POD1-SPINE2 | 10.4.58.2/32 |
-| DC2_POD1 | DC2-POD1-SPINE3 | 10.4.58.2/32 |
-| DC2_POD1 | DC2-POD1-SPINE4 | 10.4.58.2/32 |
+| DC2_POD1 | DC2-POD1-SPINE3 | 10.4.58.3/32 |
+| DC2_POD1 | DC2-POD1-SPINE4 | 10.4.58.4/32 |
 | DC2 | DC2-SUPER-SPINE1 | 172.16.200.1/32 |
 | DC2 | DC2-SUPER-SPINE2 | 172.16.200.2/32 |
 

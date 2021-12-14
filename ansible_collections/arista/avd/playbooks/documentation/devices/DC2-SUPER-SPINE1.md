@@ -177,7 +177,7 @@ vlan internal order ascending range 1006 1199
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1 | P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet1 | routed | - | 172.16.32.0/31 | default | 9214 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_DC2-POD1-SPINE4_Ethernet1 | routed | - | 172.16.32.2/31 | default | 9214 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC2-POD1-SPINE4_Ethernet1 | routed | - | 172.16.32.6/31 | default | 9214 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -197,7 +197,7 @@ interface Ethernet2
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.16.32.2/31
+   ip address 172.16.32.6/31
    ptp enable
    service-profile QOS-PROFILE
 ```
@@ -322,7 +322,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | -------- | --------- | --- | -------------- | -------------- |
 | 10.4.1.3 | 65111.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 172.16.32.1 | 65002.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.32.3 | 65002.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.32.7 | 65002.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
@@ -357,9 +357,9 @@ router bgp 65200
    neighbor 172.16.32.1 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.32.1 remote-as 65002.100
    neighbor 172.16.32.1 description DC2-POD1-SPINE1_Ethernet1
-   neighbor 172.16.32.3 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.32.3 remote-as 65002.100
-   neighbor 172.16.32.3 description DC2-POD1-SPINE4_Ethernet1
+   neighbor 172.16.32.7 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.16.32.7 remote-as 65002.100
+   neighbor 172.16.32.7 description DC2-POD1-SPINE4_Ethernet1
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

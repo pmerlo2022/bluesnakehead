@@ -37,12 +37,12 @@ spine:
       mgmt_ip: 192.168.1.21/24
       uplink_switch_interfaces: ['Ethernet2', 'Ethernet2']
     DC2-POD1-SPINE3:
-      id: 2
+      id: 3
       evpn_role: none
       mgmt_ip: 192.168.1.22/24
       uplink_switch_interfaces: ['Ethernet2', 'Ethernet2']
     DC2-POD1-SPINE4:
-      id: 2
+      id: 4
       evpn_role: none
       mgmt_ip: 10.6.32.4/24
       uplink_switch_interfaces: ['Ethernet2', 'Ethernet2']      

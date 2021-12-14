@@ -174,8 +174,8 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet2 | routed | - | 172.16.32.3/31 | default | 9214 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_DC2-SUPER-SPINE2_Ethernet2 | routed | - | 172.16.32.67/31 | default | 9214 | false | - | - |
+| Ethernet1 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet2 | routed | - | 172.16.32.5/31 | default | 9214 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC2-SUPER-SPINE2_Ethernet2 | routed | - | 172.16.32.69/31 | default | 9214 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -186,7 +186,7 @@ interface Ethernet1
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.16.32.3/31
+   ip address 172.16.32.5/31
    ptp enable
    service-profile QOS-PROFILE
 !
@@ -195,7 +195,7 @@ interface Ethernet2
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.16.32.67/31
+   ip address 172.16.32.69/31
    ptp enable
    service-profile QOS-PROFILE
 ```
@@ -208,7 +208,7 @@ interface Ethernet2
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 10.4.58.2/32 |
+| Loopback0 | EVPN_Overlay_Peering | default | 10.4.58.3/32 |
 
 #### IPv6
 
@@ -224,7 +224,7 @@ interface Ethernet2
 interface Loopback0
    description EVPN_Overlay_Peering
    no shutdown
-   ip address 10.4.58.2/32
+   ip address 10.4.58.3/32
 ```
 
 # Routing
@@ -282,7 +282,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65002.100|  10.4.58.2 |
+| 65002.100|  10.4.58.3 |
 
 | BGP Tuning |
 | ---------- |
@@ -306,8 +306,8 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 | Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
 | -------- | --------- | --- | -------------- | -------------- |
-| 172.16.32.2 | 65200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.32.66 | 65200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.32.4 | 65200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.32.68 | 65200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
@@ -320,7 +320,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 ```eos
 !
 router bgp 65002.100
-   router-id 10.4.58.2
+   router-id 10.4.58.3
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    graceful-restart restart-time 300
@@ -329,12 +329,12 @@ router bgp 65002.100
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
-   neighbor 172.16.32.2 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.32.2 remote-as 65200
-   neighbor 172.16.32.2 description DC2-SUPER-SPINE1_Ethernet2
-   neighbor 172.16.32.66 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.32.66 remote-as 65200
-   neighbor 172.16.32.66 description DC2-SUPER-SPINE2_Ethernet2
+   neighbor 172.16.32.4 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.16.32.4 remote-as 65200
+   neighbor 172.16.32.4 description DC2-SUPER-SPINE1_Ethernet2
+   neighbor 172.16.32.68 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.16.32.68 remote-as 65200
+   neighbor 172.16.32.68 description DC2-SUPER-SPINE2_Ethernet2
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family ipv4
