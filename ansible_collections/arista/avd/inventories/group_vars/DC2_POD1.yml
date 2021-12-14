@@ -1,15 +1,18 @@
 ---
 pod_name: DC2_POD1
 
+max_l3leaf_to_spine_links: 4
+
 spine:
   defaults:
     platform: vEOS-LAB
-    bgp_as: 65210
-    loopback_ipv4_pool: 172.16.210.0/24
+#    bgp_as: 65210
+    bgp_as: "65002.100"
+    loopback_ipv4_pool: 10.4.58.0/24    
     uplink_interfaces: ['Ethernet1', 'Ethernet2']
     uplink_switches: ['DC2-SUPER-SPINE1', 'DC2-SUPER-SPINE2']
     max_uplink_switches: 4
-    uplink_ipv4_pool: 172.16.21.0/24
+    uplink_ipv4_pool: 172.16.32.0/24
     uplink_ptp:
       enable: True
     bgp_defaults:
@@ -25,24 +28,33 @@ spine:
     DC2-POD1-SPINE1:
       id: 1
       mgmt_ip: 192.168.1.20/24
-      evpn_role: server
+      evpn_role: none
       uplink_switch_interfaces: ['Ethernet1', 'Ethernet1']
-      evpn_route_servers: [ DC1-RS1, DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A ]
+      #evpn_route_servers: [ DC2-POD1-LEAF1A, DC2-POD1-LEAF1B ]
     DC2-POD1-SPINE2:
       id: 2
       evpn_role: none
       mgmt_ip: 192.168.1.21/24
       uplink_switch_interfaces: ['Ethernet2', 'Ethernet2']
-
+    DC2-POD1-SPINE3:
+      id: 2
+      evpn_role: none
+      mgmt_ip: 192.168.1.22/24
+      uplink_switch_interfaces: ['Ethernet2', 'Ethernet2']
+    DC2-POD1-SPINE4:
+      id: 2
+      evpn_role: none
+      mgmt_ip: 10.6.32.4/24
+      uplink_switch_interfaces: ['Ethernet2', 'Ethernet2']      
 # In DC2 we define all variables via defaults
 l3leaf:
   defaults:
-    loopback_ipv4_pool: 172.16.210.0/24
+    loopback_ipv4_pool: 10.4.32.0/24
     loopback_ipv4_offset: 2
-    vtep_loopback_ipv4_pool: 172.18.210.0/24
+    vtep_loopback_ipv4_pool: 10.5.32.0/24
     uplink_interfaces: ['Ethernet1', 'Ethernet2']
     uplink_switches: ['DC2-POD1-SPINE1', 'DC2-POD1-SPINE2']
-    uplink_ipv4_pool: 172.17.210.0/24
+    uplink_ipv4_pool: 172.17.32.0/24
     uplink_ptp: {'enable': True}
     bgp_defaults:
       - 'no bgp default ipv4-unicast'
@@ -52,7 +64,7 @@ l3leaf:
     bgp_as: 65555
     platform: vEOS-LAB
     evpn_role: server
-    evpn_route_servers: [ DC1-RS1, DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A ]
+    evpn_route_servers: [ DC2-POD1-LEAF1A, DC2-POD1-LEAF1B ]
     spanning_tree_mode: rstp
     spanning_tree_priority: 4096
     virtual_router_mac_address: 00:1c:73:00:dc:01

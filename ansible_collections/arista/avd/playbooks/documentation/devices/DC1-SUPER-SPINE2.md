@@ -106,7 +106,7 @@ management api http-commands
 
 ```eos
 !
-username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
+username admin privilege 15 role network-admin secret sha512 $6$82gqIqw8b3nibNrk$MoZO0S8QMQN8uwnR8v48dbGrL0Ec/6q36tSx8y9IsExi4L.HtmokW9rX8VehLxhg542mNTBKqxMBF.LgnCTm4.
 ```
 
 # Monitoring
@@ -176,7 +176,6 @@ vlan internal order ascending range 1006 1199
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet3 | P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet2 | routed | - | 172.16.12.64/31 | default | 9214 | false | - | - |
 | Ethernet4 | P2P_LINK_TO_DC1-POD2-SPINE4_Ethernet2 | routed | - | 172.16.12.70/31 | default | 9214 | false | - | - |
-| Ethernet6 | P2P_LINK_TO_DC2-SUPER-SPINE2_Ethernet4 | routed | - | 11.1.2.2/31 | default | 9214 | false | - | - |
 | Ethernet17/2 | P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet2 | routed | - | 172.16.11.70/31 | default | 9214 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
@@ -200,13 +199,6 @@ interface Ethernet4
    ip address 172.16.12.70/31
    ptp enable
    service-profile QOS-PROFILE
-!
-interface Ethernet6
-   description P2P_LINK_TO_DC2-SUPER-SPINE2_Ethernet4
-   no shutdown
-   mtu 9214
-   no switchport
-   ip address 11.1.2.2/31
 !
 interface Ethernet17/2
    description P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet2
@@ -324,7 +316,6 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 | Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
 | -------- | --------- | --- | -------------- | -------------- |
-| 11.1.2.3 | 65200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.16.11.71 | 65110.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.16.12.65 | 65120 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.16.12.71 | 65120 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
@@ -350,9 +341,6 @@ router bgp 65100
    neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
-   neighbor 11.1.2.3 peer group IPv4-UNDERLAY-PEERS
-   neighbor 11.1.2.3 remote-as 65200
-   neighbor 11.1.2.3 description DC2-SUPER-SPINE2
    neighbor 172.16.11.71 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.11.71 remote-as 65110.100
    neighbor 172.16.11.71 description DC1-POD1-SPINE4_Ethernet2

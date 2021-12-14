@@ -12,20 +12,10 @@ router_bgp:
       type: ipv4
       maximum_routes: 12000
       send_community: all
-    EVPN-OVERLAY-PEERS:
-      type: evpn
-      update_source: Loopback0
-      bfd: true
-      ebgp_multihop: '5'
-      send_community: all
-      maximum_routes: 0
-      next_hop_unchanged: true
   address_family_ipv4:
     peer_groups:
       IPv4-UNDERLAY-PEERS:
         activate: true
-      EVPN-OVERLAY-PEERS:
-        activate: false
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
@@ -42,24 +32,6 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65211'
       description: DC2-POD1-LEAF1A_Ethernet1
-    10.4.2.3:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-POD1-LEAF1A
-      remote_as: '65111.100'
-    11.1.1.18:
-      remote_as: '65120'
-      description: DC1-POD2-SPINE1
-      peer_group: IPv4-UNDERLAY-PEERS
-  address_family_evpn:
-    peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: true
-  address_family_rtc:
-    peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: true
-        default_route_target:
-          only: true
 static_routes:
 - vrf: mgmt
   destination_address_prefix: 0.0.0.0/0
@@ -79,7 +51,7 @@ local_users:
   admin:
     privilege: 15
     role: network-admin
-    sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
+    sha512_password: $6$82gqIqw8b3nibNrk$MoZO0S8QMQN8uwnR8v48dbGrL0Ec/6q36tSx8y9IsExi4L.HtmokW9rX8VehLxhg542mNTBKqxMBF.LgnCTm4.
 vrfs:
   mgmt:
     ip_routing: false
@@ -135,15 +107,6 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.17.210.0/31
-  Ethernet5:
-    peer: DC1-POD2-SPINE1
-    peer_interface: Ethernet5
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet5
-    type: routed
-    shutdown: false
-    mtu: 9214
-    ip_address: 11.1.1.19/31
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -161,8 +124,3 @@ route_maps:
         type: permit
         match:
         - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-router_bfd:
-  multihop:
-    interval: 300
-    min_rx: 300
-    multiplier: 3

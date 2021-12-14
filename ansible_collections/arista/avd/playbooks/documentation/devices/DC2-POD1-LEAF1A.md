@@ -125,7 +125,7 @@ management api http-commands
 
 ```eos
 !
-username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
+username admin privilege 15 role network-admin secret sha512 $6$82gqIqw8b3nibNrk$MoZO0S8QMQN8uwnR8v48dbGrL0Ec/6q36tSx8y9IsExi4L.HtmokW9rX8VehLxhg542mNTBKqxMBF.LgnCTm4.
 ```
 
 # Monitoring
@@ -197,8 +197,7 @@ vlan internal order ascending range 1006 1199
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1 | P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet3 | routed | - | 172.17.210.1/31 | default | 9214 | false | - | - |
 | Ethernet2 | P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet3 | routed | - | 172.17.210.3/31 | default | 9214 | false | - | - |
-| Ethernet6 | P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet7 | routed | - | 100.100.100.201/24 | default | 9214 | false | - | - |
-| Ethernet7 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet7 | routed | - | 11.1.0.39/31 | default | 9214 | false | - | - |
+| Ethernet5 | P2P_LINK_TO_DC2-POD1-LEAF1B_Ethernet5 | routed | - | 11.1.1.18/31 | default | 9214 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -222,20 +221,12 @@ interface Ethernet2
    ptp enable
    service-profile QOS-PROFILE
 !
-interface Ethernet6
-   description P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet7
+interface Ethernet5
+   description P2P_LINK_TO_DC2-POD1-LEAF1B_Ethernet5
    no shutdown
    mtu 9214
    no switchport
-   ip address 100.100.100.201/24
-!
-interface Ethernet7
-   description P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet7
-   no shutdown
-   mtu 9214
-   no switchport
-   ip address 11.1.0.39/31
-   ptp enable
+   ip address 11.1.1.18/31
 ```
 
 ## Loopback Interfaces
@@ -405,8 +396,8 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
 | -------- | --------- | --- | -------------- | -------------- |
 | 10.4.2.3 | 65111.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 11.1.0.38 | 65120 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 100.100.100.101 | 65112.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 11.1.1.19 | 65102 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.210.3 | 65211 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 172.17.210.0 | 65210 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.210.2 | 65210 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
@@ -443,14 +434,14 @@ router bgp 65211
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 10.4.2.3 peer group EVPN-OVERLAY-PEERS
    neighbor 10.4.2.3 remote-as 65111.100
-   neighbor 10.4.2.3 description DC1-POD1-LEAF1A
-   neighbor 11.1.0.38 peer group IPv4-UNDERLAY-PEERS
-   neighbor 11.1.0.38 remote-as 65120
-   neighbor 11.1.0.38 description DC1-POD1-LEAF2B
-   neighbor 11.1.0.38 bfd
-   neighbor 100.100.100.101 peer group IPv4-UNDERLAY-PEERS
-   neighbor 100.100.100.101 remote-as 65112.100
-   neighbor 100.100.100.101 description DC1-POD1-LEAF2A
+   neighbor 10.4.2.3 description DC1-POD1-LEAF1B
+   neighbor 11.1.1.19 peer group IPv4-UNDERLAY-PEERS
+   neighbor 11.1.1.19 remote-as 65102
+   neighbor 11.1.1.19 local-as 65101 no-prepend replace-as
+   neighbor 11.1.1.19 description DC2-POD1-LEAF1B
+   neighbor 172.16.210.3 peer group EVPN-OVERLAY-PEERS
+   neighbor 172.16.210.3 remote-as 65211
+   neighbor 172.16.210.3 description DC2-POD1-LEAF1A
    neighbor 172.17.210.0 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.210.0 remote-as 65210
    neighbor 172.17.210.0 description DC2-POD1-SPINE1_Ethernet3

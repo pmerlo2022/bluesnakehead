@@ -78,7 +78,7 @@ management api http-commands
 
 ```eos
 !
-username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
+username admin privilege 15 role network-admin secret sha512 $6$82gqIqw8b3nibNrk$MoZO0S8QMQN8uwnR8v48dbGrL0Ec/6q36tSx8y9IsExi4L.HtmokW9rX8VehLxhg542mNTBKqxMBF.LgnCTm4.
 ```
 
 # Monitoring
@@ -149,7 +149,8 @@ vlan internal order ascending range 1006 1199
 | Ethernet1 | P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet17/1 | routed | - | 172.16.11.1/31 | default | 9214 | false | - | - |
 | Ethernet2 | P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet17/2 | routed | - | 172.16.11.65/31 | default | 9214 | false | - | - |
 | Ethernet3 | P2P_LINK_TO_DC1-SUPER-SPINE3_Ethernet17/3 | routed | - | 172.16.11.129/31 | default | 9214 | false | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SUPER-SPINE4_Ethernet17/4 | routed | - | 172.16.11.193/31 | default | 9214 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-POD1-LEAF4A_Ethernet1/1 | routed | - | 172.17.110.16/31 | default | 9214 | false | - | - |
+| Ethernet5 | P2P_LINK_TO_DC1-POD1-LEAF4B_Ethernet1/1 | routed | - | 172.17.110.24/31 | default | 9214 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -183,11 +184,20 @@ interface Ethernet3
    service-profile QOS-PROFILE
 !
 interface Ethernet4
-   description P2P_LINK_TO_DC1-SUPER-SPINE4_Ethernet17/4
+   description P2P_LINK_TO_DC1-POD1-LEAF4A_Ethernet1/1
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.16.11.193/31
+   ip address 172.17.110.16/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet5
+   description P2P_LINK_TO_DC1-POD1-LEAF4B_Ethernet1/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.110.24/31
    ptp enable
    service-profile QOS-PROFILE
 ```
@@ -301,7 +311,8 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | 172.16.11.0 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.16.11.64 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.16.11.128 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.11.192 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.110.17 | 64104 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.110.25 | 64104 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
@@ -333,9 +344,12 @@ router bgp 65110.100
    neighbor 172.16.11.128 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.11.128 remote-as 65100
    neighbor 172.16.11.128 description DC1-SUPER-SPINE3_Ethernet17/3
-   neighbor 172.16.11.192 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.11.192 remote-as 65100
-   neighbor 172.16.11.192 description DC1-SUPER-SPINE4_Ethernet17/4
+   neighbor 172.17.110.17 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.17 remote-as 64104
+   neighbor 172.17.110.17 description DC1-POD1-LEAF4A_Ethernet1/1
+   neighbor 172.17.110.25 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.25 remote-as 64104
+   neighbor 172.17.110.25 description DC1-POD1-LEAF4B_Ethernet1/1
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family ipv4

@@ -40,12 +40,8 @@ router_bgp:
       description: DC2-POD1-SPINE2_Ethernet1
     10.4.2.3:
       peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-POD1-LEAF1A
+      description: DC1-POD1-LEAF1B
       remote_as: '65111.100'
-    11.1.2.0:
-      remote_as: '65100'
-      description: DC1-SUPER-SPINE1
-      peer_group: IPv4-UNDERLAY-PEERS
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:
@@ -75,7 +71,7 @@ local_users:
   admin:
     privilege: 15
     role: network-admin
-    sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
+    sha512_password: $6$82gqIqw8b3nibNrk$MoZO0S8QMQN8uwnR8v48dbGrL0Ec/6q36tSx8y9IsExi4L.HtmokW9rX8VehLxhg542mNTBKqxMBF.LgnCTm4.
 vrfs:
   mgmt:
     ip_routing: false
@@ -118,19 +114,6 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.16.21.2/31
-  Ethernet4:
-    peer: DC1-SUPER-SPINE1
-    peer_interface: Ethernet6
-    peer_type: super-spine
-    description: P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet6
-    type: routed
-    shutdown: false
-    mtu: 9214
-    ip_address: 11.1.2.1/31
-    mac_security:
-      profile: MACSEC_PROFILE
-    ptp:
-      enable: true
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering

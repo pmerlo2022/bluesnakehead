@@ -108,7 +108,7 @@ management api http-commands
 
 ```eos
 !
-username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
+username admin privilege 15 role network-admin secret sha512 $6$82gqIqw8b3nibNrk$MoZO0S8QMQN8uwnR8v48dbGrL0Ec/6q36tSx8y9IsExi4L.HtmokW9rX8VehLxhg542mNTBKqxMBF.LgnCTm4.
 ```
 
 # Monitoring
@@ -179,7 +179,6 @@ vlan internal order ascending range 1006 1199
 | Ethernet1 | P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet4 | routed | - | 172.16.12.3/31 | default | 9214 | false | - | - |
 | Ethernet2 | P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet4 | routed | - | 172.16.12.67/31 | default | 9214 | false | - | - |
 | Ethernet3 | P2P_LINK_TO_DC1-POD2-LEAF1B_Ethernet2 | routed | - | 172.17.120.8/31 | default | 9214 | false | - | - |
-| Ethernet4 | P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet5 | routed | - | 200.200.200.101/24 | default | 9214 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -211,14 +210,6 @@ interface Ethernet3
    ip address 172.17.120.8/31
    ptp enable
    service-profile QOS-PROFILE
-!
-interface Ethernet4
-   description P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet5
-   no shutdown
-   mtu 9214
-   no switchport
-   ip address 200.200.200.101/24
-   ptp enable
 ```
 
 ## Loopback Interfaces
@@ -344,7 +335,6 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | 172.16.120.3 | 65121 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 172.16.120.4 | 65121 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 172.17.120.9 | 65121 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 200.200.200.201 | 65210 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
@@ -390,10 +380,6 @@ router bgp 65120
    neighbor 172.17.120.9 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.120.9 remote-as 65121
    neighbor 172.17.120.9 description DC1-POD2-LEAF1B_Ethernet2
-   neighbor 200.200.200.201 peer group IPv4-UNDERLAY-PEERS
-   neighbor 200.200.200.201 remote-as 65210
-   neighbor 200.200.200.201 local-as 65112 no-prepend replace-as
-   neighbor 200.200.200.201 description DC2-POD1-SPINE2
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

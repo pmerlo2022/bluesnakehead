@@ -16,6 +16,7 @@ all:
                   type: super-spine
                   ansible_host: 10.6.0.2
                   ansible_port: 22
+                  as: 65101
                 DC1-SUPER-SPINE3:
                   type: super-spine
                   ansible_host: 10.6.0.3

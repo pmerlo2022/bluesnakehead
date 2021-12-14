@@ -22,7 +22,9 @@ local_users:
 snmp_settings:
   location: true
 
-#What exactly does this do? Border, edge? It is only listed here. There are uplink ipv4 pools elsewhere
+#What exactly does this do? Border, edge? It is only listed here. There are uplink ipv4 pools elsewhere. I think this lists who connects to whom
+#Appears this is local and incestuous. The pools defined here are used further down. Makes sense that the edge would be outside of PODs...
+#Consider whether pools or specific IPs would be better..
 l3_edge:
   p2p_links_ip_pools:
     pool-leaf: 11.1.0.0/24
@@ -37,51 +39,46 @@ l3_edge:
       bfd: true
       ptp_enable: true
   p2p_links:
-    - nodes: [ DC1-SUPER-SPINE1, DC2-SUPER-SPINE1 ]
+    - nodes: [ DC1-POD1-LEAF1A, DC1-POD1-LEAF1B ]
+      # These ids seem to be incrementing in no particular order, but they aren't duplicated.
       id: 1
       interfaces: [ Ethernet6, Ethernet4 ]
-      as: [ 65100, 65200 ]
-      ip_pool: pool-super-spine
+      as: [ 64101, 64102 ]
+      #This shows you can use the pool
+      ip_pool: pool-leaf
       profile: generic-profile
+      # This might be what installs the neighbor as a peer group member of "IPv4-UNDERLAY-PEERS"
       include_in_underlay_protocol: true
       macsec_profile: MACSEC_PROFILE
-    - nodes: [ DC1-SUPER-SPINE2, DC2-SUPER-SPINE2 ]
+    - nodes: [ DC1-POD2-LEAF1A, DC2-POD2-LEAF1B ]
+      #not sure on what the id is yet
       id: 2
+      # These match the interfaces used to connect the upstream peers
       interfaces: [ Ethernet6, Ethernet4 ]
-      as: [ 65100, 65200 ]
+      # these are their AS's.. in order. Obviously referencing a single entry for this will make life easier.
+      # this errors:
+      # as: [ "{{inventory_hostname.as}}", "{{inventory_hostname.as))" ]
+      as: [ 64201, 64202 ]
       ip_pool: pool-super-spine
       #mtu: 9214
       include_in_underlay_protocol: true
-    - nodes: [ DC1-POD2-SPINE1, DC2-POD1-SPINE1 ]
+    - nodes: [ DC2-POD1-LEAF1A, DC2-POD1-LEAF1B ]
       id: 10
       interfaces: [ Ethernet5, Ethernet5 ]
-      as: [ 65120, 65210 ]
+      as: [ 65101, 65102 ]
       ip_pool: pool-spine
       #mtu: 9214
       include_in_underlay_protocol: true
-    - nodes: [ DC1-POD2-SPINE2, DC2-POD1-SPINE2 ]
+    - nodes: [ DC2-POD2-LEAF1A, DC2-POD2-LEAF1B ]
       interfaces: [ Ethernet4, Ethernet5 ]
-      as: [ 65112, 65210 ]
+      as: [ 65201, 65202 ]
+      #This shows you can use specify the IP
       ip: [ 200.200.200.101/24, 200.200.200.201/24 ]
       #mtu: 9214
-      profile: generic-profile
-      include_in_underlay_protocol: true
-    - nodes: [ DC1-POD1-LEAF2A, DC2-POD1-LEAF1A ]
-      interfaces: [ Ethernet7, Ethernet6 ]
-      as: [ "65112.100", 65211 ]
-      ip: [ 100.100.100.101/24, 100.100.100.201/24 ]
-      #mtu: 9214
-      include_in_underlay_protocol: true
-    - nodes: [ DC1-POD1-LEAF2B, DC2-POD1-LEAF1A ]
-      id: 20
-      interfaces: [ Ethernet7, Ethernet7 ]
-      as: [ 65120, 65211 ]
-      ip_pool: pool-leaf
-      profile: generic-profile
       #this is a snowflake bfd value
-      bfd: false
+      bfd: false      
+      profile: generic-profile
       include_in_underlay_protocol: true
-
 
 p2p_uplinks_mtu: 9214
 
@@ -113,6 +110,7 @@ node_type_keys:
     connected_endpoints: true
     default_evpn_role: client
     mlag_support: true
+    # is l2 a local vlan, or trunk to an l2leaf?
     network_services:
       l2: true
       l3: true

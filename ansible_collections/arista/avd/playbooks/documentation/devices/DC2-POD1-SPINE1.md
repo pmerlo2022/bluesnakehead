@@ -24,8 +24,6 @@
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
   - [Router BGP](#router-bgp)
-- [BFD](#bfd)
-  - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
 - [Filters](#filters)
   - [Prefix-lists](#prefix-lists)
@@ -108,7 +106,7 @@ management api http-commands
 
 ```eos
 !
-username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
+username admin privilege 15 role network-admin secret sha512 $6$82gqIqw8b3nibNrk$MoZO0S8QMQN8uwnR8v48dbGrL0Ec/6q36tSx8y9IsExi4L.HtmokW9rX8VehLxhg542mNTBKqxMBF.LgnCTm4.
 ```
 
 # Monitoring
@@ -179,7 +177,6 @@ vlan internal order ascending range 1006 1199
 | Ethernet1 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet1 | routed | - | 172.16.21.1/31 | default | 9214 | false | - | - |
 | Ethernet2 | P2P_LINK_TO_DC2-SUPER-SPINE2_Ethernet1 | routed | - | 172.16.21.65/31 | default | 9214 | false | - | - |
 | Ethernet3 | P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet1 | routed | - | 172.17.210.0/31 | default | 9214 | false | - | - |
-| Ethernet5 | P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet5 | routed | - | 11.1.1.19/31 | default | 9214 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -211,13 +208,6 @@ interface Ethernet3
    ip address 172.17.210.0/31
    ptp enable
    service-profile QOS-PROFILE
-!
-interface Ethernet5
-   description P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet5
-   no shutdown
-   mtu 9214
-   no switchport
-   ip address 11.1.1.19/31
 ```
 
 ## Loopback Interfaces
@@ -314,18 +304,6 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 ### Router BGP Peer Groups
 
-#### EVPN-OVERLAY-PEERS
-
-| Settings | Value |
-| -------- | ----- |
-| Address Family | evpn |
-| Next-hop unchanged | True |
-| Source | Loopback0 |
-| Bfd | true |
-| Ebgp multihop | 5 |
-| Send community | all |
-| Maximum routes | 0 (no limit) |
-
 #### IPv4-UNDERLAY-PEERS
 
 | Settings | Value |
@@ -338,8 +316,6 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 | Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
 | -------- | --------- | --- | -------------- | -------------- |
-| 10.4.2.3 | 65111.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 11.1.1.18 | 65120 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.16.21.0 | 65200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.16.21.64 | 65200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.210.1 | 65211 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
@@ -361,22 +337,9 @@ router bgp 65210
    graceful-restart restart-time 300
    graceful-restart
    maximum-paths 4 ecmp 4
-   neighbor EVPN-OVERLAY-PEERS peer group
-   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
-   neighbor EVPN-OVERLAY-PEERS update-source Loopback0
-   neighbor EVPN-OVERLAY-PEERS bfd
-   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 5
-   neighbor EVPN-OVERLAY-PEERS send-community
-   neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
-   neighbor 10.4.2.3 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.2.3 remote-as 65111.100
-   neighbor 10.4.2.3 description DC1-POD1-LEAF1A
-   neighbor 11.1.1.18 peer group IPv4-UNDERLAY-PEERS
-   neighbor 11.1.1.18 remote-as 65120
-   neighbor 11.1.1.18 description DC1-POD2-SPINE1
    neighbor 172.16.21.0 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.21.0 remote-as 65200
    neighbor 172.16.21.0 description DC2-SUPER-SPINE1_Ethernet1
@@ -388,34 +351,8 @@ router bgp 65210
    neighbor 172.17.210.1 description DC2-POD1-LEAF1A_Ethernet1
    redistribute connected route-map RM-CONN-2-BGP
    !
-   address-family evpn
-      neighbor EVPN-OVERLAY-PEERS activate
-   !
-   address-family rt-membership
-      neighbor EVPN-OVERLAY-PEERS activate
-      neighbor EVPN-OVERLAY-PEERS default-route-target only
-   !
    address-family ipv4
-      no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
-```
-
-# BFD
-
-## Router BFD
-
-### Router BFD Multihop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-### Router BFD Device Configuration
-
-```eos
-!
-router bfd
-   multihop interval 300 min-rx 300 multiplier 3
 ```
 
 # Multicast
