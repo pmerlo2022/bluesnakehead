@@ -35,12 +35,12 @@ router_bgp:
       description: DC1-SUPER-SPINE3_Ethernet17/3
     172.17.1.17:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '64105'
-      description: DC1-POD1-LEAF5A_Ethernet1/1
+      remote_as: '65111.1400'
+      description: DC1-POD1-LEAF14A_Ethernet1/1
     172.17.1.25:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '64105'
-      description: DC1-POD1-LEAF5B_Ethernet1/1
+      remote_as: '65111.1400'
+      description: DC1-POD1-LEAF14B_Ethernet1/1
 static_routes:
 - vrf: mgmt
   destination_address_prefix: 0.0.0.0/0
@@ -108,10 +108,10 @@ ethernet_interfaces:
     shutdown: false
     ip_address: 172.16.1.129/31
   Ethernet4:
-    peer: DC1-POD1-LEAF5A
+    peer: DC1-POD1-LEAF14A
     peer_interface: Ethernet1/1
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-POD1-LEAF5A_Ethernet1/1
+    description: P2P_LINK_TO_DC1-POD1-LEAF14A_Ethernet1/1
     mtu: 9214
     service_profile: QOS-PROFILE
     ptp:
@@ -120,10 +120,10 @@ ethernet_interfaces:
     shutdown: false
     ip_address: 172.17.1.16/31
   Ethernet5:
-    peer: DC1-POD1-LEAF5B
+    peer: DC1-POD1-LEAF14B
     peer_interface: Ethernet1/1
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-POD1-LEAF5B_Ethernet1/1
+    description: P2P_LINK_TO_DC1-POD1-LEAF14B_Ethernet1/1
     mtu: 9214
     service_profile: QOS-PROFILE
     ptp:

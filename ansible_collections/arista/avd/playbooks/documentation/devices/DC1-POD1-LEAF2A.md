@@ -156,25 +156,20 @@ mlag configuration
 
 ## Spanning Tree Summary
 
-STP mode: **mstp**
-
-### MSTP Instance and Priority
-
-| Instance(s) | Priority |
-| -------- | -------- |
-| 0 | 4096 |
+STP mode: **rstp**
 
 ### Global Spanning-Tree Settings
 
+Global RSTP priority: 4096
 Spanning Tree disabled for VLANs: **4094**
 
 ## Spanning Tree Device Configuration
 
 ```eos
 !
-spanning-tree mode mstp
+spanning-tree mode rstp
 no spanning-tree vlan-id 4094
-spanning-tree mst 0 priority 4096
+spanning-tree priority 4096
 ```
 
 # Internal VLAN Allocation Policy
@@ -198,39 +193,11 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 110 | Tenant_A_OP_Zone_1 | - |
-| 111 | Tenant_A_OP_Zone_2 | - |
-| 112 | Tenant_A_OP_Zone_3 | - |
-| 113 | SVI_with_no_vxlan | - |
-| 2500 | web-l2-vlan | - |
-| 2600 | web-l2-vlan-2 | - |
-| 2601 | l2vlan_with_no_vxlan | - |
 | 4094 | MLAG_PEER | MLAG |
 
 ## VLANs Device Configuration
 
 ```eos
-!
-vlan 110
-   name Tenant_A_OP_Zone_1
-!
-vlan 111
-   name Tenant_A_OP_Zone_2
-!
-vlan 112
-   name Tenant_A_OP_Zone_3
-!
-vlan 113
-   name SVI_with_no_vxlan
-!
-vlan 2500
-   name web-l2-vlan
-!
-vlan 2600
-   name web-l2-vlan-2
-!
-vlan 2601
-   name l2vlan_with_no_vxlan
 !
 vlan 4094
    name MLAG_PEER
@@ -461,54 +428,18 @@ interface Loopback1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan110 |  set from structured_config on svi for DC1-POD1-LEAF2A (was Tenant_A_OP_Zone_1)  |  Common_VRF  |  -  |  false  |
-| Vlan111 |  Tenant_A_OP_Zone_2  |  Common_VRF  |  -  |  true  |
-| Vlan112 |  Tenant_A_OP_Zone_3  |  Common_VRF  |  -  |  false  |
-| Vlan113 |  SVI_with_no_vxlan  |  Common_VRF  |  -  |  false  |
 | Vlan4094 |  MLAG_PEER  |  default  |  9214  |  false  |
 
 #### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan110 |  Common_VRF  |  -  |  10.1.10.1/24  |  -  |  -  |  -  |  -  |
-| Vlan111 |  Common_VRF  |  -  |  10.1.11.1/24  |  -  |  -  |  -  |  -  |
-| Vlan112 |  Common_VRF  |  -  |  10.1.12.1/24  |  -  |  -  |  -  |  -  |
-| Vlan113 |  Common_VRF  |  -  |  10.10.13.1/24  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  172.20.1.4/31  |  -  |  -  |  -  |  -  |  -  |
 
 
 ### VLAN Interfaces Device Configuration
 
 ```eos
-!
-interface Vlan110
-   description set from structured_config on svi for DC1-POD1-LEAF2A (was Tenant_A_OP_Zone_1)
-   no shutdown
-   vrf Common_VRF
-   ip address virtual 10.1.10.1/24
-!
-interface Vlan111
-   description Tenant_A_OP_Zone_2
-   shutdown
-   vrf Common_VRF
-   ip address virtual 10.1.11.1/24
-!
-interface Vlan112
-   description Tenant_A_OP_Zone_3
-   no shutdown
-   vrf Common_VRF
-   ip address virtual 10.1.12.1/24
-   comment
-   Comment created from raw_eos_cli under SVI 112 in VRF Common_VRF
-   EOF
-
-!
-interface Vlan113
-   description SVI_with_no_vxlan
-   no shutdown
-   vrf Common_VRF
-   ip address virtual 10.10.13.1/24
 !
 interface Vlan4094
    description MLAG_PEER
@@ -528,16 +459,6 @@ interface Vlan4094
 
 #### EVPN MLAG Shared Router MAC : mlag-system-id
 
-#### VLAN to VNI and Flood List Mappings
-
-| VLAN | VNI | Flood List |
-| ---- | --- | ---------- |
-| 110 | 10110 | - |
-| 111 | 50111 | - |
-| 112 | 50112 | - |
-| 2500 | 2500 | - |
-| 2600 | 2600 | - |
-
 #### VRF to VNI Mappings
 
 | VLAN | VNI |
@@ -553,11 +474,6 @@ interface Vxlan1
    vxlan source-interface Loopback1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
-   vxlan vlan 110 vni 10110
-   vxlan vlan 111 vni 50111
-   vxlan vlan 112 vni 50112
-   vxlan vlan 2500 vni 2500
-   vxlan vlan 2600 vni 2600
    vxlan vrf Common_VRF vni 1025
 ```
 
@@ -632,7 +548,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65112.100|  10.4.1.5 |
+| 65111.200|  10.4.1.5 |
 
 | BGP Tuning |
 | ---------- |
@@ -649,6 +565,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | Settings | Value |
 | -------- | ----- |
 | Address Family | evpn |
+| Next-hop unchanged | True |
 | Source | Loopback0 |
 | Bfd | true |
 | Ebgp multihop | 5 |
@@ -668,7 +585,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote AS | 65112.100 |
+| Remote AS | 65111.200 |
 | Next-hop self | True |
 | Send community | all |
 | Maximum routes | 12000 |
@@ -677,7 +594,6 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 | Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
 | -------- | --------- | --- | -------------- | -------------- |
-| 10.4.1.3 | 65111.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 172.17.1.16 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.1.18 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.1.20 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
@@ -690,16 +606,6 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 #### Router BGP EVPN MAC-VRFs
 
-##### VLAN Based
-
-| VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
-| ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-| 110 | 10.4.1.5:10110 | 10110:10110 | - | - | learned |
-| 111 | 10.4.1.5:50111 | 50111:50111 | - | - | learned |
-| 112 | 10.4.1.5:50112 | 50112:50112 | - | - | learned |
-| 2500 | 10.4.1.5:2500 | 2500:2500 | - | - | learned |
-| 2600 | 10.4.1.5:2600 | 2600:2600 | - | - | learned |
-
 #### Router BGP EVPN VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
@@ -710,7 +616,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 ```eos
 !
-router bgp 65112.100
+router bgp 65111.200
    router-id 10.4.1.5
    no bgp default ipv4-unicast
    distance bgp 20 200 200
@@ -718,6 +624,7 @@ router bgp 65112.100
    graceful-restart
    maximum-paths 4 ecmp 4
    neighbor EVPN-OVERLAY-PEERS peer group
+   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
    neighbor EVPN-OVERLAY-PEERS ebgp-multihop 5
@@ -729,16 +636,12 @@ router bgp 65112.100
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
-   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65112.100
+   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65111.200
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
    neighbor MLAG-IPv4-UNDERLAY-PEER password 7 vnEaG8gMeQf3d3cN6PktXQ==
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
-   neighbor 10.4.1.3 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.1.3 remote-as 65111.100
-   neighbor 10.4.1.3 description DC1-POD1-LEAF1B
-   neighbor 10.4.1.3 route-map RM-EVPN-FILTER-AS65111.100 out
    neighbor 172.17.1.16 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.1.16 remote-as 65001.100
    neighbor 172.17.1.16 description DC1-POD1-SPINE1_Ethernet4
@@ -755,37 +658,13 @@ router bgp 65112.100
    neighbor 172.20.1.5 description DC1-POD1-LEAF2B
    redistribute connected route-map RM-CONN-2-BGP
    !
-   vlan 110
-      rd 10.4.1.5:10110
-      route-target both 10110:10110
-      redistribute learned
-   !
-   vlan 111
-      rd 10.4.1.5:50111
-      route-target both 50111:50111
-      redistribute learned
-   !
-   vlan 112
-      rd 10.4.1.5:50112
-      route-target both 50112:50112
-      redistribute learned
-   !
-   vlan 2500
-      rd 10.4.1.5:2500
-      route-target both 2500:2500
-      redistribute learned
-   !
-   vlan 2600
-      rd 10.4.1.5:2600
-      route-target both 2600:2600
-      redistribute learned
-   !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
       route import match-failure action discard
    !
    address-family rt-membership
       neighbor EVPN-OVERLAY-PEERS activate
+      neighbor EVPN-OVERLAY-PEERS default-route-target only
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
@@ -869,12 +748,6 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 | -------- | ---- | ---------------- |
 | 10 | permit | match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY |
 
-#### RM-EVPN-FILTER-AS65111.100
-
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| 10 | deny | match as 65111.100 |
-
 #### RM-MLAG-PEER-IN
 
 | Sequence | Type | Match and/or Set |
@@ -887,11 +760,6 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 !
 route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-!
-route-map RM-EVPN-FILTER-AS65111.100 deny 10
-   match as 65111.100
-!
-route-map RM-EVPN-FILTER-AS65111.100 permit 20
 !
 route-map RM-MLAG-PEER-IN permit 10
    description Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
@@ -924,9 +792,6 @@ vrf instance mgmt
 
 ```eos
 !
-interface Loopback1002
-  description Loopback created from raw_eos_cli under l3leaf node-group RACK2_MLAG
-
 interface Loopback1111
   description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
 

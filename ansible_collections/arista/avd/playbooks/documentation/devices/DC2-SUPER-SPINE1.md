@@ -353,7 +353,7 @@ router bgp 65200
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 10.4.1.3 peer group EVPN-OVERLAY-PEERS
    neighbor 10.4.1.3 remote-as 65111.100
-   neighbor 10.4.1.3 description DC1-POD1-LEAF1B
+   neighbor 10.4.1.3 description DC1-POD1-LEAF1A
    neighbor 172.16.32.1 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.32.1 remote-as 65002.100
    neighbor 172.16.32.1 description DC2-POD1-SPINE1_Ethernet1

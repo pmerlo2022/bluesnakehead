@@ -53,6 +53,11 @@ l3leaf:
   defaults:
     bgp_as: 65555
     virtual_router_mac_address: 00:1c:73:00:dc:01
+    platform: vEOS-LAB
+    evpn_role: server
+    evpn_route_servers: [ DC1-POD2-LEAF1A, DC1-POD2-LEAF1B ]
+    spanning_tree_mode: rstp
+    spanning_tree_priority: 4096
     loopback_ipv4_pool: 10.4.2.0/24
     loopback_ipv4_offset: 2
     vtep_loopback_ipv4_pool: 10.5.2.0/24
@@ -66,6 +71,10 @@ l3leaf:
       - 'distance bgp 20 200 200'
       - 'graceful-restart restart-time 300'
       - 'graceful-restart'
+    filter:
+      always_include_vrfs_in_tenants: [ 'all' ] #Testing that we configure all VRFs even with no VLANs.
+      tags: []
+    mlag: false
     mlag_peer_l3_ipv4_pool: 172.19.2.0/24
     mlag_peer_ipv4_pool: 172.20.2.0/24
   node_groups:

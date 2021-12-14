@@ -68,13 +68,13 @@ l3leaf:
       - 'distance bgp 20 200 200'
       - 'graceful-restart restart-time 300'
       - 'graceful-restart'
-    mlag: false
     filter:
       always_include_vrfs_in_tenants: [ 'all' ] #Testing that we configure all VRFs even with no VLANs.
       tags: []
     raw_eos_cli: |
       interface Loopback1010
         description Loopback created from raw_eos_cli under l3leaf defaults in DC2 POD1
+    mlag: false
     mlag_peer_l3_ipv4_pool: 172.19.32.0/24
     mlag_peer_ipv4_pool: 172.20.32.0/24
   node_groups:

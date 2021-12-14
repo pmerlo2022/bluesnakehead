@@ -1,5 +1,5 @@
 router_bgp:
-  as: '65112.100'
+  as: '65111.200'
   router_id: 10.4.1.5
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -10,7 +10,7 @@ router_bgp:
   peer_groups:
     MLAG-IPv4-UNDERLAY-PEER:
       type: ipv4
-      remote_as: '65112.100'
+      remote_as: '65111.200'
       next_hop_self: true
       password: vnEaG8gMeQf3d3cN6PktXQ==
       maximum_routes: 12000
@@ -29,6 +29,7 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
+      next_hop_unchanged: true
   address_family_ipv4:
     peer_groups:
       MLAG-IPv4-UNDERLAY-PEER:
@@ -57,11 +58,6 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65001.100'
       description: DC1-POD1-SPINE4_Ethernet7
-    10.4.1.3:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-POD1-LEAF1B
-      remote_as: '65111.100'
-      route_map_out: RM-EVPN-FILTER-AS65111.100
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
@@ -75,6 +71,8 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
+        default_route_target:
+          only: true
   vrfs:
     Common_VRF:
       router_id: 10.4.1.5
@@ -95,47 +93,6 @@ router_bgp:
         EOF
 
         '
-  vlans:
-    110:
-      tenant: Tenant_A
-      rd: 10.4.1.5:10110
-      route_targets:
-        both:
-        - 10110:10110
-      redistribute_routes:
-      - learned
-    111:
-      tenant: Tenant_A
-      rd: 10.4.1.5:50111
-      route_targets:
-        both:
-        - 50111:50111
-      redistribute_routes:
-      - learned
-    112:
-      tenant: Tenant_A
-      rd: 10.4.1.5:50112
-      route_targets:
-        both:
-        - 50112:50112
-      redistribute_routes:
-      - learned
-    2500:
-      tenant: Tenant_A
-      rd: 10.4.1.5:2500
-      route_targets:
-        both:
-        - 2500:2500
-      redistribute_routes:
-      - learned
-    2600:
-      tenant: Tenant_A
-      rd: 10.4.1.5:2600
-      route_targets:
-        both:
-        - 2600:2600
-      redistribute_routes:
-      - learned
 static_routes:
 - vrf: mgmt
   destination_address_prefix: 0.0.0.0/0
@@ -150,10 +107,8 @@ vlan_internal_order:
 snmp_server:
   location: AMS DC1 DC1_POD1 DC1-POD1-LEAF2A
 spanning_tree:
-  mode: mstp
-  mst_instances:
-    '0':
-      priority: 4096
+  mode: rstp
+  rstp_priority: 4096
   no_spanning_tree_vlan: 4094
 local_users:
   admin:
@@ -170,10 +125,9 @@ management_api_http:
   enable_vrfs:
     mgmt: {}
   enable_https: true
-eos_cli: "interface Loopback1002\n  description Loopback created from raw_eos_cli
-  under l3leaf node-group RACK2_MLAG\n\ninterface Loopback1111\n  description Loopback
-  created from raw_eos_cli under platform_settings vEOS-LAB\n\ninterface Loopback1000\n
-  \ description Loopback created from raw_eos_cli under VRF Common_VRF\n"
+eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli
+  under platform_settings vEOS-LAB\n\ninterface Loopback1000\n  description Loopback
+  created from raw_eos_cli under VRF Common_VRF\n"
 struct_cfg:
   domain_list:
   - structured-config.set.on.node
@@ -184,27 +138,6 @@ vlans:
     name: MLAG_PEER
     trunk_groups:
     - MLAG
-  110:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_1
-  111:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_2
-  112:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_3
-  113:
-    tenant: Tenant_A
-    name: SVI_with_no_vxlan
-  2500:
-    tenant: Tenant_A
-    name: web-l2-vlan
-  2600:
-    tenant: Tenant_A
-    name: web-l2-vlan-2
-  2601:
-    tenant: Tenant_A
-    name: l2vlan_with_no_vxlan
 vlan_interfaces:
   Vlan4094:
     description: MLAG_PEER
@@ -212,47 +145,6 @@ vlan_interfaces:
     ip_address: 172.20.1.4/31
     no_autostate: true
     mtu: 9214
-  Vlan110:
-    tenant: Tenant_A
-    tags:
-    - opzone
-    description: set from structured_config on svi for DC1-POD1-LEAF2A (was Tenant_A_OP_Zone_1)
-    shutdown: false
-    vrf: Common_VRF
-    ip_address_virtual: 10.1.10.1/24
-    struct_cfg:
-      description: set from structured_config on svi for DC1-POD1-LEAF2A (was Tenant_A_OP_Zone_1)
-  Vlan111:
-    tenant: Tenant_A
-    tags:
-    - opzone
-    description: Tenant_A_OP_Zone_2
-    shutdown: true
-    vrf: Common_VRF
-    ip_address_virtual: 10.1.11.1/24
-  Vlan112:
-    tenant: Tenant_A
-    tags:
-    - opzone
-    description: Tenant_A_OP_Zone_3
-    shutdown: false
-    vrf: Common_VRF
-    ip_address_virtual: 10.1.12.1/24
-    eos_cli: 'comment
-
-      Comment created from raw_eos_cli under SVI 112 in VRF Common_VRF
-
-      EOF
-
-      '
-  Vlan113:
-    tenant: Tenant_A
-    tags:
-    - opzone
-    description: SVI_with_no_vxlan
-    shutdown: false
-    vrf: Common_VRF
-    ip_address_virtual: 10.10.13.1/24
 port_channel_interfaces:
   Port-Channel5:
     description: MLAG_PEER_DC1-POD1-LEAF2B_Po5
@@ -489,14 +381,6 @@ route_maps:
         type: permit
         match:
         - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-  RM-EVPN-FILTER-AS65111.100:
-    sequence_numbers:
-      10:
-        type: deny
-        match:
-        - as 65111.100
-      20:
-        type: permit
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -528,17 +412,6 @@ vxlan_interface:
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
       udp_port: 4789
-      vlans:
-        110:
-          vni: 10110
-        111:
-          vni: 50111
-        112:
-          vni: 50112
-        2500:
-          vni: 2500
-        2600:
-          vni: 2600
       vrfs:
         Common_VRF:
           vni: 1025

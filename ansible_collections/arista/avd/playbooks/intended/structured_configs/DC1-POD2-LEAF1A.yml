@@ -1,0 +1,217 @@
+router_bgp:
+  as: '65121'
+  router_id: 10.4.2.3
+  bgp_defaults:
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+  - maximum-paths 4 ecmp 4
+  peer_groups:
+    IPv4-UNDERLAY-PEERS:
+      type: ipv4
+      password: AQQvKeimxJu+uGQ/yYvv9w==
+      maximum_routes: 12000
+      send_community: all
+    EVPN-OVERLAY-PEERS:
+      type: evpn
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: '5'
+      password: q+VNViP5i4rVjW1cxFv2wA==
+      send_community: all
+      maximum_routes: 0
+      next_hop_unchanged: true
+  address_family_ipv4:
+    peer_groups:
+      IPv4-UNDERLAY-PEERS:
+        activate: true
+      EVPN-OVERLAY-PEERS:
+        activate: false
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
+  neighbors:
+    172.17.2.0:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65001.200'
+      description: DC1-POD2-SPINE1_Ethernet3
+    172.17.2.2:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65001.200'
+      description: DC1-POD2-SPINE2_Ethernet3
+    10.4.2.3:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-POD2-LEAF1A
+      remote_as: '65121'
+      route_map_out: RM-EVPN-FILTER-AS65121
+    10.4.2.4:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-POD2-LEAF1B
+      remote_as: '65121'
+      route_map_out: RM-EVPN-FILTER-AS65121
+    11.1.2.3:
+      remote_as: '64202'
+      description: DC2-POD2-LEAF1B
+      peer_group: IPv4-UNDERLAY-PEERS
+      local_as: '64201'
+  address_family_evpn:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+    route:
+      import_match_failure_action: discard
+  address_family_rtc:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+        default_route_target:
+          only: true
+  vrfs:
+    Common_VRF:
+      router_id: 10.4.2.3
+      rd: 10.4.2.3:1025
+      route_targets:
+        import:
+          evpn:
+          - 1025:1025
+        export:
+          evpn:
+          - 1025:1025
+      redistribute_routes:
+      - connected
+      eos_cli: 'comment
+
+        Comment created from raw_eos_cli under BGP for VRF Common_VRF
+
+        EOF
+
+        '
+static_routes:
+- vrf: mgmt
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 10.6.1.1
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+snmp_server:
+  location: AMS DC1 DC1_POD2 DC1-POD2-LEAF1A
+spanning_tree:
+  mode: none
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$82gqIqw8b3nibNrk$MoZO0S8QMQN8uwnR8v48dbGrL0Ec/6q36tSx8y9IsExi4L.HtmokW9rX8VehLxhg542mNTBKqxMBF.LgnCTm4.
+vrfs:
+  mgmt:
+    ip_routing: false
+  Common_VRF:
+    tenant: Tenant_A
+    ip_routing: true
+management_interfaces:
+  Management0:
+    description: oob_management
+    shutdown: false
+    vrf: mgmt
+    ip_address: 192.168.1.17/24
+    gateway: 10.6.1.1
+    type: oob
+management_api_http:
+  enable_vrfs:
+    mgmt: {}
+  enable_https: true
+eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli
+  under platform_settings vEOS-LAB\n\ninterface Loopback1000\n  description Loopback
+  created from raw_eos_cli under VRF Common_VRF\n"
+ethernet_interfaces:
+  Ethernet1:
+    peer: DC1-POD2-SPINE1
+    peer_interface: Ethernet3
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet3
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.1/31
+  Ethernet2:
+    peer: DC1-POD2-SPINE2
+    peer_interface: Ethernet3
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet3
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.3/31
+  Ethernet6:
+    peer: DC2-POD2-LEAF1B
+    peer_interface: Ethernet4
+    peer_type: other
+    description: P2P_LINK_TO_DC2-POD2-LEAF1B_Ethernet4
+    type: routed
+    shutdown: false
+    mtu: 9214
+    ip_address: 11.1.2.2/31
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    shutdown: false
+    ip_address: 10.4.2.3/32
+  Loopback1:
+    description: VTEP_VXLAN_Tunnel_Source
+    shutdown: false
+    ip_address: 10.5.2.3/32
+prefix_lists:
+  PL-LOOPBACKS-EVPN-OVERLAY:
+    sequence_numbers:
+      10:
+        action: permit 10.4.2.0/24 eq 32
+      20:
+        action: permit 10.5.2.0/24 eq 32
+route_maps:
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+  RM-EVPN-FILTER-AS65121:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+        - as 65121
+      20:
+        type: permit
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+ip_igmp_snooping:
+  globally_enabled: true
+ip_virtual_router_mac_address: 00:1c:73:00:dc:01
+struct_cfg:
+  domain_list:
+  - structured-config.set.under.vrf.common-vrf
+vxlan_interface:
+  Vxlan1:
+    description: DC1-POD2-LEAF1A_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vrfs:
+        Common_VRF:
+          vni: 1025
+domain_list:
+- structured-config.set.under.vrf.common-vrf

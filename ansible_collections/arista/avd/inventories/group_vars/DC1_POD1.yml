@@ -52,6 +52,11 @@ l3leaf:
   defaults:
     bgp_as: "65555"
     virtual_router_mac_address: 00:1c:73:00:dc:01
+    platform: vEOS-LAB
+    evpn_role: server
+#    evpn_route_servers: [ DC1-POD1-LEAF1A, DC1-POD1-LEAF1B ]
+    spanning_tree_mode: rstp
+    spanning_tree_priority: 4096
     loopback_ipv4_pool: 10.4.1.0/24
     # what is this offset?
     loopback_ipv4_offset: 2
@@ -66,59 +71,91 @@ l3leaf:
       - 'distance bgp 20 200 200'
       - 'graceful-restart restart-time 300'
       - 'graceful-restart'
+    filter:
+      always_include_vrfs_in_tenants: [ 'all' ] #Testing that we configure all VRFs even with no VLANs.
+      tags: []
+    mlag: false
     mlag_peer_l3_ipv4_pool: 172.19.1.0/24
     mlag_peer_ipv4_pool: 172.20.1.0/24
   node_groups:
     # Single switch working as underlay L3 router and EVPN RS
-    RACK1_SINGLE:
+#    RACK1_SINGLE:
+#      platform: vEOS-LAB
+#      #Moved to defaults
+#      #uplink_interfaces: ['Ethernet1', 'Ethernet2']
+#      #uplink_switches: ['DC1-POD1-SPINE1', 'DC1-POD1-SPINE2']
+#      spanning_tree_mode: none
+#      bgp_as: "65111.100"
+#      mlag: false
+#      evpn_role: server
+#      #let's figure out what this line means
+#      evpn_route_servers: [ DC2-SUPER-SPINE1, DC2-POD1-SPINE1, DC2-POD1-LEAF1A ]
+#      filter:
+#        tenants: []
+#        tags: []
+#        always_include_vrfs_in_tenants: [ 'all' ] #Testing that we respect the empty tenants list, so no VRFs will be configured.
+      # Below will not have any effect since it is overridden on the node level. So just a negative test.
+#      raw_eos_cli: |
+#        interface Loopback1001
+#          description Loopback created from raw_eos_cli under node-group RACK1_SINGLE
+#      nodes:
+#        DC1-POD1-LEAF1A:
+#          id: 1
+#          # mgmt_ip: 192.168.1.7/24 Test without management IP
+#          # Doesn't seem to be picking up defaults. Wait... this isn't a default. uplink_switch, uplink_interfaces.. but what is this?L2?
+#          uplink_switch_interfaces: ['Ethernet3', 'Ethernet3']
+#          raw_eos_cli: |
+#            interface Loopback1002
+#              description Loopback created from raw_eos_cli under node DC1-POD1-LEAF1A
+    RACK1_MLAG:
       platform: vEOS-LAB
       #Moved to defaults
-      #uplink_interfaces: ['Ethernet1', 'Ethernet2']
-      #uplink_switches: ['DC1-POD1-SPINE1', 'DC1-POD1-SPINE2']
-      spanning_tree_mode: none
+#      uplink_interfaces: ['Ethernet1', 'Ethernet2']
+#      uplink_switches: ['DC1-POD1-SPINE1', 'DC1-POD1-SPINE2']
+#      spanning_tree_mode: none
       bgp_as: "65111.100"
-      mlag: false
+      mlag: true
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      mlag_dual_primary_detection: true
+      mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
       evpn_role: server
-      #let's figure out what this line means
-      evpn_route_servers: [ DC2-SUPER-SPINE1, DC2-POD1-SPINE1, DC2-POD1-LEAF1A ]
+      #let's figure out what this line means. If I'm a server, do I have spec this?
+#      evpn_route_servers: [ DC1-POD1-LEAF1A, DC1-POD1-LEA1B ]
       filter:
         tenants: []
         tags: []
         always_include_vrfs_in_tenants: [ 'all' ] #Testing that we respect the empty tenants list, so no VRFs will be configured.
       # Below will not have any effect since it is overridden on the node level. So just a negative test.
-      raw_eos_cli: |
-        interface Loopback1001
-          description Loopback created from raw_eos_cli under node-group RACK1_SINGLE
+#      raw_eos_cli: |
+#        interface Loopback1001
+#          description Loopback created from raw_eos_cli under node-group RACK1_SINGLE
       nodes:
         DC1-POD1-LEAF1A:
           id: 1
-          # mgmt_ip: 192.168.1.7/24 Test without management IP
+          mgmt_ip: 192.168.1.7/24 Test without management IP
           # Doesn't seem to be picking up defaults. Wait... this isn't a default. uplink_switch, uplink_interfaces.. but what is this?L2?
-          uplink_switch_interfaces: ['Ethernet3', 'Ethernet3']
-          raw_eos_cli: |
-            interface Loopback1002
-              description Loopback created from raw_eos_cli under node DC1-POD1-LEAF1A
+          uplink_switch_interfaces: [ 'Ethernet3', 'Ethernet3' ]
+#          raw_eos_cli: |
+#            interface Loopback1002
+#              description Loopback created from raw_eos_cli under node DC1-POD1-LEAF1A
         DC1-POD1-LEAF1B:
           id: 1
-          # mgmt_ip: 192.168.1.7/24 Test without management IP
+          mgmt_ip: 192.168.1.7/24
           uplink_switch_interfaces: ['Ethernet3', 'Ethernet3']
-          
+                    
     # Regular MLAG pair
     RACK2_MLAG:
       platform: vEOS-LAB
       #moved next two to defaults
       uplink_interfaces: [ Ethernet1, Ethernet2, Ethernet11, Ethernet12 ]
       #uplink_switches: [ DC1-POD1-SPINE1, DC1-POD1-SPINE2, DC1-POD1-SPINE1, DC1-POD1-SPINE2 ]
-      bgp_as: "65112.100"
-      evpn_route_servers: [ DC1-POD1-LEAF1A, DC1-POD1-LEAF1B ]
+      bgp_as: "65111.200"
+      evpn_role: server
+#      evpn_route_servers: [ DC1-POD1-LEAF1A, DC1-POD1-LEAF1B ]
+      mlag: true
       mlag_interfaces: [ Ethernet5, Ethernet6 ]
       mlag_dual_primary_detection: true
       mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
-      spanning_tree_mode: mstp
-      spanning_tree_priority: 4096
-      raw_eos_cli: |
-        interface Loopback1002
-          description Loopback created from raw_eos_cli under l3leaf node-group RACK2_MLAG
       nodes:
         DC1-POD1-LEAF2A:
           structured_config:
@@ -138,18 +175,18 @@ l3leaf:
       platform: vEOS-LAB
       # uplink_interfaces: [ Ethernet1, Ethernet2, Ethernet11, Ethernet12 ]
       # uplink_switches: [ DC1-POD1-SPINE1, DC1-POD1-SPINE2, DC1-POD1-SPINE1, DC1-POD1-SPINE2 ]
-      bgp_as: "64103"
-      evpn_route_servers: [ DC1-POD1-LEAF1A, DC1-POD1-LEAF1B ]
+      bgp_as: "65111.300"
+#      evpn_route_servers: [ DC1-POD1-LEAF1A, DC1-POD1-LEAF1B ]
       mlag_interfaces: [ Ethernet5, Ethernet6 ]
       mlag_dual_primary_detection: true
       mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
-      spanning_tree_mode: mstp
-      spanning_tree_priority: 4096
+#      spanning_tree_mode: mstp
+#      spanning_tree_priority: 4096
       nodes:
         DC1-POD1-LEAF3A:
-          structured_config:
-            domain_list:
-              - structured-config.set.on.node
+#          structured_config:
+#            domain_list:
+#              - structured-config.set.on.node
           id: 3
           # mgmt_ip: 192.168.1.8/16 Test without management IP
           uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
@@ -161,18 +198,18 @@ l3leaf:
       platform: vEOS-LAB
       # uplink_interfaces: [ Ethernet1, Ethernet2, Ethernet11, Ethernet12 ]
       # uplink_switches: [ DC1-POD1-SPINE1, DC1-POD1-SPINE2, DC1-POD1-SPINE1, DC1-POD1-SPINE2 ]
-      bgp_as: "64104"
-      evpn_route_servers: [ DC1-POD1-LEAF1A, DC1-POD1-LEAF1B ]
+      bgp_as: "65111.400"
+#      evpn_route_servers: [ DC1-POD1-LEAF1A, DC1-POD1-LEAF1B ]
       mlag_interfaces: [ Ethernet5, Ethernet6 ]
       mlag_dual_primary_detection: true
       mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
-      spanning_tree_mode: mstp
-      spanning_tree_priority: 4096
+#      spanning_tree_mode: mstp
+#      spanning_tree_priority: 4096
       nodes:
         DC1-POD1-LEAF4A:
-          structured_config:
-            domain_list:
-              - structured-config.set.on.node
+#          structured_config:
+#            domain_list:
+#              - structured-config.set.on.node
           id: 3
           # mgmt_ip: 192.168.1.8/16 Test without management IP
           uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
@@ -182,18 +219,13 @@ l3leaf:
           uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]
     RACK5_MLAG:
       platform: vEOS-LAB
-      bgp_as: "64105"
-      evpn_route_servers: [ DC1-POD1-LEAF1A, DC1-POD1-LEAF1B ]
+      bgp_as: "65111.500"
+#      evpn_route_servers: [ DC1-POD1-LEAF1A, DC1-POD1-LEAF1B ]
       mlag_interfaces: [ Ethernet5, Ethernet6 ]
       mlag_dual_primary_detection: true
       mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
-      spanning_tree_mode: mstp
-      spanning_tree_priority: 4096
       nodes:
         DC1-POD1-LEAF5A:
-          structured_config:
-            domain_list:
-              - structured-config.set.on.node
           id: 3
           # mgmt_ip: 192.168.1.8/16 Test without management IP
           uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
@@ -201,6 +233,142 @@ l3leaf:
           id: 4
           mgmt_ip: 192.168.1.11/16
           uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]
+    RACK6_MLAG:
+      bgp_as: "65111.600"
+      mlag: true
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      mlag_dual_primary_detection: true
+      mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
+      nodes:
+        DC1-POD1-LEAF6A:
+          id: 3
+          # mgmt_ip: 192.168.1.8/16 Test without management IP
+          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+        DC1-POD1-LEAF6B:
+          id: 4
+          mgmt_ip: 192.168.1.11/16
+          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]
+    RACK7_MLAG:
+      bgp_as: "65111.700"
+      mlag: true
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      mlag_dual_primary_detection: true
+      mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
+      nodes:
+        DC1-POD1-LEAF7A:
+          id: 3
+          # mgmt_ip: 192.168.1.8/16 Test without management IP
+          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+        DC1-POD1-LEAF7B:
+          id: 4
+          mgmt_ip: 192.168.1.11/16
+          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]
+    RACK8_MLAG:
+      bgp_as: "65111.800"
+      mlag: true
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      mlag_dual_primary_detection: true
+      mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
+      nodes:
+        DC1-POD1-LEAF8A:
+          id: 3
+          # mgmt_ip: 192.168.1.8/16 Test without management IP
+          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+        DC1-POD1-LEAF8B:
+          id: 4
+          mgmt_ip: 192.168.1.11/16
+          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ] 
+    RACK9_MLAG:
+      bgp_as: "65111.900"
+      mlag: true
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      mlag_dual_primary_detection: true
+      mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
+      nodes:
+        DC1-POD1-LEAF9A:
+          id: 3
+          # mgmt_ip: 192.168.1.8/16 Test without management IP
+          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+        DC1-POD1-LEAF9B:
+          id: 4
+          mgmt_ip: 192.168.1.11/16
+          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ] 
+    RACK10_MLAG:
+      bgp_as: "65111.1000"
+      mlag: true
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      mlag_dual_primary_detection: true
+      mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
+      nodes:
+        DC1-POD1-LEAF10A:
+          id: 3
+          # mgmt_ip: 192.168.1.8/16 Test without management IP
+          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+        DC1-POD1-LEAF10B:
+          id: 4
+          mgmt_ip: 192.168.1.11/16
+          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ] 
+    RACK11_MLAG:
+      bgp_as: "65111.1100"
+      mlag: true
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      mlag_dual_primary_detection: true
+      mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
+      nodes:
+        DC1-POD1-LEAF11A:
+          id: 3
+          # mgmt_ip: 192.168.1.8/16 Test without management IP
+          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+        DC1-POD1-LEAF11B:
+          id: 4
+          mgmt_ip: 192.168.1.11/16
+          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]                                                   
+    RACK12_MLAG:
+      bgp_as: "65111.1200"
+      mlag: true
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      mlag_dual_primary_detection: true
+      mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
+      nodes:
+        DC1-POD1-LEAF12A:
+          id: 3
+          # mgmt_ip: 192.168.1.8/16 Test without management IP
+          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+        DC1-POD1-LEAF12B:
+          id: 4
+          mgmt_ip: 192.168.1.11/16
+          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]                                                   
+    RACK13_MLAG:
+      bgp_as: "65111.1300"
+      mlag: true
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      mlag_dual_primary_detection: true
+      mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
+      nodes:
+        DC1-POD1-LEAF13A:
+          id: 3
+          # mgmt_ip: 192.168.1.8/16 Test without management IP
+          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+        DC1-POD1-LEAF13B:
+          id: 4
+          mgmt_ip: 192.168.1.11/16
+          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]                                                   
+    RACK14_MLAG:
+      bgp_as: "65111.1400"
+      mlag: true
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      mlag_dual_primary_detection: true
+      mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
+      nodes:
+        DC1-POD1-LEAF14A:
+          id: 3
+          # mgmt_ip: 192.168.1.8/16 Test without management IP
+          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+        DC1-POD1-LEAF14B:
+          id: 4
+          mgmt_ip: 192.168.1.11/16
+          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]                                                   
+
 # In DC1 we define all variables on specific node / node_group
 #l2leaf:
 #  defaults:
