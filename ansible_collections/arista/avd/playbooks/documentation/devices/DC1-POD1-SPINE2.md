@@ -146,46 +146,74 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1/1 | P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet17/1 | routed | - | 172.16.1.3/31 | default | 9214 | false | - | - |
-| Ethernet2/1 | P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet17/2 | routed | - | 172.16.1.11/31 | default | 9214 | false | - | - |
-| Ethernet3/1 | P2P_LINK_TO_DC1-SUPER-SPINE3_Ethernet17/3 | routed | - | 172.16.1.19/31 | default | 9214 | false | - | - |
-| Ethernet4 | P2P_LINK_TO_DC2-POD1-LEAF14A_Ethernet1/2 | routed | - | 172.17.32.18/31 | default | 9214 | false | - | - |
-| Ethernet4/1 | P2P_LINK_TO_DC1-SUPER-SPINE4_Ethernet17/4 | routed | - | 172.16.1.27/31 | default | 9214 | false | - | - |
-| Ethernet5 | P2P_LINK_TO_DC2-POD1-LEAF14B_Ethernet1/2 | routed | - | 172.17.32.26/31 | default | 9214 | false | - | - |
+| Ethernet1/1 | P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet30/1 | routed | - | 172.17.1.2/31 | default | 9214 | false | - | - |
+| Ethernet2/1 | P2P_LINK_TO_DC1-POD1-LEAF1B_Ethernet30/1 | routed | - | 172.17.1.10/31 | default | 9214 | false | - | - |
+| Ethernet3/1 | P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet30/1 | routed | - | 172.17.1.18/31 | default | 9214 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_DC2-POD1-LEAF14A_Ethernet30/1 | routed | - | 172.17.32.18/31 | default | 9214 | false | - | - |
+| Ethernet4/1 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet30/1 | routed | - | 172.17.1.26/31 | default | 9214 | false | - | - |
+| Ethernet5 | P2P_LINK_TO_DC2-POD1-LEAF14B_Ethernet30/1 | routed | - | 172.17.32.26/31 | default | 9214 | false | - | - |
+| Ethernet5/1 | P2P_LINK_TO_DC1-POD1-LEAF3A_Ethernet30/1 | routed | - | 172.17.1.18/31 | default | 9214 | false | - | - |
+| Ethernet6/1 | P2P_LINK_TO_DC1-POD1-LEAF3B_Ethernet30/1 | routed | - | 172.17.1.26/31 | default | 9214 | false | - | - |
+| Ethernet7/1 | P2P_LINK_TO_DC1-POD1-LEAF4A_Ethernet30/1 | routed | - | 172.17.1.18/31 | default | 9214 | false | - | - |
+| Ethernet8/1 | P2P_LINK_TO_DC1-POD1-LEAF4B_Ethernet30/1 | routed | - | 172.17.1.26/31 | default | 9214 | false | - | - |
+| Ethernet9/1 | P2P_LINK_TO_DC1-POD1-LEAF5A_Ethernet30/1 | routed | - | 172.17.1.18/31 | default | 9214 | false | - | - |
+| Ethernet10/1 | P2P_LINK_TO_DC1-POD1-LEAF5B_Ethernet30/1 | routed | - | 172.17.1.26/31 | default | 9214 | false | - | - |
+| Ethernet11/1 | P2P_LINK_TO_DC1-POD1-LEAF6A_Ethernet30/1 | routed | - | 172.17.1.18/31 | default | 9214 | false | - | - |
+| Ethernet12/1 | P2P_LINK_TO_DC1-POD1-LEAF6B_Ethernet30/1 | routed | - | 172.17.1.26/31 | default | 9214 | false | - | - |
+| Ethernet13/1 | P2P_LINK_TO_DC1-POD1-LEAF7A_Ethernet30/1 | routed | - | 172.17.1.18/31 | default | 9214 | false | - | - |
+| Ethernet14/1 | P2P_LINK_TO_DC1-POD1-LEAF7B_Ethernet30/1 | routed | - | 172.17.1.26/31 | default | 9214 | false | - | - |
+| Ethernet15/1 | P2P_LINK_TO_DC1-POD1-LEAF8A_Ethernet30/1 | routed | - | 172.17.1.18/31 | default | 9214 | false | - | - |
+| Ethernet16/1 | P2P_LINK_TO_DC1-POD1-LEAF8B_Ethernet30/1 | routed | - | 172.17.1.26/31 | default | 9214 | false | - | - |
+| Ethernet17/1 | P2P_LINK_TO_DC1-POD1-LEAF9A_Ethernet30/1 | routed | - | 172.17.1.18/31 | default | 9214 | false | - | - |
+| Ethernet18/1 | P2P_LINK_TO_DC1-POD1-LEAF9B_Ethernet30/1 | routed | - | 172.17.1.26/31 | default | 9214 | false | - | - |
+| Ethernet19/1 | P2P_LINK_TO_DC1-POD1-LEAF10A_Ethernet30/1 | routed | - | 172.17.1.18/31 | default | 9214 | false | - | - |
+| Ethernet20/1 | P2P_LINK_TO_DC1-POD1-LEAF10B_Ethernet30/1 | routed | - | 172.17.1.26/31 | default | 9214 | false | - | - |
+| Ethernet21/1 | P2P_LINK_TO_DC1-POD1-LEAF11A_Ethernet30/1 | routed | - | 172.17.1.18/31 | default | 9214 | false | - | - |
+| Ethernet22/1 | P2P_LINK_TO_DC1-POD1-LEAF11B_Ethernet30/1 | routed | - | 172.17.1.26/31 | default | 9214 | false | - | - |
+| Ethernet23/1 | P2P_LINK_TO_DC1-POD1-LEAF12A_Ethernet30/1 | routed | - | 172.17.1.18/31 | default | 9214 | false | - | - |
+| Ethernet24/1 | P2P_LINK_TO_DC1-POD1-LEAF12B_Ethernet30/1 | routed | - | 172.17.1.26/31 | default | 9214 | false | - | - |
+| Ethernet25/1 | P2P_LINK_TO_DC1-POD1-LEAF13A_Ethernet30/1 | routed | - | 172.17.1.18/31 | default | 9214 | false | - | - |
+| Ethernet26/1 | P2P_LINK_TO_DC1-POD1-LEAF13B_Ethernet30/1 | routed | - | 172.17.1.26/31 | default | 9214 | false | - | - |
+| Ethernet27/1 | P2P_LINK_TO_DC1-POD1-LEAF14A_Ethernet30/1 | routed | - | 172.17.1.18/31 | default | 9214 | false | - | - |
+| Ethernet28/1 | P2P_LINK_TO_DC1-POD1-LEAF14B_Ethernet30/1 | routed | - | 172.17.1.26/31 | default | 9214 | false | - | - |
+| Ethernet29/1 | P2P_LINK_TO_SUPER-SPINE1_Ethernet2/1 | routed | - | 172.16.1.3/31 | default | 9214 | false | - | - |
+| Ethernet30/1 | P2P_LINK_TO_SUPER-SPINE2_Ethernet2/1 | routed | - | 172.16.1.11/31 | default | 9214 | false | - | - |
+| Ethernet31/1 | P2P_LINK_TO_SUPER-SPINE3_Ethernet2/1 | routed | - | 172.16.1.19/31 | default | 9214 | false | - | - |
+| Ethernet32/1 | P2P_LINK_TO_SUPER-SPINE4_Ethernet2/1 | routed | - | 172.16.1.27/31 | default | 9214 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1/1
-   description P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet17/1
+   description P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet30/1
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.16.1.3/31
+   ip address 172.17.1.2/31
    ptp enable
    service-profile QOS-PROFILE
 !
 interface Ethernet2/1
-   description P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet17/2
+   description P2P_LINK_TO_DC1-POD1-LEAF1B_Ethernet30/1
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.16.1.11/31
+   ip address 172.17.1.10/31
    ptp enable
    service-profile QOS-PROFILE
 !
 interface Ethernet3/1
-   description P2P_LINK_TO_DC1-SUPER-SPINE3_Ethernet17/3
+   description P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet30/1
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.16.1.19/31
+   ip address 172.17.1.18/31
    ptp enable
    service-profile QOS-PROFILE
 !
 interface Ethernet4
-   description P2P_LINK_TO_DC2-POD1-LEAF14A_Ethernet1/2
+   description P2P_LINK_TO_DC2-POD1-LEAF14A_Ethernet30/1
    no shutdown
    mtu 9214
    no switchport
@@ -194,20 +222,272 @@ interface Ethernet4
    service-profile QOS-PROFILE
 !
 interface Ethernet4/1
-   description P2P_LINK_TO_DC1-SUPER-SPINE4_Ethernet17/4
+   description P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet30/1
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.16.1.27/31
+   ip address 172.17.1.26/31
    ptp enable
    service-profile QOS-PROFILE
 !
 interface Ethernet5
-   description P2P_LINK_TO_DC2-POD1-LEAF14B_Ethernet1/2
+   description P2P_LINK_TO_DC2-POD1-LEAF14B_Ethernet30/1
    no shutdown
    mtu 9214
    no switchport
    ip address 172.17.32.26/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet5/1
+   description P2P_LINK_TO_DC1-POD1-LEAF3A_Ethernet30/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.18/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet6/1
+   description P2P_LINK_TO_DC1-POD1-LEAF3B_Ethernet30/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.26/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet7/1
+   description P2P_LINK_TO_DC1-POD1-LEAF4A_Ethernet30/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.18/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet8/1
+   description P2P_LINK_TO_DC1-POD1-LEAF4B_Ethernet30/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.26/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet9/1
+   description P2P_LINK_TO_DC1-POD1-LEAF5A_Ethernet30/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.18/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet10/1
+   description P2P_LINK_TO_DC1-POD1-LEAF5B_Ethernet30/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.26/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet11/1
+   description P2P_LINK_TO_DC1-POD1-LEAF6A_Ethernet30/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.18/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet12/1
+   description P2P_LINK_TO_DC1-POD1-LEAF6B_Ethernet30/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.26/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet13/1
+   description P2P_LINK_TO_DC1-POD1-LEAF7A_Ethernet30/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.18/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet14/1
+   description P2P_LINK_TO_DC1-POD1-LEAF7B_Ethernet30/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.26/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet15/1
+   description P2P_LINK_TO_DC1-POD1-LEAF8A_Ethernet30/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.18/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet16/1
+   description P2P_LINK_TO_DC1-POD1-LEAF8B_Ethernet30/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.26/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet17/1
+   description P2P_LINK_TO_DC1-POD1-LEAF9A_Ethernet30/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.18/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet18/1
+   description P2P_LINK_TO_DC1-POD1-LEAF9B_Ethernet30/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.26/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet19/1
+   description P2P_LINK_TO_DC1-POD1-LEAF10A_Ethernet30/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.18/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet20/1
+   description P2P_LINK_TO_DC1-POD1-LEAF10B_Ethernet30/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.26/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet21/1
+   description P2P_LINK_TO_DC1-POD1-LEAF11A_Ethernet30/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.18/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet22/1
+   description P2P_LINK_TO_DC1-POD1-LEAF11B_Ethernet30/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.26/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet23/1
+   description P2P_LINK_TO_DC1-POD1-LEAF12A_Ethernet30/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.18/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet24/1
+   description P2P_LINK_TO_DC1-POD1-LEAF12B_Ethernet30/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.26/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet25/1
+   description P2P_LINK_TO_DC1-POD1-LEAF13A_Ethernet30/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.18/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet26/1
+   description P2P_LINK_TO_DC1-POD1-LEAF13B_Ethernet30/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.26/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet27/1
+   description P2P_LINK_TO_DC1-POD1-LEAF14A_Ethernet30/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.18/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet28/1
+   description P2P_LINK_TO_DC1-POD1-LEAF14B_Ethernet30/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.1.26/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet29/1
+   description P2P_LINK_TO_SUPER-SPINE1_Ethernet2/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.16.1.3/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet30/1
+   description P2P_LINK_TO_SUPER-SPINE2_Ethernet2/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.16.1.11/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet31/1
+   description P2P_LINK_TO_SUPER-SPINE3_Ethernet2/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.16.1.19/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet32/1
+   description P2P_LINK_TO_SUPER-SPINE4_Ethernet2/1
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.16.1.27/31
    ptp enable
    service-profile QOS-PROFILE
 ```
@@ -294,7 +574,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65001.100|  10.4.28.2 |
+| 65001.102|  10.4.28.2 |
 
 | BGP Tuning |
 | ---------- |
@@ -322,6 +602,10 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | 172.16.1.10 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.16.1.18 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.16.1.26 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.1.3 | 65111.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.1.11 | 65111.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.1.19 | 65111.1400 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.1.27 | 65111.1400 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.32.19 | 65211.1400 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.32.27 | 65211.1400 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
@@ -335,7 +619,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 ```eos
 !
-router bgp 65001.100
+router bgp 65001.102
    router-id 10.4.28.2
    no bgp default ipv4-unicast
    distance bgp 20 200 200
@@ -348,22 +632,34 @@ router bgp 65001.100
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.16.1.2 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.1.2 remote-as 65100
-   neighbor 172.16.1.2 description DC1-SUPER-SPINE1_Ethernet17/1
+   neighbor 172.16.1.2 description SUPER-SPINE1_Ethernet2/1
    neighbor 172.16.1.10 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.1.10 remote-as 65100
-   neighbor 172.16.1.10 description DC1-SUPER-SPINE2_Ethernet17/2
+   neighbor 172.16.1.10 description SUPER-SPINE2_Ethernet2/1
    neighbor 172.16.1.18 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.1.18 remote-as 65100
-   neighbor 172.16.1.18 description DC1-SUPER-SPINE3_Ethernet17/3
+   neighbor 172.16.1.18 description SUPER-SPINE3_Ethernet2/1
    neighbor 172.16.1.26 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.1.26 remote-as 65100
-   neighbor 172.16.1.26 description DC1-SUPER-SPINE4_Ethernet17/4
+   neighbor 172.16.1.26 description SUPER-SPINE4_Ethernet2/1
+   neighbor 172.17.1.3 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.1.3 remote-as 65111.100
+   neighbor 172.17.1.3 description DC1-POD1-LEAF1A_Ethernet30/1
+   neighbor 172.17.1.11 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.1.11 remote-as 65111.100
+   neighbor 172.17.1.11 description DC1-POD1-LEAF1B_Ethernet30/1
+   neighbor 172.17.1.19 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.1.19 remote-as 65111.1400
+   neighbor 172.17.1.19 description DC1-POD1-LEAF14A_Ethernet30/1
+   neighbor 172.17.1.27 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.1.27 remote-as 65111.1400
+   neighbor 172.17.1.27 description DC1-POD1-LEAF14B_Ethernet30/1
    neighbor 172.17.32.19 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.32.19 remote-as 65211.1400
-   neighbor 172.17.32.19 description DC2-POD1-LEAF14A_Ethernet1/2
+   neighbor 172.17.32.19 description DC2-POD1-LEAF14A_Ethernet30/1
    neighbor 172.17.32.27 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.32.27 remote-as 65211.1400
-   neighbor 172.17.32.27 description DC2-POD1-LEAF14B_Ethernet1/2
+   neighbor 172.17.32.27 description DC2-POD1-LEAF14B_Ethernet30/1
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family ipv4

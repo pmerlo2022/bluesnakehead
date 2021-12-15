@@ -206,7 +206,7 @@ ethernet_interfaces:
       mode: active
     mtu: 9214
     ip_address: 11.1.2.2/31
-  Ethernet1/1:
+  Ethernet29/1:
     peer: DC1-POD2-SPINE1
     peer_interface: Ethernet4
     peer_type: spine
@@ -218,7 +218,7 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.17.2.1/31
-  Ethernet1/2:
+  Ethernet30/1:
     peer: DC1-POD2-SPINE2
     peer_interface: Ethernet5
     peer_type: spine
@@ -230,7 +230,7 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.17.2.3/31
-  Ethernet1/3:
+  Ethernet31/1:
     peer: DC1-POD2-SPINE3
     peer_interface: Ethernet6
     peer_type: spine
@@ -242,7 +242,7 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.17.2.5/31
-  Ethernet1/4:
+  Ethernet32/1:
     peer: DC1-POD2-SPINE4
     peer_interface: Ethernet7
     peer_type: spine

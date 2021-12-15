@@ -21,30 +21,30 @@ router_bgp:
     connected:
       route_map: RM-CONN-2-BGP
   neighbors:
-    172.16.2.4:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65100'
-      description: DC1-SUPER-SPINE1_Ethernet17/1
-    172.16.2.68:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65100'
-      description: DC1-SUPER-SPINE2_Ethernet17/2
-    172.16.2.132:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65100'
-      description: DC1-SUPER-SPINE3_Ethernet17/3
-    172.16.2.196:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65100'
-      description: DC1-SUPER-SPINE4_Ethernet17/4
     172.17.2.29:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65112.1400'
-      description: DC1-POD2-LEAF14B_Ethernet1/3
+      description: DC1-POD2-LEAF14B_Ethernet31/1
     172.17.2.21:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65112.1400'
-      description: DC1-POD2-LEAF14A_Ethernet1/3
+      description: DC1-POD2-LEAF14A_Ethernet31/1
+    172.16.2.4:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65100'
+      description: SUPER-SPINE1_Ethernet7/1
+    172.16.2.68:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65100'
+      description: SUPER-SPINE2_Ethernet7/1
+    172.16.2.132:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65100'
+      description: SUPER-SPINE3_Ethernet7/1
+    172.16.2.196:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65100'
+      description: SUPER-SPINE4_Ethernet7/1
 static_routes:
 - vrf: mgmt
   destination_address_prefix: 0.0.0.0/0
@@ -83,59 +83,11 @@ management_api_http:
 eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli
   under platform_settings vEOS-LAB\n"
 ethernet_interfaces:
-  Ethernet1:
-    peer: DC1-SUPER-SPINE1
-    peer_interface: Ethernet17/1
-    peer_type: super-spine
-    description: P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet17/1
-    mtu: 9214
-    service_profile: QOS-PROFILE
-    ptp:
-      enable: true
-    type: routed
-    shutdown: false
-    ip_address: 172.16.2.5/31
-  Ethernet2:
-    peer: DC1-SUPER-SPINE2
-    peer_interface: Ethernet17/2
-    peer_type: super-spine
-    description: P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet17/2
-    mtu: 9214
-    service_profile: QOS-PROFILE
-    ptp:
-      enable: true
-    type: routed
-    shutdown: false
-    ip_address: 172.16.2.69/31
-  Ethernet3:
-    peer: DC1-SUPER-SPINE3
-    peer_interface: Ethernet17/3
-    peer_type: super-spine
-    description: P2P_LINK_TO_DC1-SUPER-SPINE3_Ethernet17/3
-    mtu: 9214
-    service_profile: QOS-PROFILE
-    ptp:
-      enable: true
-    type: routed
-    shutdown: false
-    ip_address: 172.16.2.133/31
-  Ethernet4:
-    peer: DC1-SUPER-SPINE4
-    peer_interface: Ethernet17/4
-    peer_type: super-spine
-    description: P2P_LINK_TO_DC1-SUPER-SPINE4_Ethernet17/4
-    mtu: 9214
-    service_profile: QOS-PROFILE
-    ptp:
-      enable: true
-    type: routed
-    shutdown: false
-    ip_address: 172.16.2.197/31
   Ethernet6:
     peer: DC1-POD2-LEAF2B
-    peer_interface: Ethernet1/3
+    peer_interface: Ethernet31/1
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-POD2-LEAF2B_Ethernet1/3
+    description: P2P_LINK_TO_DC1-POD2-LEAF2B_Ethernet31/1
     mtu: 9214
     service_profile: QOS-PROFILE
     ptp:
@@ -145,9 +97,9 @@ ethernet_interfaces:
     ip_address: 172.17.2.28/31
   Ethernet7:
     peer: DC1-POD2-LEAF14A
-    peer_interface: Ethernet1/3
+    peer_interface: Ethernet31/1
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-POD2-LEAF14A_Ethernet1/3
+    description: P2P_LINK_TO_DC1-POD2-LEAF14A_Ethernet31/1
     mtu: 9214
     service_profile: QOS-PROFILE
     ptp:
@@ -157,9 +109,9 @@ ethernet_interfaces:
     ip_address: 172.17.2.20/31
   Ethernet8:
     peer: DC1-POD2-LEAF14B
-    peer_interface: Ethernet1/3
+    peer_interface: Ethernet31/1
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-POD2-LEAF14B_Ethernet1/3
+    description: P2P_LINK_TO_DC1-POD2-LEAF14B_Ethernet31/1
     mtu: 9214
     service_profile: QOS-PROFILE
     ptp:
@@ -167,6 +119,54 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.17.2.28/31
+  Ethernet29/1:
+    peer: SUPER-SPINE1
+    peer_interface: Ethernet7/1
+    peer_type: super-spine
+    description: P2P_LINK_TO_SUPER-SPINE1_Ethernet7/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.16.2.5/31
+  Ethernet30/1:
+    peer: SUPER-SPINE2
+    peer_interface: Ethernet7/1
+    peer_type: super-spine
+    description: P2P_LINK_TO_SUPER-SPINE2_Ethernet7/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.16.2.69/31
+  Ethernet31/1:
+    peer: SUPER-SPINE3
+    peer_interface: Ethernet7/1
+    peer_type: super-spine
+    description: P2P_LINK_TO_SUPER-SPINE3_Ethernet7/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.16.2.133/31
+  Ethernet32/1:
+    peer: SUPER-SPINE4
+    peer_interface: Ethernet7/1
+    peer_type: super-spine
+    description: P2P_LINK_TO_SUPER-SPINE4_Ethernet7/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.16.2.197/31
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering

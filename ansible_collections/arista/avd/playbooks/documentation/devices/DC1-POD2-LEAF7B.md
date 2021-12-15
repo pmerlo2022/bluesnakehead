@@ -247,50 +247,14 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1/1 | P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet5 | routed | - | 172.17.2.25/31 | default | 9214 | false | - | - |
-| Ethernet1/2 | P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet5 | routed | - | 172.17.2.27/31 | default | 9214 | false | - | - |
-| Ethernet1/3 | P2P_LINK_TO_DC1-POD2-SPINE3_Ethernet8 | routed | - | 172.17.2.29/31 | default | 9214 | false | - | - |
-| Ethernet1/4 | P2P_LINK_TO_DC1-POD2-SPINE4_Ethernet8 | routed | - | 172.17.2.31/31 | default | 9214 | false | - | - |
+| Ethernet29/1 | P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet5 | routed | - | 172.17.2.25/31 | default | 9214 | false | - | - |
+| Ethernet30/1 | P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet5 | routed | - | 172.17.2.27/31 | default | 9214 | false | - | - |
+| Ethernet31/1 | P2P_LINK_TO_DC1-POD2-SPINE3_Ethernet8 | routed | - | 172.17.2.29/31 | default | 9214 | false | - | - |
+| Ethernet32/1 | P2P_LINK_TO_DC1-POD2-SPINE4_Ethernet8 | routed | - | 172.17.2.31/31 | default | 9214 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
-!
-interface Ethernet1/1
-   description P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet5
-   no shutdown
-   mtu 9214
-   no switchport
-   ip address 172.17.2.25/31
-   ptp enable
-   service-profile QOS-PROFILE
-!
-interface Ethernet1/2
-   description P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet5
-   no shutdown
-   mtu 9214
-   no switchport
-   ip address 172.17.2.27/31
-   ptp enable
-   service-profile QOS-PROFILE
-!
-interface Ethernet1/3
-   description P2P_LINK_TO_DC1-POD2-SPINE3_Ethernet8
-   no shutdown
-   mtu 9214
-   no switchport
-   ip address 172.17.2.29/31
-   ptp enable
-   service-profile QOS-PROFILE
-!
-interface Ethernet1/4
-   description P2P_LINK_TO_DC1-POD2-SPINE4_Ethernet8
-   no shutdown
-   mtu 9214
-   no switchport
-   ip address 172.17.2.31/31
-   ptp enable
-   service-profile QOS-PROFILE
 !
 interface Ethernet5
    description MLAG_PEER_DC1-POD2-LEAF7A_Ethernet5
@@ -301,6 +265,42 @@ interface Ethernet6
    description MLAG_PEER_DC1-POD2-LEAF7A_Ethernet6
    no shutdown
    channel-group 5 mode active
+!
+interface Ethernet29/1
+   description P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet5
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.2.25/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet30/1
+   description P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet5
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.2.27/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet31/1
+   description P2P_LINK_TO_DC1-POD2-SPINE3_Ethernet8
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.2.29/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet32/1
+   description P2P_LINK_TO_DC1-POD2-SPINE4_Ethernet8
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 172.17.2.31/31
+   ptp enable
+   service-profile QOS-PROFILE
 ```
 
 ## Port-Channel Interfaces

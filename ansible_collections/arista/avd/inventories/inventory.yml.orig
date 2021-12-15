@@ -2,7 +2,7 @@
 
 all:
   children:
-    AMS:
+    AVD:
       children:
         DC1:
           children:

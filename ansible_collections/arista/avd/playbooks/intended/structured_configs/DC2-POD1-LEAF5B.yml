@@ -45,7 +45,7 @@ router_bgp:
       description: DC1-POD1-SPINE1_Ethernet5
     172.17.32.26:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65001.100'
+      remote_as: '65001.102'
       description: DC1-POD1-SPINE2_Ethernet5
     172.17.32.28:
       peer_group: IPv4-UNDERLAY-PEERS
@@ -185,7 +185,7 @@ ethernet_interfaces:
     channel_group:
       id: 5
       mode: active
-  Ethernet1/1:
+  Ethernet29/1:
     peer: DC1-POD1-SPINE1
     peer_interface: Ethernet5
     peer_type: spine
@@ -197,7 +197,7 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.17.32.25/31
-  Ethernet1/2:
+  Ethernet30/1:
     peer: DC1-POD1-SPINE2
     peer_interface: Ethernet5
     peer_type: spine
@@ -209,7 +209,7 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.17.32.27/31
-  Ethernet1/3:
+  Ethernet31/1:
     peer: DC1-POD1-SPINE3
     peer_interface: Ethernet8
     peer_type: spine
@@ -221,7 +221,7 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.17.32.29/31
-  Ethernet1/4:
+  Ethernet32/1:
     peer: DC1-POD1-SPINE4
     peer_interface: Ethernet8
     peer_type: spine

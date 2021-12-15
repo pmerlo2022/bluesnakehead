@@ -2,11 +2,11 @@ default_node_type_keys:
   "l3ls-evpn":
     spine:
       type: spine
-      default_evpn_role: server
+      default_evpn_role: none
     l3leaf:
       type: l3leaf
       connected_endpoints: true
-      default_evpn_role: client
+      default_evpn_role: server
       mlag_support: true
       network_services:
         l2: true

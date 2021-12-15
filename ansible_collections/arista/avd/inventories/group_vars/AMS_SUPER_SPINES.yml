@@ -1,0 +1,31 @@
+---
+super_spine:
+  defaults:
+    platform: 7280R
+    bgp_as: 65100
+    loopback_ipv4_pool: 10.4.27.0/24
+    bgp_defaults:
+      - 'no bgp default ipv4-unicast'
+      - 'distance bgp 20 200 200'
+      - 'graceful-restart restart-time 300'
+      - 'graceful-restart'
+  nodes:
+    SUPER-SPINE1:
+      id: 1
+      mgmt_ip: 10.6.0.1/24
+      # evpn_role: none
+      # evpn_route_servers: []
+    SUPER-SPINE2:
+      id: 2
+      mgmt_ip: 10.6.0.2/24
+      # evpn_role: none
+      # evpn_route_servers: []
+    SUPER-SPINE3:
+      id: 3
+      mgmt_ip: 10.6.0.3/24
+    SUPER-SPINE4:
+      id: 4
+      mgmt_ip: 10.6.0.4/24
+    SUPER-SPINE5:
+      id: 5
+      mgmt_ip: 10.6.0.5/24

@@ -45,7 +45,7 @@ router_bgp:
       description: DC1-POD1-SPINE1_Ethernet4
     172.17.32.2:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65001.100'
+      remote_as: '65001.102'
       description: DC1-POD1-SPINE2_Ethernet5
     172.17.32.4:
       peer_group: IPv4-UNDERLAY-PEERS
@@ -167,8 +167,8 @@ vlan_interfaces:
     no_autostate: true
     mtu: 9214
 port_channel_interfaces:
-  Port-Channel5:
-    description: MLAG_PEER_DC2-POD1-LEAF1B_Po5
+  Port-Channel151:
+    description: MLAG_PEER_DC2-POD1-LEAF1B_Po151
     type: switched
     shutdown: false
     vlans: 2-4094
@@ -178,29 +178,27 @@ port_channel_interfaces:
     - LEAF_PEER_L3
     - MLAG
 ethernet_interfaces:
-  Ethernet5:
+  Ethernet15/1:
     peer: DC2-POD1-LEAF1B
-    peer_interface: Ethernet5
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC2-POD1-LEAF1B_Ethernet5
-    type: routed
-    shutdown: false
-    channel_group:
-      id: 5
-      mode: active
-    mtu: 9214
-    ip_address: 11.1.1.18/31
-  Ethernet6:
-    peer: DC2-POD1-LEAF1B
-    peer_interface: Ethernet6
+    peer_interface: Ethernet15/1
     peer_type: mlag_peer
-    description: MLAG_PEER_DC2-POD1-LEAF1B_Ethernet6
+    description: MLAG_PEER_DC2-POD1-LEAF1B_Ethernet15/1
     type: switched
     shutdown: false
     channel_group:
-      id: 5
+      id: 151
       mode: active
-  Ethernet1/1:
+  Ethernet16/1:
+    peer: DC2-POD1-LEAF1B
+    peer_interface: Ethernet16/1
+    peer_type: mlag_peer
+    description: MLAG_PEER_DC2-POD1-LEAF1B_Ethernet16/1
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 151
+      mode: active
+  Ethernet29/1:
     peer: DC1-POD1-SPINE1
     peer_interface: Ethernet4
     peer_type: spine
@@ -212,7 +210,7 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.17.32.1/31
-  Ethernet1/2:
+  Ethernet30/1:
     peer: DC1-POD1-SPINE2
     peer_interface: Ethernet5
     peer_type: spine
@@ -224,7 +222,7 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.17.32.3/31
-  Ethernet1/3:
+  Ethernet31/1:
     peer: DC1-POD1-SPINE3
     peer_interface: Ethernet6
     peer_type: spine
@@ -236,7 +234,7 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.17.32.5/31
-  Ethernet1/4:
+  Ethernet32/1:
     peer: DC1-POD1-SPINE4
     peer_interface: Ethernet7
     peer_type: spine
@@ -248,6 +246,15 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.17.32.7/31
+  Ethernet5:
+    peer: DC2-POD1-LEAF1B
+    peer_interface: Ethernet5
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC2-POD1-LEAF1B_Ethernet5
+    type: routed
+    shutdown: false
+    mtu: 9214
+    ip_address: 11.1.1.18/31
 mlag_configuration:
   domain_id: RACK1_MLAG
   local_interface: Vlan4094
@@ -256,7 +263,7 @@ mlag_configuration:
     peer_ip: 192.168.1.8
     vrf: mgmt
   dual_primary_detection_delay: 5
-  peer_link: Port-Channel5
+  peer_link: Port-Channel151
   reload_delay_mlag: 300
   reload_delay_non_mlag: 330
 route_maps:

@@ -4,31 +4,29 @@ all:
   children:
     AMS:
       children:
-        DC1:
-          children:
-            DC1_SUPER_SPINES:
-              hosts:
-                DC1-SUPER-SPINE1:
-                  type: super-spine
-                  ansible_host: 10.6.0.1
-                  ansible_port: 22
-                DC1-SUPER-SPINE2:
-                  type: super-spine
-                  ansible_host: 10.6.0.2
-                  ansible_port: 22
-                  as: 65101
-                DC1-SUPER-SPINE3:
-                  type: super-spine
-                  ansible_host: 10.6.0.3
-                  ansible_port: 22
-                DC1-SUPER-SPINE4:
-                  type: super-spine
-                  ansible_host: 10.6.0.4
-                  ansible_port: 22
-                DC1-SUPER-SPINE5:
-                  type: super-spine
-                  ansible_host: 10.6.0.5
-                  ansible_port: 22
+        AMS_SUPER_SPINES:
+          hosts:
+            SUPER-SPINE1:
+              type: super-spine
+              ansible_host: 10.6.0.1
+              ansible_port: 22
+            SUPER-SPINE2:
+              type: super-spine
+              ansible_host: 10.6.0.2
+              ansible_port: 22
+              as: 65101
+            SUPER-SPINE3:
+              type: super-spine
+              ansible_host: 10.6.0.3
+              ansible_port: 22
+            SUPER-SPINE4:
+              type: super-spine
+              ansible_host: 10.6.0.4
+              ansible_port: 22
+            SUPER-SPINE5:
+              type: super-spine
+              ansible_host: 10.6.0.5
+              ansible_port: 22
 # Commented out by csbowse 11/15/21
 #            DC1_ROUTE_SERVERS:
 #              hosts:
@@ -38,6 +36,8 @@ all:
 #                DC1-RS2:
 #                  type: overlay-controller
 #                  ansible_port: 8004
+        DC1:
+          children:
             DC1_POD1:
               children:
                 DC1_POD1_SPINES:
@@ -316,16 +316,16 @@ all:
                       ansible_port: 22
         DC2:
           children:
-            DC2_SUPER_SPINES:
-              hosts:
-                DC2-SUPER-SPINE1:
-                  type: super-spine
-                  ansible_host: 10.6.64.1
-                  ansible_port: 22
-                DC2-SUPER-SPINE2:
-                  type: super-spine
-                  ansible_host: 10.6.64.2
-                  ansible_port: 22
+#            DC2_SUPER_SPINES:
+#              hosts:
+#                DC2-SUPER-SPINE1:
+#                  type: super-spine
+#                  ansible_host: 10.6.64.1
+#                  ansible_port: 22
+#                DC2-SUPER-SPINE2:
+#                  type: super-spine
+#                  ansible_host: 10.6.64.2
+#                  ansible_port: 22
 #            DC2_ROUTE_SERVERS:
 #              hosts:
 #                DC2-RS1:
