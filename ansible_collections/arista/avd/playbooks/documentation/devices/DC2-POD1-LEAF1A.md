@@ -4,7 +4,6 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [Domain-list](#domain-list)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
@@ -60,7 +59,7 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management0 | oob_management | oob | mgmt | 192.168.1.7/24 Test without management IP | 10.6.1.1 |
+| Management0 | oob_management | oob | mgmt | 10.6.32.1/24 | 10.6.1.1 |
 
 #### IPv6
 
@@ -76,20 +75,7 @@ interface Management0
    description oob_management
    no shutdown
    vrf mgmt
-   ip address 192.168.1.7/24 Test without management IP
-```
-
-## Domain-list
-
-### Domain-list:
- - structured-config.set.under.vrf.common-vrf
-
-### Domain-list Device Configuration
-
-```eos
-!
-ip domain-list structured-config.set.under.vrf.common-vrf
-!
+   ip address 10.6.32.1/24
 ```
 
 ## Management API HTTP
@@ -159,7 +145,7 @@ snmp-server location AMS DC2 DC2_POD1 DC2-POD1-LEAF1A
 
 | Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
-| RACK1_MLAG | Vlan4094 | 172.20.32.1 | Port-Channel151 |
+| RACK1_MLAG | Vlan4094 | 172.20.32.1 | Port-Channel5 |
 
 Dual primary detection is enabled. The detection delay is 5 seconds.
 
@@ -171,8 +157,8 @@ mlag configuration
    domain-id RACK1_MLAG
    local-interface Vlan4094
    peer-address 172.20.32.1
-   peer-address heartbeat 192.168.1.8 vrf mgmt
-   peer-link Port-Channel151
+   peer-address heartbeat 10.6.32.1 vrf mgmt
+   peer-link Port-Channel5
    dual-primary detection delay 5 action errdisable all-interfaces
    reload-delay mlag 300
    reload-delay non-mlag 330
@@ -240,8 +226,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet15/1 | MLAG_PEER_DC2-POD1-LEAF1B_Ethernet15/1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 151 |
-| Ethernet16/1 | MLAG_PEER_DC2-POD1-LEAF1B_Ethernet16/1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 151 |
+| Ethernet5 | MLAG_PEER_DC2-POD1-LEAF1B_Ethernet5 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet6 | MLAG_PEER_DC2-POD1-LEAF1B_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
 
 *Inherited from Port-Channel Interface
 
@@ -249,35 +235,35 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet5 | P2P_LINK_TO_DC2-POD1-LEAF1B_Ethernet5 | routed | - | 11.1.1.18/31 | default | 9214 | false | - | - |
-| Ethernet29/1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4 | routed | - | 172.17.32.1/31 | default | 9214 | false | - | - |
-| Ethernet30/1 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5 | routed | - | 172.17.32.3/31 | default | 9214 | false | - | - |
-| Ethernet31/1 | P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet6 | routed | - | 172.17.32.5/31 | default | 9214 | false | - | - |
-| Ethernet32/1 | P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet7 | routed | - | 172.17.32.7/31 | default | 9214 | false | - | - |
+| Ethernet28/1 | P2P_LINK_TO_DC2-POD1-LEAF1B_Ethernet28/1 | routed | - | 11.1.1.18/31 | default | 9214 | false | - | - |
+| Ethernet29/1 | P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet1/1 | routed | - | 172.17.32.1/31 | default | 9214 | false | - | - |
+| Ethernet30/1 | P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet1/1 | routed | - | 172.17.32.3/31 | default | 9214 | false | - | - |
+| Ethernet31/1 | P2P_LINK_TO_DC2-POD1-SPINE3_Ethernet1/1 | routed | - | 172.17.32.5/31 | default | 9214 | false | - | - |
+| Ethernet32/1 | P2P_LINK_TO_DC2-POD1-SPINE4_Ethernet1/1 | routed | - | 172.17.32.7/31 | default | 9214 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet5
-   description P2P_LINK_TO_DC2-POD1-LEAF1B_Ethernet5
+   description MLAG_PEER_DC2-POD1-LEAF1B_Ethernet5
+   no shutdown
+   channel-group 5 mode active
+!
+interface Ethernet6
+   description MLAG_PEER_DC2-POD1-LEAF1B_Ethernet6
+   no shutdown
+   channel-group 5 mode active
+!
+interface Ethernet28/1
+   description P2P_LINK_TO_DC2-POD1-LEAF1B_Ethernet28/1
    no shutdown
    mtu 9214
    no switchport
    ip address 11.1.1.18/31
 !
-interface Ethernet15/1
-   description MLAG_PEER_DC2-POD1-LEAF1B_Ethernet15/1
-   no shutdown
-   channel-group 151 mode active
-!
-interface Ethernet16/1
-   description MLAG_PEER_DC2-POD1-LEAF1B_Ethernet16/1
-   no shutdown
-   channel-group 151 mode active
-!
 interface Ethernet29/1
-   description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4
+   description P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet1/1
    no shutdown
    mtu 9214
    no switchport
@@ -286,7 +272,7 @@ interface Ethernet29/1
    service-profile QOS-PROFILE
 !
 interface Ethernet30/1
-   description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5
+   description P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet1/1
    no shutdown
    mtu 9214
    no switchport
@@ -295,7 +281,7 @@ interface Ethernet30/1
    service-profile QOS-PROFILE
 !
 interface Ethernet31/1
-   description P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet6
+   description P2P_LINK_TO_DC2-POD1-SPINE3_Ethernet1/1
    no shutdown
    mtu 9214
    no switchport
@@ -304,7 +290,7 @@ interface Ethernet31/1
    service-profile QOS-PROFILE
 !
 interface Ethernet32/1
-   description P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet7
+   description P2P_LINK_TO_DC2-POD1-SPINE4_Ethernet1/1
    no shutdown
    mtu 9214
    no switchport
@@ -321,14 +307,14 @@ interface Ethernet32/1
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel151 | MLAG_PEER_DC2-POD1-LEAF1B_Po151 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel5 | MLAG_PEER_DC2-POD1-LEAF1B_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
-interface Port-Channel151
-   description MLAG_PEER_DC2-POD1-LEAF1B_Po151
+interface Port-Channel5
+   description MLAG_PEER_DC2-POD1-LEAF1B_Po5
    no shutdown
    switchport
    switchport trunk allowed vlan 2-4094
@@ -409,12 +395,6 @@ interface Vlan4094
 
 #### EVPN MLAG Shared Router MAC : mlag-system-id
 
-#### VRF to VNI Mappings
-
-| VLAN | VNI |
-| ---- | --- |
-| Common_VRF | 1025 |
-
 ### VXLAN Interface Device Configuration
 
 ```eos
@@ -424,7 +404,6 @@ interface Vxlan1
    vxlan source-interface Loopback1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
-   vxlan vrf Common_VRF vni 1025
 ```
 
 # Routing
@@ -456,15 +435,13 @@ ip virtual-router mac-address 00:1c:73:00:dc:01
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| Common_VRF | true |
-| mgmt | false |
+| default | true|| mgmt | false |
 
 ### IP Routing Device Configuration
 
 ```eos
 !
 ip routing
-ip routing vrf Common_VRF
 no ip routing vrf mgmt
 ```
 ## IPv6 Routing
@@ -473,8 +450,7 @@ no ip routing vrf mgmt
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false || Common_VRF | false |
-| mgmt | false |
+| default | false || mgmt | false |
 
 
 ## Static Routes
@@ -506,7 +482,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | distance bgp 20 200 200 |
 | graceful-restart restart-time 300 |
 | graceful-restart |
-| maximum-paths 4 ecmp 4 |
+| maximum-paths 16 ecmp 16 |
 
 ### Router BGP Peer Groups
 
@@ -546,13 +522,37 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | -------- | --------- | --- | -------------- | -------------- |
 | 10.4.32.3 | 65211.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 10.4.32.4 | 65211.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.5 | 65211.1400 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.6 | 65211.1400 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.4.32.5 | 65112.200 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.4.32.6 | 65112.200 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.4.32.7 | 65112.300 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.4.32.8 | 65112.300 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.4.32.9 | 65112.400 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.4.32.10 | 65112.400 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.4.32.11 | 65112.500 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.4.32.12 | 65112.500 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.4.32.13 | 65112.600 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.4.32.14 | 65112.600 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.4.32.15 | 65112.700 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.4.32.16 | 65112.700 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.4.32.17 | 65112.800 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.4.32.18 | 65112.800 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.4.32.19 | 65112.900 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.4.32.20 | 65112.900 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.4.32.21 | 65211.1000 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.4.32.22 | 65211.1000 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.4.32.23 | 65112.1100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.4.32.24 | 65112.1100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.4.32.25 | 65112.1200 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.4.32.26 | 65112.1200 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.4.32.27 | 65112.1300 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.4.32.28 | 65112.1300 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.4.32.29 | 65112.1400 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.4.32.30 | 65112.1400 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 11.1.1.19 | 65102 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.17.32.0 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.17.32.2 | 65001.102 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.17.32.4 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.17.32.6 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.32.0 | 65002.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.32.2 | 65002.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.32.4 | 65002.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.32.6 | 65002.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.20.32.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
 
 ### Router BGP EVPN Address Family
@@ -560,10 +560,6 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 #### Router BGP EVPN MAC-VRFs
 
 #### Router BGP EVPN VRFs
-
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| Common_VRF | 10.4.32.3:1025 | connected |
 
 ### Router BGP Device Configuration
 
@@ -575,7 +571,7 @@ router bgp 65211.100
    distance bgp 20 200 200
    graceful-restart restart-time 300
    graceful-restart
-   maximum-paths 4 ecmp 4
+   maximum-paths 16 ecmp 16
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
@@ -599,27 +595,99 @@ router bgp 65211.100
    neighbor 10.4.32.4 remote-as 65211.100
    neighbor 10.4.32.4 description DC2-POD1-LEAF1B
    neighbor 10.4.32.5 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.5 remote-as 65211.1400
-   neighbor 10.4.32.5 description DC2-POD1-LEAF14A
+   neighbor 10.4.32.5 remote-as 65112.200
+   neighbor 10.4.32.5 description DC2-POD1-LEAF2A
    neighbor 10.4.32.6 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.6 remote-as 65211.1400
-   neighbor 10.4.32.6 description DC2-POD1-LEAF14B
+   neighbor 10.4.32.6 remote-as 65112.200
+   neighbor 10.4.32.6 description DC2-POD1-LEAF2B
+   neighbor 10.4.32.7 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.4.32.7 remote-as 65112.300
+   neighbor 10.4.32.7 description DC2-POD1-LEAF3A
+   neighbor 10.4.32.8 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.4.32.8 remote-as 65112.300
+   neighbor 10.4.32.8 description DC2-POD1-LEAF3B
+   neighbor 10.4.32.9 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.4.32.9 remote-as 65112.400
+   neighbor 10.4.32.9 description DC2-POD1-LEAF4A
+   neighbor 10.4.32.10 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.4.32.10 remote-as 65112.400
+   neighbor 10.4.32.10 description DC2-POD1-LEAF4B
+   neighbor 10.4.32.11 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.4.32.11 remote-as 65112.500
+   neighbor 10.4.32.11 description DC2-POD1-LEAF5A
+   neighbor 10.4.32.12 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.4.32.12 remote-as 65112.500
+   neighbor 10.4.32.12 description DC2-POD1-LEAF5B
+   neighbor 10.4.32.13 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.4.32.13 remote-as 65112.600
+   neighbor 10.4.32.13 description DC2-POD1-LEAF6A
+   neighbor 10.4.32.14 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.4.32.14 remote-as 65112.600
+   neighbor 10.4.32.14 description DC2-POD1-LEAF6B
+   neighbor 10.4.32.15 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.4.32.15 remote-as 65112.700
+   neighbor 10.4.32.15 description DC2-POD1-LEAF7A
+   neighbor 10.4.32.16 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.4.32.16 remote-as 65112.700
+   neighbor 10.4.32.16 description DC2-POD1-LEAF7B
+   neighbor 10.4.32.17 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.4.32.17 remote-as 65112.800
+   neighbor 10.4.32.17 description DC2-POD1-LEAF8A
+   neighbor 10.4.32.18 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.4.32.18 remote-as 65112.800
+   neighbor 10.4.32.18 description DC2-POD1-LEAF8B
+   neighbor 10.4.32.19 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.4.32.19 remote-as 65112.900
+   neighbor 10.4.32.19 description DC2-POD1-LEAF9A
+   neighbor 10.4.32.20 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.4.32.20 remote-as 65112.900
+   neighbor 10.4.32.20 description DC2-POD1-LEAF9B
+   neighbor 10.4.32.21 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.4.32.21 remote-as 65211.1000
+   neighbor 10.4.32.21 description DC2-POD1-LEAF10A
+   neighbor 10.4.32.22 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.4.32.22 remote-as 65211.1000
+   neighbor 10.4.32.22 description DC2-POD1-LEAF10B
+   neighbor 10.4.32.23 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.4.32.23 remote-as 65112.1100
+   neighbor 10.4.32.23 description DC2-POD1-LEAF11A
+   neighbor 10.4.32.24 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.4.32.24 remote-as 65112.1100
+   neighbor 10.4.32.24 description DC2-POD1-LEAF11B
+   neighbor 10.4.32.25 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.4.32.25 remote-as 65112.1200
+   neighbor 10.4.32.25 description DC2-POD1-LEAF12A
+   neighbor 10.4.32.26 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.4.32.26 remote-as 65112.1200
+   neighbor 10.4.32.26 description DC2-POD1-LEAF12B
+   neighbor 10.4.32.27 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.4.32.27 remote-as 65112.1300
+   neighbor 10.4.32.27 description DC2-POD1-LEAF13A
+   neighbor 10.4.32.28 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.4.32.28 remote-as 65112.1300
+   neighbor 10.4.32.28 description DC2-POD1-LEAF13B
+   neighbor 10.4.32.29 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.4.32.29 remote-as 65112.1400
+   neighbor 10.4.32.29 description DC2-POD1-LEAF14A
+   neighbor 10.4.32.30 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.4.32.30 remote-as 65112.1400
+   neighbor 10.4.32.30 description DC2-POD1-LEAF14B
    neighbor 11.1.1.19 peer group IPv4-UNDERLAY-PEERS
    neighbor 11.1.1.19 remote-as 65102
    neighbor 11.1.1.19 local-as 65101 no-prepend replace-as
    neighbor 11.1.1.19 description DC2-POD1-LEAF1B
    neighbor 172.17.32.0 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.32.0 remote-as 65001.100
-   neighbor 172.17.32.0 description DC1-POD1-SPINE1_Ethernet4
+   neighbor 172.17.32.0 remote-as 65002.100
+   neighbor 172.17.32.0 description DC2-POD1-SPINE1_Ethernet1/1
    neighbor 172.17.32.2 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.32.2 remote-as 65001.102
-   neighbor 172.17.32.2 description DC1-POD1-SPINE2_Ethernet5
+   neighbor 172.17.32.2 remote-as 65002.100
+   neighbor 172.17.32.2 description DC2-POD1-SPINE2_Ethernet1/1
    neighbor 172.17.32.4 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.32.4 remote-as 65001.100
-   neighbor 172.17.32.4 description DC1-POD1-SPINE3_Ethernet6
+   neighbor 172.17.32.4 remote-as 65002.100
+   neighbor 172.17.32.4 description DC2-POD1-SPINE3_Ethernet1/1
    neighbor 172.17.32.6 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.32.6 remote-as 65001.100
-   neighbor 172.17.32.6 description DC1-POD1-SPINE4_Ethernet7
+   neighbor 172.17.32.6 remote-as 65002.100
+   neighbor 172.17.32.6 description DC2-POD1-SPINE4_Ethernet1/1
    neighbor 172.20.32.1 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 172.20.32.1 description DC2-POD1-LEAF1B
    redistribute connected route-map RM-CONN-2-BGP
@@ -635,18 +703,6 @@ router bgp 65211.100
       no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
-   !
-   vrf Common_VRF
-      rd 10.4.32.3:1025
-      route-target import evpn 1025:1025
-      route-target export evpn 1025:1025
-      router-id 10.4.32.3
-      redistribute connected
-      !
-      comment
-      Comment created from raw_eos_cli under BGP for VRF Common_VRF
-      EOF
-
 ```
 
 # BFD
@@ -739,14 +795,11 @@ route-map RM-MLAG-PEER-IN permit 10
 
 | VRF Name | IP Routing |
 | -------- | ---------- |
-| Common_VRF | enabled |
 | mgmt | disabled |
 
 ## VRF Instances Device Configuration
 
 ```eos
-!
-vrf instance Common_VRF
 !
 vrf instance mgmt
 ```
@@ -762,8 +815,5 @@ interface Loopback1010
 
 interface Loopback1111
   description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
-
-interface Loopback1000
-  description Loopback created from raw_eos_cli under VRF Common_VRF
 
 ```

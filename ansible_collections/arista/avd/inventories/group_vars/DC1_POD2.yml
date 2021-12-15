@@ -23,23 +23,23 @@ spine:
   nodes:
     DC1-POD2-SPINE1:
       id: 1
-      mgmt_ip: 192.168.1.13/24
+      mgmt_ip: "{{ ansible_host }}/24"
       evpn_role: none
       uplink_switch_interfaces: ['Ethernet5/1', 'Ethernet5/1', 'Ethernet5/1', 'Ethernet5/1']      
     DC1-POD2-SPINE2:
       id: 2
       evpn_role: none
-      mgmt_ip: 192.168.1.14/24
+      mgmt_ip: "{{ ansible_host }}/24"
       uplink_switch_interfaces: ['Ethernet6/1', 'Ethernet6/1', 'Ethernet6/1', 'Ethernet6/1']      
     DC1-POD2-SPINE3:
       id: 3
       evpn_role: none
-      mgmt_ip: 192.168.1.15/24
+      mgmt_ip: "{{ ansible_host }}/24"
       uplink_switch_interfaces: ['Ethernet7/1', 'Ethernet7/1', 'Ethernet7/1', 'Ethernet7/1']      
     DC1-POD2-SPINE4:
       id: 4
       evpn_role: none
-      mgmt_ip: 192.168.1.16/24
+      mgmt_ip: "{{ ansible_host }}/24"
       uplink_switch_interfaces: ['Ethernet8/1', 'Ethernet8/1', 'Ethernet8/1', 'Ethernet8/1']      
 
 # In DC1 we define all variables on specific node / node_group
@@ -68,219 +68,215 @@ l3leaf:
     filter:
       always_include_vrfs_in_tenants: [ 'all' ] #Testing that we configure all VRFs even with no VLANs.
       tags: []
-    mlag: false
+    mlag: true
+    mlag_interfaces: [ Ethernet15/1, Ethernet16/1 ]        
     mlag_peer_l3_ipv4_pool: 172.19.2.0/24
     mlag_peer_ipv4_pool: 172.20.2.0/24
   node_groups:
     RACK1_MLAG:
+      platform: vEOS-LAB
       bgp_as: "65112.100"
       mlag: true
-      mlag_interfaces: [ Ethernet5, Ethernet6 ]
       mlag_dual_primary_detection: true
       mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
+      evpn_role: server
+      filter:
+        tenants: []
+        tags: []
+        always_include_vrfs_in_tenants: [ 'all' ] #Testing that we respect the empty tenants list, so no VRFs will be configured.
       nodes:
         DC1-POD2-LEAF1A:
           id: 1
-          mgmt_ip: 192.168.1.7/24 Test without management IP
-          # Doesn't seem to be picking up defaults. Wait... this isn't a default. uplink_switch, uplink_interfaces.. but what is this?L2?
-          uplink_switch_interfaces: [ Ethernet4, Ethernet5, Ethernet6, Ethernet7 ]
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet1/1, Ethernet1/1, Ethernet1/1, Ethernet1/1 ]
         DC1-POD2-LEAF1B:
           id: 2
-          mgmt_ip: 192.168.1.8/24
-          uplink_switch_interfaces: [ Ethernet4, Ethernet5, Ethernet6, Ethernet7 ]
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet2/1, Ethernet2/1, Ethernet2/1, Ethernet2/1 ]
     RACK2_MLAG:
+      platform: vEOS-LAB
       bgp_as: "65112.200"
+      evpn_role: server
       mlag: true
-      mlag_interfaces: [ Ethernet5, Ethernet6 ]
       mlag_dual_primary_detection: true
       mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
       nodes:
         DC1-POD2-LEAF2A:
+          structured_config:
+            domain_list:
+              - structured-config.set.on.node
           id: 3
-          # mgmt_ip: 192.168.1.8/16 Test without management IP
-          uplink_switch_interfaces: [ Ethernet4, Ethernet5, Ethernet6, Ethernet7 ]
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet3/1, Ethernet3/1, Ethernet3/1, Ethernet3/1 ]
         DC1-POD2-LEAF2B:
           id: 4
-          mgmt_ip: 192.168.1.9/16
-          uplink_switch_interfaces: [ Ethernet4, Ethernet5, Ethernet6, Ethernet7 ]
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet4/1, Ethernet4/1, Ethernet4/1, Ethernet4/1 ]
     RACK3_MLAG:
+      platform: vEOS-LAB
       bgp_as: "65112.300"
-      mlag: true
-      mlag_interfaces: [ Ethernet5, Ethernet6 ]
       mlag_dual_primary_detection: true
       mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
       nodes:
         DC1-POD2-LEAF3A:
-          id: 3
-          # mgmt_ip: 192.168.1.8/16 Test without management IP
-          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+          id: 5
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet5/1, Ethernet5/1, Ethernet5/1, Ethernet5/1 ]
         DC1-POD2-LEAF3B:
-          id: 4
-          mgmt_ip: 192.168.1.11/16
-          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]
+          id: 6
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet6/1, Ethernet6/1, Ethernet6/1, Ethernet6/1 ]
     RACK4_MLAG:
+      platform: vEOS-LAB
       bgp_as: "65112.400"
-      mlag: true
-      mlag_interfaces: [ Ethernet5, Ethernet6 ]
       mlag_dual_primary_detection: true
       mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
       nodes:
         DC1-POD2-LEAF4A:
-          id: 3
-          # mgmt_ip: 192.168.1.8/16 Test without management IP
-          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+          id: 7
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet7/1, Ethernet7/1, Ethernet7/1, Ethernet7/1 ]
         DC1-POD2-LEAF4B:
-          id: 4
-          mgmt_ip: 192.168.1.11/16
-          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]
+          id: 8
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet8/1, Ethernet8/1, Ethernet8/1, Ethernet8/1 ]
     RACK5_MLAG:
+      platform: vEOS-LAB
       bgp_as: "65112.500"
-      mlag: true
-      mlag_interfaces: [ Ethernet5, Ethernet6 ]
       mlag_dual_primary_detection: true
       mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
       nodes:
         DC1-POD2-LEAF5A:
-          id: 3
-          # mgmt_ip: 192.168.1.8/16 Test without management IP
-          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+          id: 9
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet9/1, Ethernet9/1, Ethernet9/1, Ethernet9/1 ]
         DC1-POD2-LEAF5B:
-          id: 4
-          mgmt_ip: 192.168.1.11/16
-          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]
+          id: 10
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet10/1, Ethernet10/1, Ethernet10/1, Ethernet10/1 ]
     RACK6_MLAG:
       bgp_as: "65112.600"
       mlag: true
-      mlag_interfaces: [ Ethernet5, Ethernet6 ]
       mlag_dual_primary_detection: true
       mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
       nodes:
         DC1-POD2-LEAF6A:
-          id: 3
-          # mgmt_ip: 192.168.1.8/16 Test without management IP
-          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+          id: 11
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet11/1, Ethernet11/1, Ethernet11/1, Ethernet11/1 ]
         DC1-POD2-LEAF6B:
-          id: 4
-          mgmt_ip: 192.168.1.11/16
-          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]
+          id: 12
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet12/1, Ethernet12/1, Ethernet12/1, Ethernet12/1 ]
     RACK7_MLAG:
       bgp_as: "65112.700"
       mlag: true
-      mlag_interfaces: [ Ethernet5, Ethernet6 ]
       mlag_dual_primary_detection: true
       mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
       nodes:
         DC1-POD2-LEAF7A:
-          id: 3
-          # mgmt_ip: 192.168.1.8/16 Test without management IP
-          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+          id: 13
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet13/1, Ethernet13/1, Ethernet13/1, Ethernet13/1 ]
         DC1-POD2-LEAF7B:
-          id: 4
-          mgmt_ip: 192.168.1.11/16
-          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]
+          id: 14
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet14/1, Ethernet14/1, Ethernet14/1, Ethernet14/1 ]
     RACK8_MLAG:
       bgp_as: "65112.800"
       mlag: true
-      mlag_interfaces: [ Ethernet5, Ethernet6 ]
       mlag_dual_primary_detection: true
       mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
       nodes:
         DC1-POD2-LEAF8A:
-          id: 3
-          # mgmt_ip: 192.168.1.8/16 Test without management IP
-          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+          id: 15
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet15/1, Ethernet15/1, Ethernet15/1, Ethernet15/1 ]
         DC1-POD2-LEAF8B:
-          id: 4
-          mgmt_ip: 192.168.1.11/16
-          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ] 
+          id: 16
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet16/1, Ethernet16/1, Ethernet16/1, Ethernet16/1 ]
     RACK9_MLAG:
       bgp_as: "65112.900"
       mlag: true
-      mlag_interfaces: [ Ethernet5, Ethernet6 ]
       mlag_dual_primary_detection: true
       mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
       nodes:
         DC1-POD2-LEAF9A:
-          id: 3
-          # mgmt_ip: 192.168.1.8/16 Test without management IP
-          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+          id: 17
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet17/1, Ethernet17/1, Ethernet17/1, Ethernet17/1 ]
         DC1-POD2-LEAF9B:
-          id: 4
-          mgmt_ip: 192.168.1.11/16
-          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ] 
+          id: 18
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet18/1, Ethernet18/1, Ethernet18/1, Ethernet18/1 ]
     RACK10_MLAG:
       bgp_as: "65112.1000"
       mlag: true
-      mlag_interfaces: [ Ethernet5, Ethernet6 ]
       mlag_dual_primary_detection: true
       mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
       nodes:
         DC1-POD2-LEAF10A:
-          id: 3
-          # mgmt_ip: 192.168.1.8/16 Test without management IP
-          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+          id: 19
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet19/1, Ethernet19/1, Ethernet19/1, Ethernet19/1 ]
         DC1-POD2-LEAF10B:
-          id: 4
-          mgmt_ip: 192.168.1.11/16
-          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ] 
+          id: 20
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet20/1, Ethernet20/1, Ethernet20/1, Ethernet20/1 ]
     RACK11_MLAG:
       bgp_as: "65112.1100"
       mlag: true
-      mlag_interfaces: [ Ethernet5, Ethernet6 ]
       mlag_dual_primary_detection: true
       mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
       nodes:
         DC1-POD2-LEAF11A:
-          id: 3
-          # mgmt_ip: 192.168.1.8/16 Test without management IP
-          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+          id: 21
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet21/1, Ethernet21/1, Ethernet21/1, Ethernet21/1 ]
         DC1-POD2-LEAF11B:
-          id: 4
-          mgmt_ip: 192.168.1.11/16
-          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]                                                   
+          id: 22
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet22/1, Ethernet22/1, Ethernet22/1, Ethernet22/1 ]
     RACK12_MLAG:
       bgp_as: "65112.1200"
       mlag: true
-      mlag_interfaces: [ Ethernet5, Ethernet6 ]
       mlag_dual_primary_detection: true
       mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
       nodes:
         DC1-POD2-LEAF12A:
-          id: 3
-          # mgmt_ip: 192.168.1.8/16 Test without management IP
-          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+          id: 23
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet23/1, Ethernet23/1, Ethernet23/1, Ethernet23/1 ]
         DC1-POD2-LEAF12B:
-          id: 4
-          mgmt_ip: 192.168.1.11/16
-          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]                                                   
+          id: 24
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet24/1, Ethernet24/1, Ethernet24/1, Ethernet24/1 ]
     RACK13_MLAG:
       bgp_as: "65112.1300"
       mlag: true
-      mlag_interfaces: [ Ethernet5, Ethernet6 ]
       mlag_dual_primary_detection: true
       mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
       nodes:
         DC1-POD2-LEAF13A:
-          id: 3
-          # mgmt_ip: 192.168.1.8/16 Test without management IP
-          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+          id: 25
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet25/1, Ethernet25/1, Ethernet25/1, Ethernet25/1 ]
         DC1-POD2-LEAF13B:
-          id: 4
-          mgmt_ip: 192.168.1.11/16
-          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]                                                   
+          id: 26
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet26/1, Ethernet26/1, Ethernet26/1, Ethernet26/1 ]
     RACK14_MLAG:
       bgp_as: "65112.1400"
       mlag: true
-      mlag_interfaces: [ Ethernet5, Ethernet6 ]
       mlag_dual_primary_detection: true
       mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
       nodes:
         DC1-POD2-LEAF14A:
-          id: 3
-          # mgmt_ip: 192.168.1.8/16 Test without management IP
-          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
+          id: 27
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet27/1, Ethernet27/1, Ethernet27/1, Ethernet27/1 ]
         DC1-POD2-LEAF14B:
-          id: 4
-          mgmt_ip: 192.168.1.11/16
-          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]                                                   
-
+          id: 28
+          mgmt_ip: "{{ ansible_host }}/24"
+          uplink_switch_interfaces: [ Ethernet28/1, Ethernet28/1, Ethernet28/1, Ethernet28/1 ]

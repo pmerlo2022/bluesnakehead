@@ -6,7 +6,7 @@ router_bgp:
   - distance bgp 20 200 200
   - graceful-restart restart-time 300
   - graceful-restart
-  - maximum-paths 4 ecmp 4
+  - maximum-paths 16 ecmp 16
   peer_groups:
     MLAG-IPv4-UNDERLAY-PEER:
       type: ipv4
@@ -41,20 +41,20 @@ router_bgp:
       description: DC2-POD1-LEAF1B
     172.17.32.0:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65001.100'
-      description: DC1-POD1-SPINE1_Ethernet4
+      remote_as: '65002.100'
+      description: DC2-POD1-SPINE1_Ethernet1/1
     172.17.32.2:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65001.102'
-      description: DC1-POD1-SPINE2_Ethernet5
+      remote_as: '65002.100'
+      description: DC2-POD1-SPINE2_Ethernet1/1
     172.17.32.4:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65001.100'
-      description: DC1-POD1-SPINE3_Ethernet6
+      remote_as: '65002.100'
+      description: DC2-POD1-SPINE3_Ethernet1/1
     172.17.32.6:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65001.100'
-      description: DC1-POD1-SPINE4_Ethernet7
+      remote_as: '65002.100'
+      description: DC2-POD1-SPINE4_Ethernet1/1
     10.4.32.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC2-POD1-LEAF1A
@@ -65,12 +65,108 @@ router_bgp:
       remote_as: '65211.100'
     10.4.32.5:
       peer_group: EVPN-OVERLAY-PEERS
-      description: DC2-POD1-LEAF14A
-      remote_as: '65211.1400'
+      description: DC2-POD1-LEAF2A
+      remote_as: '65112.200'
     10.4.32.6:
       peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF2B
+      remote_as: '65112.200'
+    10.4.32.7:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF3A
+      remote_as: '65112.300'
+    10.4.32.8:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF3B
+      remote_as: '65112.300'
+    10.4.32.9:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF4A
+      remote_as: '65112.400'
+    10.4.32.10:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF4B
+      remote_as: '65112.400'
+    10.4.32.11:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF5A
+      remote_as: '65112.500'
+    10.4.32.12:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF5B
+      remote_as: '65112.500'
+    10.4.32.13:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF6A
+      remote_as: '65112.600'
+    10.4.32.14:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF6B
+      remote_as: '65112.600'
+    10.4.32.15:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF7A
+      remote_as: '65112.700'
+    10.4.32.16:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF7B
+      remote_as: '65112.700'
+    10.4.32.17:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF8A
+      remote_as: '65112.800'
+    10.4.32.18:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF8B
+      remote_as: '65112.800'
+    10.4.32.19:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF9A
+      remote_as: '65112.900'
+    10.4.32.20:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF9B
+      remote_as: '65112.900'
+    10.4.32.21:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF10A
+      remote_as: '65211.1000'
+    10.4.32.22:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF10B
+      remote_as: '65211.1000'
+    10.4.32.23:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF11A
+      remote_as: '65112.1100'
+    10.4.32.24:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF11B
+      remote_as: '65112.1100'
+    10.4.32.25:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF12A
+      remote_as: '65112.1200'
+    10.4.32.26:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF12B
+      remote_as: '65112.1200'
+    10.4.32.27:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF13A
+      remote_as: '65112.1300'
+    10.4.32.28:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF13B
+      remote_as: '65112.1300'
+    10.4.32.29:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF14A
+      remote_as: '65112.1400'
+    10.4.32.30:
+      peer_group: EVPN-OVERLAY-PEERS
       description: DC2-POD1-LEAF14B
-      remote_as: '65211.1400'
+      remote_as: '65112.1400'
     11.1.1.19:
       remote_as: '65102'
       description: DC2-POD1-LEAF1B
@@ -89,26 +185,6 @@ router_bgp:
         activate: true
         default_route_target:
           only: true
-  vrfs:
-    Common_VRF:
-      router_id: 10.4.32.3
-      rd: 10.4.32.3:1025
-      route_targets:
-        import:
-          evpn:
-          - 1025:1025
-        export:
-          evpn:
-          - 1025:1025
-      redistribute_routes:
-      - connected
-      eos_cli: 'comment
-
-        Comment created from raw_eos_cli under BGP for VRF Common_VRF
-
-        EOF
-
-        '
 static_routes:
 - vrf: mgmt
   destination_address_prefix: 0.0.0.0/0
@@ -134,15 +210,12 @@ local_users:
 vrfs:
   mgmt:
     ip_routing: false
-  Common_VRF:
-    tenant: Tenant_A
-    ip_routing: true
 management_interfaces:
   Management0:
     description: oob_management
     shutdown: false
     vrf: mgmt
-    ip_address: 192.168.1.7/24 Test without management IP
+    ip_address: 10.6.32.1/24
     gateway: 10.6.1.1
     type: oob
 management_api_http:
@@ -151,8 +224,7 @@ management_api_http:
   enable_https: true
 eos_cli: "interface Loopback1010\n  description Loopback created from raw_eos_cli
   under l3leaf defaults in DC2 POD1\n\ninterface Loopback1111\n  description Loopback
-  created from raw_eos_cli under platform_settings vEOS-LAB\n\ninterface Loopback1000\n
-  \ description Loopback created from raw_eos_cli under VRF Common_VRF\n"
+  created from raw_eos_cli under platform_settings vEOS-LAB\n"
 vlans:
   4094:
     tenant: system
@@ -167,8 +239,8 @@ vlan_interfaces:
     no_autostate: true
     mtu: 9214
 port_channel_interfaces:
-  Port-Channel151:
-    description: MLAG_PEER_DC2-POD1-LEAF1B_Po151
+  Port-Channel5:
+    description: MLAG_PEER_DC2-POD1-LEAF1B_Po5
     type: switched
     shutdown: false
     vlans: 2-4094
@@ -178,31 +250,31 @@ port_channel_interfaces:
     - LEAF_PEER_L3
     - MLAG
 ethernet_interfaces:
-  Ethernet15/1:
+  Ethernet5:
     peer: DC2-POD1-LEAF1B
-    peer_interface: Ethernet15/1
+    peer_interface: Ethernet5
     peer_type: mlag_peer
-    description: MLAG_PEER_DC2-POD1-LEAF1B_Ethernet15/1
+    description: MLAG_PEER_DC2-POD1-LEAF1B_Ethernet5
     type: switched
     shutdown: false
     channel_group:
-      id: 151
+      id: 5
       mode: active
-  Ethernet16/1:
+  Ethernet6:
     peer: DC2-POD1-LEAF1B
-    peer_interface: Ethernet16/1
+    peer_interface: Ethernet6
     peer_type: mlag_peer
-    description: MLAG_PEER_DC2-POD1-LEAF1B_Ethernet16/1
+    description: MLAG_PEER_DC2-POD1-LEAF1B_Ethernet6
     type: switched
     shutdown: false
     channel_group:
-      id: 151
+      id: 5
       mode: active
   Ethernet29/1:
-    peer: DC1-POD1-SPINE1
-    peer_interface: Ethernet4
+    peer: DC2-POD1-SPINE1
+    peer_interface: Ethernet1/1
     peer_type: spine
-    description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4
+    description: P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet1/1
     mtu: 9214
     service_profile: QOS-PROFILE
     ptp:
@@ -211,10 +283,10 @@ ethernet_interfaces:
     shutdown: false
     ip_address: 172.17.32.1/31
   Ethernet30/1:
-    peer: DC1-POD1-SPINE2
-    peer_interface: Ethernet5
+    peer: DC2-POD1-SPINE2
+    peer_interface: Ethernet1/1
     peer_type: spine
-    description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5
+    description: P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet1/1
     mtu: 9214
     service_profile: QOS-PROFILE
     ptp:
@@ -223,10 +295,10 @@ ethernet_interfaces:
     shutdown: false
     ip_address: 172.17.32.3/31
   Ethernet31/1:
-    peer: DC1-POD1-SPINE3
-    peer_interface: Ethernet6
+    peer: DC2-POD1-SPINE3
+    peer_interface: Ethernet1/1
     peer_type: spine
-    description: P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet6
+    description: P2P_LINK_TO_DC2-POD1-SPINE3_Ethernet1/1
     mtu: 9214
     service_profile: QOS-PROFILE
     ptp:
@@ -235,10 +307,10 @@ ethernet_interfaces:
     shutdown: false
     ip_address: 172.17.32.5/31
   Ethernet32/1:
-    peer: DC1-POD1-SPINE4
-    peer_interface: Ethernet7
+    peer: DC2-POD1-SPINE4
+    peer_interface: Ethernet1/1
     peer_type: spine
-    description: P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet7
+    description: P2P_LINK_TO_DC2-POD1-SPINE4_Ethernet1/1
     mtu: 9214
     service_profile: QOS-PROFILE
     ptp:
@@ -246,11 +318,11 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.17.32.7/31
-  Ethernet5:
+  Ethernet28/1:
     peer: DC2-POD1-LEAF1B
-    peer_interface: Ethernet5
+    peer_interface: Ethernet28/1
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC2-POD1-LEAF1B_Ethernet5
+    description: P2P_LINK_TO_DC2-POD1-LEAF1B_Ethernet28/1
     type: routed
     shutdown: false
     mtu: 9214
@@ -260,10 +332,10 @@ mlag_configuration:
   local_interface: Vlan4094
   peer_address: 172.20.32.1
   peer_address_heartbeat:
-    peer_ip: 192.168.1.8
+    peer_ip: 10.6.32.1
     vrf: mgmt
   dual_primary_detection_delay: 5
-  peer_link: Port-Channel151
+  peer_link: Port-Channel5
   reload_delay_mlag: 300
   reload_delay_non_mlag: 330
 route_maps:
@@ -305,9 +377,6 @@ router_bfd:
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
-struct_cfg:
-  domain_list:
-  - structured-config.set.under.vrf.common-vrf
 vxlan_interface:
   Vxlan1:
     description: DC2-POD1-LEAF1A_VTEP
@@ -315,8 +384,3 @@ vxlan_interface:
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
       udp_port: 4789
-      vrfs:
-        Common_VRF:
-          vni: 1025
-domain_list:
-- structured-config.set.under.vrf.common-vrf

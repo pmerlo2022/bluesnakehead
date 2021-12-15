@@ -1,12 +1,12 @@
 router_bgp:
   as: '65111.800'
-  router_id: 10.4.1.6
+  router_id: 10.4.1.18
   bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - graceful-restart restart-time 300
   - graceful-restart
-  - maximum-paths 4 ecmp 4
+  - maximum-paths 16 ecmp 16
   peer_groups:
     MLAG-IPv4-UNDERLAY-PEER:
       type: ipv4
@@ -39,22 +39,22 @@ router_bgp:
       EVPN-OVERLAY-PEERS:
         activate: false
   neighbors:
-    172.20.1.4:
+    172.20.1.28:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: DC1-POD1-LEAF8A
-    172.17.1.24:
+    172.17.1.120:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65001.100'
       description: DC1-POD1-SPINE1_Ethernet16/1
-    172.17.1.26:
+    172.17.1.122:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65001.102'
       description: DC1-POD1-SPINE2_Ethernet16/1
-    172.17.1.28:
+    172.17.1.124:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65001.100'
       description: DC1-POD1-SPINE3_Ethernet16/1
-    172.17.1.30:
+    172.17.1.126:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65001.100'
       description: DC1-POD1-SPINE4_Ethernet16/1
@@ -75,8 +75,8 @@ router_bgp:
           only: true
   vrfs:
     Common_VRF:
-      router_id: 10.4.1.6
-      rd: 10.4.1.6:1025
+      router_id: 10.4.1.18
+      rd: 10.4.1.18:1025
       route_targets:
         import:
           evpn:
@@ -126,7 +126,7 @@ management_interfaces:
     description: oob_management
     shutdown: false
     vrf: mgmt
-    ip_address: 192.168.1.11/16
+    ip_address: 10.6.2.16/24
     gateway: 10.6.1.1
     type: oob
 management_api_http:
@@ -143,7 +143,7 @@ vlan_interfaces:
   Vlan4094:
     description: MLAG_PEER
     shutdown: false
-    ip_address: 172.20.1.5/31
+    ip_address: 172.20.1.29/31
     no_autostate: true
     mtu: 9214
 port_channel_interfaces:
@@ -189,7 +189,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.1.25/31
+    ip_address: 172.17.1.121/31
   Ethernet30/1:
     peer: DC1-POD1-SPINE2
     peer_interface: Ethernet16/1
@@ -201,7 +201,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.1.27/31
+    ip_address: 172.17.1.123/31
   Ethernet31/1:
     peer: DC1-POD1-SPINE3
     peer_interface: Ethernet16/1
@@ -213,7 +213,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.1.29/31
+    ip_address: 172.17.1.125/31
   Ethernet32/1:
     peer: DC1-POD1-SPINE4
     peer_interface: Ethernet16/1
@@ -225,11 +225,15 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.1.31/31
+    ip_address: 172.17.1.127/31
 mlag_configuration:
   domain_id: RACK8_MLAG
   local_interface: Vlan4094
-  peer_address: 172.20.1.4
+  peer_address: 172.20.1.28
+  peer_address_heartbeat:
+    peer_ip: 10.6.2.16
+    vrf: mgmt
+  dual_primary_detection_delay: 5
   peer_link: Port-Channel151
   reload_delay_mlag: 300
   reload_delay_non_mlag: 330
@@ -252,11 +256,11 @@ loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     shutdown: false
-    ip_address: 10.4.1.6/32
+    ip_address: 10.4.1.18/32
   Loopback1:
     description: VTEP_VXLAN_Tunnel_Source
     shutdown: false
-    ip_address: 10.5.1.5/32
+    ip_address: 10.5.1.17/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:

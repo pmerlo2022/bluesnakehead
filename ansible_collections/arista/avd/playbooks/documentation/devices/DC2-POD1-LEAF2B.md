@@ -60,7 +60,7 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management0 | oob_management | oob | mgmt | 192.168.1.9/16 | 10.6.1.1 |
+| Management0 | oob_management | oob | mgmt | 10.6.32.4/24 | 10.6.1.1 |
 
 #### IPv6
 
@@ -76,7 +76,7 @@ interface Management0
    description oob_management
    no shutdown
    vrf mgmt
-   ip address 192.168.1.9/16
+   ip address 10.6.32.4/24
 ```
 
 ## Domain-list
@@ -161,7 +161,7 @@ snmp-server location AMS DC2 DC2_POD1 DC2-POD1-LEAF2B
 | --------- | --------------- | ------------ | --------- |
 | RACK2_MLAG | Vlan4094 | 172.20.32.4 | Port-Channel5 |
 
-Dual primary detection is disabled.
+Dual primary detection is enabled. The detection delay is 5 seconds.
 
 ## MLAG Device Configuration
 
@@ -171,7 +171,9 @@ mlag configuration
    domain-id RACK2_MLAG
    local-interface Vlan4094
    peer-address 172.20.32.4
+   peer-address heartbeat 10.6.32.4 vrf mgmt
    peer-link Port-Channel5
+   dual-primary detection delay 5 action errdisable all-interfaces
    reload-delay mlag 300
    reload-delay non-mlag 330
 ```
@@ -247,10 +249,10 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet29/1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4 | routed | - | 172.17.32.25/31 | default | 9214 | false | - | - |
-| Ethernet30/1 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5 | routed | - | 172.17.32.27/31 | default | 9214 | false | - | - |
-| Ethernet31/1 | P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet6 | routed | - | 172.17.32.29/31 | default | 9214 | false | - | - |
-| Ethernet32/1 | P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet7 | routed | - | 172.17.32.31/31 | default | 9214 | false | - | - |
+| Ethernet29/1 | P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet4/1 | routed | - | 172.17.32.25/31 | default | 9214 | false | - | - |
+| Ethernet30/1 | P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet4/1 | routed | - | 172.17.32.27/31 | default | 9214 | false | - | - |
+| Ethernet31/1 | P2P_LINK_TO_DC2-POD1-SPINE3_Ethernet4/1 | routed | - | 172.17.32.29/31 | default | 9214 | false | - | - |
+| Ethernet32/1 | P2P_LINK_TO_DC2-POD1-SPINE4_Ethernet4/1 | routed | - | 172.17.32.31/31 | default | 9214 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -267,7 +269,7 @@ interface Ethernet6
    channel-group 5 mode active
 !
 interface Ethernet29/1
-   description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4
+   description P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet4/1
    no shutdown
    mtu 9214
    no switchport
@@ -276,7 +278,7 @@ interface Ethernet29/1
    service-profile QOS-PROFILE
 !
 interface Ethernet30/1
-   description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5
+   description P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet4/1
    no shutdown
    mtu 9214
    no switchport
@@ -285,7 +287,7 @@ interface Ethernet30/1
    service-profile QOS-PROFILE
 !
 interface Ethernet31/1
-   description P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet6
+   description P2P_LINK_TO_DC2-POD1-SPINE3_Ethernet4/1
    no shutdown
    mtu 9214
    no switchport
@@ -294,7 +296,7 @@ interface Ethernet31/1
    service-profile QOS-PROFILE
 !
 interface Ethernet32/1
-   description P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet7
+   description P2P_LINK_TO_DC2-POD1-SPINE4_Ethernet4/1
    no shutdown
    mtu 9214
    no switchport
@@ -488,7 +490,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65211.200|  10.4.32.6 |
+| 65112.200|  10.4.32.6 |
 
 | BGP Tuning |
 | ---------- |
@@ -496,7 +498,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | distance bgp 20 200 200 |
 | graceful-restart restart-time 300 |
 | graceful-restart |
-| maximum-paths 4 ecmp 4 |
+| maximum-paths 16 ecmp 16 |
 
 ### Router BGP Peer Groups
 
@@ -525,7 +527,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote AS | 65211.200 |
+| Remote AS | 65112.200 |
 | Next-hop self | True |
 | Send community | all |
 | Maximum routes | 12000 |
@@ -536,10 +538,10 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | -------- | --------- | --- | -------------- | -------------- |
 | 10.4.32.3 | 65211.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 10.4.32.4 | 65211.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 172.17.32.24 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.17.32.26 | 65001.102 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.17.32.28 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.17.32.30 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.32.24 | 65002.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.32.26 | 65002.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.32.28 | 65002.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.32.30 | 65002.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.20.32.4 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
 
 ### Router BGP EVPN Address Family
@@ -556,13 +558,13 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 ```eos
 !
-router bgp 65211.200
+router bgp 65112.200
    router-id 10.4.32.6
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    graceful-restart restart-time 300
    graceful-restart
-   maximum-paths 4 ecmp 4
+   maximum-paths 16 ecmp 16
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
@@ -574,7 +576,7 @@ router bgp 65211.200
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
-   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65211.200
+   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65112.200
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
@@ -586,17 +588,17 @@ router bgp 65211.200
    neighbor 10.4.32.4 remote-as 65211.100
    neighbor 10.4.32.4 description DC2-POD1-LEAF1B
    neighbor 172.17.32.24 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.32.24 remote-as 65001.100
-   neighbor 172.17.32.24 description DC1-POD1-SPINE1_Ethernet4
+   neighbor 172.17.32.24 remote-as 65002.100
+   neighbor 172.17.32.24 description DC2-POD1-SPINE1_Ethernet4/1
    neighbor 172.17.32.26 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.32.26 remote-as 65001.102
-   neighbor 172.17.32.26 description DC1-POD1-SPINE2_Ethernet5
+   neighbor 172.17.32.26 remote-as 65002.100
+   neighbor 172.17.32.26 description DC2-POD1-SPINE2_Ethernet4/1
    neighbor 172.17.32.28 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.32.28 remote-as 65001.100
-   neighbor 172.17.32.28 description DC1-POD1-SPINE3_Ethernet6
+   neighbor 172.17.32.28 remote-as 65002.100
+   neighbor 172.17.32.28 description DC2-POD1-SPINE3_Ethernet4/1
    neighbor 172.17.32.30 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.32.30 remote-as 65001.100
-   neighbor 172.17.32.30 description DC1-POD1-SPINE4_Ethernet7
+   neighbor 172.17.32.30 remote-as 65002.100
+   neighbor 172.17.32.30 description DC2-POD1-SPINE4_Ethernet4/1
    neighbor 172.20.32.4 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 172.20.32.4 description DC2-POD1-LEAF2A
    redistribute connected route-map RM-CONN-2-BGP

@@ -1,12 +1,12 @@
 router_bgp:
   as: '65112.600'
-  router_id: 10.4.2.5
+  router_id: 10.4.2.13
   bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - graceful-restart restart-time 300
   - graceful-restart
-  - maximum-paths 4 ecmp 4
+  - maximum-paths 16 ecmp 16
   peer_groups:
     MLAG-IPv4-UNDERLAY-PEER:
       type: ipv4
@@ -39,25 +39,25 @@ router_bgp:
       EVPN-OVERLAY-PEERS:
         activate: false
   neighbors:
-    172.20.2.5:
+    172.20.2.21:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: DC1-POD2-LEAF6B
-    172.17.2.16:
+    172.17.2.80:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65001.200'
-      description: DC1-POD2-SPINE1_Ethernet4
-    172.17.2.18:
+      description: DC1-POD2-SPINE1_Ethernet11/1
+    172.17.2.82:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65001.200'
-      description: DC1-POD2-SPINE2_Ethernet4
-    172.17.2.20:
+      description: DC1-POD2-SPINE2_Ethernet11/1
+    172.17.2.84:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65001.200'
-      description: DC1-POD2-SPINE3_Ethernet7
-    172.17.2.22:
+      description: DC1-POD2-SPINE3_Ethernet11/1
+    172.17.2.86:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65001.200'
-      description: DC1-POD2-SPINE4_Ethernet7
+      description: DC1-POD2-SPINE4_Ethernet11/1
     10.4.2.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD2-LEAF1A
@@ -85,8 +85,8 @@ router_bgp:
           only: true
   vrfs:
     Common_VRF:
-      router_id: 10.4.2.5
-      rd: 10.4.2.5:1025
+      router_id: 10.4.2.13
+      rd: 10.4.2.13:1025
       route_targets:
         import:
           evpn:
@@ -131,6 +131,14 @@ vrfs:
   Common_VRF:
     tenant: Tenant_A
     ip_routing: true
+management_interfaces:
+  Management0:
+    description: oob_management
+    shutdown: false
+    vrf: mgmt
+    ip_address: 10.6.34.11/24
+    gateway: 10.6.1.1
+    type: oob
 management_api_http:
   enable_vrfs:
     mgmt: {}
@@ -148,12 +156,12 @@ vlan_interfaces:
   Vlan4094:
     description: MLAG_PEER
     shutdown: false
-    ip_address: 172.20.2.4/31
+    ip_address: 172.20.2.20/31
     no_autostate: true
     mtu: 9214
 port_channel_interfaces:
-  Port-Channel5:
-    description: MLAG_PEER_DC1-POD2-LEAF6B_Po5
+  Port-Channel151:
+    description: MLAG_PEER_DC1-POD2-LEAF6B_Po151
     type: switched
     shutdown: false
     vlans: 2-4094
@@ -163,83 +171,83 @@ port_channel_interfaces:
     - LEAF_PEER_L3
     - MLAG
 ethernet_interfaces:
-  Ethernet5:
+  Ethernet15/1:
     peer: DC1-POD2-LEAF6B
-    peer_interface: Ethernet5
+    peer_interface: Ethernet15/1
     peer_type: mlag_peer
-    description: MLAG_PEER_DC1-POD2-LEAF6B_Ethernet5
+    description: MLAG_PEER_DC1-POD2-LEAF6B_Ethernet15/1
     type: switched
     shutdown: false
     channel_group:
-      id: 5
+      id: 151
       mode: active
-  Ethernet6:
+  Ethernet16/1:
     peer: DC1-POD2-LEAF6B
-    peer_interface: Ethernet6
+    peer_interface: Ethernet16/1
     peer_type: mlag_peer
-    description: MLAG_PEER_DC1-POD2-LEAF6B_Ethernet6
+    description: MLAG_PEER_DC1-POD2-LEAF6B_Ethernet16/1
     type: switched
     shutdown: false
     channel_group:
-      id: 5
+      id: 151
       mode: active
   Ethernet29/1:
     peer: DC1-POD2-SPINE1
-    peer_interface: Ethernet4
+    peer_interface: Ethernet11/1
     peer_type: spine
-    description: P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet4
+    description: P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet11/1
     mtu: 9214
     service_profile: QOS-PROFILE
     ptp:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.2.17/31
+    ip_address: 172.17.2.81/31
   Ethernet30/1:
     peer: DC1-POD2-SPINE2
-    peer_interface: Ethernet4
+    peer_interface: Ethernet11/1
     peer_type: spine
-    description: P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet4
+    description: P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet11/1
     mtu: 9214
     service_profile: QOS-PROFILE
     ptp:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.2.19/31
+    ip_address: 172.17.2.83/31
   Ethernet31/1:
     peer: DC1-POD2-SPINE3
-    peer_interface: Ethernet7
+    peer_interface: Ethernet11/1
     peer_type: spine
-    description: P2P_LINK_TO_DC1-POD2-SPINE3_Ethernet7
+    description: P2P_LINK_TO_DC1-POD2-SPINE3_Ethernet11/1
     mtu: 9214
     service_profile: QOS-PROFILE
     ptp:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.2.21/31
+    ip_address: 172.17.2.85/31
   Ethernet32/1:
     peer: DC1-POD2-SPINE4
-    peer_interface: Ethernet7
+    peer_interface: Ethernet11/1
     peer_type: spine
-    description: P2P_LINK_TO_DC1-POD2-SPINE4_Ethernet7
+    description: P2P_LINK_TO_DC1-POD2-SPINE4_Ethernet11/1
     mtu: 9214
     service_profile: QOS-PROFILE
     ptp:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.2.23/31
+    ip_address: 172.17.2.87/31
 mlag_configuration:
   domain_id: RACK6_MLAG
   local_interface: Vlan4094
-  peer_address: 172.20.2.5
+  peer_address: 172.20.2.21
   peer_address_heartbeat:
-    peer_ip: 192.168.1.11
+    peer_ip: 10.6.34.11
     vrf: mgmt
   dual_primary_detection_delay: 5
-  peer_link: Port-Channel5
+  peer_link: Port-Channel151
   reload_delay_mlag: 300
   reload_delay_non_mlag: 330
 route_maps:
@@ -269,11 +277,11 @@ loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     shutdown: false
-    ip_address: 10.4.2.5/32
+    ip_address: 10.4.2.13/32
   Loopback1:
     description: VTEP_VXLAN_Tunnel_Source
     shutdown: false
-    ip_address: 10.5.2.5/32
+    ip_address: 10.5.2.13/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:

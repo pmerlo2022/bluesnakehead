@@ -43,7 +43,7 @@ terminattr_ingestgrpcurl_port: 9910
 terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
 terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
 
-p2p_uplinks_mtu: 9000
+p2p_uplinks_mtu: 9214
 
 underlay_routing_protocol: BGP
 overlay_routing_protocol: BGP
@@ -62,8 +62,8 @@ underlay_ospf_bfd_enable: false
 isis_area_id: "49.0001"
 isis_maximum_paths: 4
 
-bgp_maximum_paths: 4
-bgp_ecmp: 4
+bgp_maximum_paths: 16
+bgp_ecmp: 16
 
 vxlan_vlan_aware_bundles: false
 

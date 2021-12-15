@@ -3,6 +3,7 @@
 <!-- toc -->
 
 - [Management](#management)
+  - [Management Interfaces](#management-interfaces)
   - [Domain-list](#domain-list)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
@@ -51,15 +52,44 @@
 <!-- toc -->
 # Management
 
+## Management Interfaces
+
+### Management Interfaces Summary
+
+#### IPv4
+
+| Management Interface | description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+| Management0 | oob_management | oob | mgmt | 10.6.34.3/24 | 10.6.1.1 |
+
+#### IPv6
+
+| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management0 | oob_management | oob | mgmt | -  | - |
+
+### Management Interfaces Device Configuration
+
+```eos
+!
+interface Management0
+   description oob_management
+   no shutdown
+   vrf mgmt
+   ip address 10.6.34.3/24
+```
+
 ## Domain-list
 
 ### Domain-list:
+ - structured-config.set.on.node
  - structured-config.set.under.vrf.common-vrf
 
 ### Domain-list Device Configuration
 
 ```eos
 !
+ip domain-list structured-config.set.on.node
 ip domain-list structured-config.set.under.vrf.common-vrf
 !
 ```
@@ -131,7 +161,7 @@ snmp-server location AMS DC1 DC1_POD2 DC1-POD2-LEAF2A
 
 | Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
-| RACK2_MLAG | Vlan4094 | 172.20.2.5 | Port-Channel5 |
+| RACK2_MLAG | Vlan4094 | 172.20.2.5 | Port-Channel151 |
 
 Dual primary detection is enabled. The detection delay is 5 seconds.
 
@@ -143,8 +173,8 @@ mlag configuration
    domain-id RACK2_MLAG
    local-interface Vlan4094
    peer-address 172.20.2.5
-   peer-address heartbeat 192.168.1.9 vrf mgmt
-   peer-link Port-Channel5
+   peer-address heartbeat 10.6.34.3 vrf mgmt
+   peer-link Port-Channel151
    dual-primary detection delay 5 action errdisable all-interfaces
    reload-delay mlag 300
    reload-delay non-mlag 330
@@ -212,8 +242,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | MLAG_PEER_DC1-POD2-LEAF2B_Ethernet5 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet6 | MLAG_PEER_DC1-POD2-LEAF2B_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet15/1 | MLAG_PEER_DC1-POD2-LEAF2B_Ethernet15/1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 151 |
+| Ethernet16/1 | MLAG_PEER_DC1-POD2-LEAF2B_Ethernet16/1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 151 |
 
 *Inherited from Port-Channel Interface
 
@@ -221,27 +251,27 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet29/1 | P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet4 | routed | - | 172.17.2.17/31 | default | 9214 | false | - | - |
-| Ethernet30/1 | P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet5 | routed | - | 172.17.2.19/31 | default | 9214 | false | - | - |
-| Ethernet31/1 | P2P_LINK_TO_DC1-POD2-SPINE3_Ethernet6 | routed | - | 172.17.2.21/31 | default | 9214 | false | - | - |
-| Ethernet32/1 | P2P_LINK_TO_DC1-POD2-SPINE4_Ethernet7 | routed | - | 172.17.2.23/31 | default | 9214 | false | - | - |
+| Ethernet29/1 | P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet3/1 | routed | - | 172.17.2.17/31 | default | 9214 | false | - | - |
+| Ethernet30/1 | P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet3/1 | routed | - | 172.17.2.19/31 | default | 9214 | false | - | - |
+| Ethernet31/1 | P2P_LINK_TO_DC1-POD2-SPINE3_Ethernet3/1 | routed | - | 172.17.2.21/31 | default | 9214 | false | - | - |
+| Ethernet32/1 | P2P_LINK_TO_DC1-POD2-SPINE4_Ethernet3/1 | routed | - | 172.17.2.23/31 | default | 9214 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
-interface Ethernet5
-   description MLAG_PEER_DC1-POD2-LEAF2B_Ethernet5
+interface Ethernet15/1
+   description MLAG_PEER_DC1-POD2-LEAF2B_Ethernet15/1
    no shutdown
-   channel-group 5 mode active
+   channel-group 151 mode active
 !
-interface Ethernet6
-   description MLAG_PEER_DC1-POD2-LEAF2B_Ethernet6
+interface Ethernet16/1
+   description MLAG_PEER_DC1-POD2-LEAF2B_Ethernet16/1
    no shutdown
-   channel-group 5 mode active
+   channel-group 151 mode active
 !
 interface Ethernet29/1
-   description P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet4
+   description P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet3/1
    no shutdown
    mtu 9214
    no switchport
@@ -250,7 +280,7 @@ interface Ethernet29/1
    service-profile QOS-PROFILE
 !
 interface Ethernet30/1
-   description P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet5
+   description P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet3/1
    no shutdown
    mtu 9214
    no switchport
@@ -259,7 +289,7 @@ interface Ethernet30/1
    service-profile QOS-PROFILE
 !
 interface Ethernet31/1
-   description P2P_LINK_TO_DC1-POD2-SPINE3_Ethernet6
+   description P2P_LINK_TO_DC1-POD2-SPINE3_Ethernet3/1
    no shutdown
    mtu 9214
    no switchport
@@ -268,7 +298,7 @@ interface Ethernet31/1
    service-profile QOS-PROFILE
 !
 interface Ethernet32/1
-   description P2P_LINK_TO_DC1-POD2-SPINE4_Ethernet7
+   description P2P_LINK_TO_DC1-POD2-SPINE4_Ethernet3/1
    no shutdown
    mtu 9214
    no switchport
@@ -285,14 +315,14 @@ interface Ethernet32/1
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_DC1-POD2-LEAF2B_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel151 | MLAG_PEER_DC1-POD2-LEAF2B_Po151 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
-interface Port-Channel5
-   description MLAG_PEER_DC1-POD2-LEAF2B_Po5
+interface Port-Channel151
+   description MLAG_PEER_DC1-POD2-LEAF2B_Po151
    no shutdown
    switchport
    switchport trunk allowed vlan 2-4094
@@ -470,7 +500,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | distance bgp 20 200 200 |
 | graceful-restart restart-time 300 |
 | graceful-restart |
-| maximum-paths 4 ecmp 4 |
+| maximum-paths 16 ecmp 16 |
 
 ### Router BGP Peer Groups
 
@@ -538,7 +568,7 @@ router bgp 65112.200
    distance bgp 20 200 200
    graceful-restart restart-time 300
    graceful-restart
-   maximum-paths 4 ecmp 4
+   maximum-paths 16 ecmp 16
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
@@ -568,16 +598,16 @@ router bgp 65112.200
    neighbor 10.4.2.4 route-map RM-EVPN-FILTER-AS65112.100 out
    neighbor 172.17.2.16 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.2.16 remote-as 65001.200
-   neighbor 172.17.2.16 description DC1-POD2-SPINE1_Ethernet4
+   neighbor 172.17.2.16 description DC1-POD2-SPINE1_Ethernet3/1
    neighbor 172.17.2.18 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.2.18 remote-as 65001.200
-   neighbor 172.17.2.18 description DC1-POD2-SPINE2_Ethernet5
+   neighbor 172.17.2.18 description DC1-POD2-SPINE2_Ethernet3/1
    neighbor 172.17.2.20 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.2.20 remote-as 65001.200
-   neighbor 172.17.2.20 description DC1-POD2-SPINE3_Ethernet6
+   neighbor 172.17.2.20 description DC1-POD2-SPINE3_Ethernet3/1
    neighbor 172.17.2.22 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.2.22 remote-as 65001.200
-   neighbor 172.17.2.22 description DC1-POD2-SPINE4_Ethernet7
+   neighbor 172.17.2.22 description DC1-POD2-SPINE4_Ethernet3/1
    neighbor 172.20.2.5 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 172.20.2.5 description DC1-POD2-LEAF2B
    redistribute connected route-map RM-CONN-2-BGP

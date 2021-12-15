@@ -1,13 +1,21 @@
 router_bgp:
   as: '65111.300'
-  router_id: 10.4.1.5
+  router_id: 10.4.1.7
   bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - graceful-restart restart-time 300
   - graceful-restart
-  - maximum-paths 4 ecmp 4
+  - maximum-paths 16 ecmp 16
   peer_groups:
+    MLAG-IPv4-UNDERLAY-PEER:
+      type: ipv4
+      remote_as: '65111.300'
+      next_hop_self: true
+      password: vnEaG8gMeQf3d3cN6PktXQ==
+      maximum_routes: 12000
+      send_community: all
+      route_map_in: RM-MLAG-PEER-IN
     IPv4-UNDERLAY-PEERS:
       type: ipv4
       password: AQQvKeimxJu+uGQ/yYvv9w==
@@ -24,30 +32,35 @@ router_bgp:
       next_hop_unchanged: true
   address_family_ipv4:
     peer_groups:
+      MLAG-IPv4-UNDERLAY-PEER:
+        activate: true
       IPv4-UNDERLAY-PEERS:
         activate: true
       EVPN-OVERLAY-PEERS:
         activate: false
-  redistribute_routes:
-    connected:
-      route_map: RM-CONN-2-BGP
   neighbors:
-    172.17.1.16:
+    172.20.1.9:
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: DC1-POD1-LEAF3B
+    172.17.1.32:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65001.100'
       description: DC1-POD1-SPINE1_Ethernet5/1
-    172.17.1.18:
+    172.17.1.34:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65001.102'
       description: DC1-POD1-SPINE2_Ethernet5/1
-    172.17.1.20:
+    172.17.1.36:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65001.100'
       description: DC1-POD1-SPINE3_Ethernet5/1
-    172.17.1.22:
+    172.17.1.38:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65001.100'
       description: DC1-POD1-SPINE4_Ethernet5/1
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:
@@ -62,8 +75,8 @@ router_bgp:
           only: true
   vrfs:
     Common_VRF:
-      router_id: 10.4.1.5
-      rd: 10.4.1.5:1025
+      router_id: 10.4.1.7
+      rd: 10.4.1.7:1025
       route_targets:
         import:
           evpn:
@@ -96,6 +109,7 @@ snmp_server:
 spanning_tree:
   mode: rstp
   rstp_priority: 4096
+  no_spanning_tree_vlan: 4094
 local_users:
   admin:
     privilege: 15
@@ -107,6 +121,14 @@ vrfs:
   Common_VRF:
     tenant: Tenant_A
     ip_routing: true
+management_interfaces:
+  Management0:
+    description: oob_management
+    shutdown: false
+    vrf: mgmt
+    ip_address: 10.6.2.5/24
+    gateway: 10.6.1.1
+    type: oob
 management_api_http:
   enable_vrfs:
     mgmt: {}
@@ -114,7 +136,51 @@ management_api_http:
 eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli
   under platform_settings vEOS-LAB\n\ninterface Loopback1000\n  description Loopback
   created from raw_eos_cli under VRF Common_VRF\n"
+vlans:
+  4094:
+    tenant: system
+    name: MLAG_PEER
+    trunk_groups:
+    - MLAG
+vlan_interfaces:
+  Vlan4094:
+    description: MLAG_PEER
+    shutdown: false
+    ip_address: 172.20.1.8/31
+    no_autostate: true
+    mtu: 9214
+port_channel_interfaces:
+  Port-Channel151:
+    description: MLAG_PEER_DC1-POD1-LEAF3B_Po151
+    type: switched
+    shutdown: false
+    vlans: 2-4094
+    mode: trunk
+    service_profile: QOS-PROFILE
+    trunk_groups:
+    - LEAF_PEER_L3
+    - MLAG
 ethernet_interfaces:
+  Ethernet15/1:
+    peer: DC1-POD1-LEAF3B
+    peer_interface: Ethernet15/1
+    peer_type: mlag_peer
+    description: MLAG_PEER_DC1-POD1-LEAF3B_Ethernet15/1
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 151
+      mode: active
+  Ethernet16/1:
+    peer: DC1-POD1-LEAF3B
+    peer_interface: Ethernet16/1
+    peer_type: mlag_peer
+    description: MLAG_PEER_DC1-POD1-LEAF3B_Ethernet16/1
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 151
+      mode: active
   Ethernet29/1:
     peer: DC1-POD1-SPINE1
     peer_interface: Ethernet5/1
@@ -126,7 +192,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.1.17/31
+    ip_address: 172.17.1.33/31
   Ethernet30/1:
     peer: DC1-POD1-SPINE2
     peer_interface: Ethernet5/1
@@ -138,7 +204,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.1.19/31
+    ip_address: 172.17.1.35/31
   Ethernet31/1:
     peer: DC1-POD1-SPINE3
     peer_interface: Ethernet5/1
@@ -150,7 +216,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.1.21/31
+    ip_address: 172.17.1.37/31
   Ethernet32/1:
     peer: DC1-POD1-SPINE4
     peer_interface: Ethernet5/1
@@ -162,16 +228,42 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.1.23/31
+    ip_address: 172.17.1.39/31
+mlag_configuration:
+  domain_id: RACK3_MLAG
+  local_interface: Vlan4094
+  peer_address: 172.20.1.9
+  peer_address_heartbeat:
+    peer_ip: 10.6.2.5
+    vrf: mgmt
+  dual_primary_detection_delay: 5
+  peer_link: Port-Channel151
+  reload_delay_mlag: 300
+  reload_delay_non_mlag: 330
+route_maps:
+  RM-MLAG-PEER-IN:
+    sequence_numbers:
+      10:
+        type: permit
+        set:
+        - origin incomplete
+        description: Make routes learned over MLAG Peer-link less preferred on spines
+          to ensure optimal routing
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     shutdown: false
-    ip_address: 10.4.1.5/32
+    ip_address: 10.4.1.7/32
   Loopback1:
     description: VTEP_VXLAN_Tunnel_Source
     shutdown: false
-    ip_address: 10.5.1.5/32
+    ip_address: 10.5.1.7/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:
@@ -179,13 +271,6 @@ prefix_lists:
         action: permit 10.4.1.0/24 eq 32
       20:
         action: permit 10.5.1.0/24 eq 32
-route_maps:
-  RM-CONN-2-BGP:
-    sequence_numbers:
-      10:
-        type: permit
-        match:
-        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 router_bfd:
   multihop:
     interval: 300
@@ -202,6 +287,7 @@ vxlan_interface:
     description: DC1-POD1-LEAF3A_VTEP
     vxlan:
       source_interface: Loopback1
+      virtual_router_encapsulation_mac_address: mlag-system-id
       udp_port: 4789
       vrfs:
         Common_VRF:

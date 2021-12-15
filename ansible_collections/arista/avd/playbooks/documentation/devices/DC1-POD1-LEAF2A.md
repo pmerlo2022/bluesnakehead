@@ -3,6 +3,7 @@
 <!-- toc -->
 
 - [Management](#management)
+  - [Management Interfaces](#management-interfaces)
   - [Domain-list](#domain-list)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
@@ -50,6 +51,33 @@
 
 <!-- toc -->
 # Management
+
+## Management Interfaces
+
+### Management Interfaces Summary
+
+#### IPv4
+
+| Management Interface | description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+| Management0 | oob_management | oob | mgmt | 10.6.2.3/24 | 10.6.1.1 |
+
+#### IPv6
+
+| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management0 | oob_management | oob | mgmt | -  | - |
+
+### Management Interfaces Device Configuration
+
+```eos
+!
+interface Management0
+   description oob_management
+   no shutdown
+   vrf mgmt
+   ip address 10.6.2.3/24
+```
 
 ## Domain-list
 
@@ -145,7 +173,7 @@ mlag configuration
    domain-id RACK2_MLAG
    local-interface Vlan4094
    peer-address 172.20.1.5
-   peer-address heartbeat 192.168.1.9 vrf mgmt
+   peer-address heartbeat 10.6.2.3 vrf mgmt
    peer-link Port-Channel151
    dual-primary detection delay 5 action errdisable all-interfaces
    reload-delay mlag 300
@@ -214,12 +242,11 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+| Ethernet12/1 | Set using structured_config on server adapter | *access | *110 | *- | *- | 121 |
+| Ethernet13/1 | server-1_Eth5 | *access | *110 | *- | *- | 131 |
+| Ethernet14/1 | server-1_Eth7 | *access | *110 | *- | *- | 141 |
 | Ethernet15/1 | MLAG_PEER_DC1-POD1-LEAF2B_Ethernet15/1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 151 |
-| Ethernet16 | server-1_Eth1 | *access | *110 | *- | *- | 16 |
 | Ethernet16/1 | MLAG_PEER_DC1-POD1-LEAF2B_Ethernet16/1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 151 |
-| Ethernet17 | Set using structured_config on server adapter | *access | *110 | *- | *- | 17 |
-| Ethernet18 | server-1_Eth5 | *access | *110 | *- | *- | 18 |
-| Ethernet19 | server-1_Eth7 | *access | *110 | *- | *- | 19 |
 
 *Inherited from Port-Channel Interface
 
@@ -236,51 +263,42 @@ vlan 4094
 
 ```eos
 !
-interface Ethernet15/1
-   description MLAG_PEER_DC1-POD1-LEAF2B_Ethernet15/1
-   no shutdown
-   channel-group 151 mode active
-!
-interface Ethernet16
-   description server-1_Eth1
-   no shutdown
-   channel-group 16 mode active
-   comment
-   Comment created from raw_eos_cli under profile TENANT_A
-   EOF
-
-!
-interface Ethernet16/1
-   description MLAG_PEER_DC1-POD1-LEAF2B_Ethernet16/1
-   no shutdown
-   channel-group 151 mode active
-!
-interface Ethernet17
+interface Ethernet12/1
    description Set using structured_config on server adapter
    no shutdown
-   channel-group 17 mode active
+   channel-group 121 mode active
    comment
    Comment created from raw_eos_cli under adapter for switch Eth17
    EOF
 
 !
-interface Ethernet18
+interface Ethernet13/1
    description server-1_Eth5
    no shutdown
-   channel-group 18 mode active
+   channel-group 131 mode active
    comment
    Comment created from raw_eos_cli under profile NESTED_TENANT_A
    EOF
 
 !
-interface Ethernet19
+interface Ethernet14/1
    description server-1_Eth7
    no shutdown
-   channel-group 19 mode active
+   channel-group 141 mode active
    comment
    Comment created from raw_eos_cli under profile NESTED_TENANT_A
    EOF
 
+!
+interface Ethernet15/1
+   description MLAG_PEER_DC1-POD1-LEAF2B_Ethernet15/1
+   no shutdown
+   channel-group 151 mode active
+!
+interface Ethernet16/1
+   description MLAG_PEER_DC1-POD1-LEAF2B_Ethernet16/1
+   no shutdown
+   channel-group 151 mode active
 !
 interface Ethernet29/1
    description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet3/1
@@ -327,50 +345,41 @@ interface Ethernet32/1
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel16 | server-1_PortChannel | switched | access | 110 | - | - | - | - | 16 | - |
-| Port-Channel17 | Set using structured_config on server adapter port-channel | switched | access | 110 | - | - | - | - | 17 | - |
-| Port-Channel18 | server-1_PortChannel | switched | access | 110 | - | - | - | - | 18 | - |
-| Port-Channel19 | server-1_PortChannel | switched | access | 110 | - | - | - | - | 19 | - |
+| Port-Channel121 | Set using structured_config on server adapter port-channel | switched | access | 110 | - | - | - | - | 121 | - |
+| Port-Channel131 | server-1_PortChannel | switched | access | 110 | - | - | - | - | 131 | - |
+| Port-Channel141 | server-1_PortChannel | switched | access | 110 | - | - | - | - | 141 | - |
 | Port-Channel151 | MLAG_PEER_DC1-POD1-LEAF2B_Po151 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
-interface Port-Channel16
-   description server-1_PortChannel
-   no shutdown
-   switchport
-   switchport access vlan 110
-   mlag 16
-   service-profile bar
-!
-interface Port-Channel17
+interface Port-Channel121
    description Set using structured_config on server adapter port-channel
    no shutdown
    switchport
    switchport access vlan 110
-   mlag 17
+   mlag 121
    service-profile foo
 !
-interface Port-Channel18
+interface Port-Channel131
    description server-1_PortChannel
    no shutdown
    switchport
    switchport access vlan 110
-   mlag 18
+   mlag 131
    service-profile foo
    comment
    Comment created from raw_eos_cli under port_channel on profile NESTED_TENANT_A
    EOF
 
 !
-interface Port-Channel19
+interface Port-Channel141
    description server-1_PortChannel
    no shutdown
    switchport
    switchport access vlan 110
-   mlag 19
+   mlag 141
    service-profile foo
    comment
    Comment created from raw_eos_cli under adapter port_channel for switch Po19
@@ -556,7 +565,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | distance bgp 20 200 200 |
 | graceful-restart restart-time 300 |
 | graceful-restart |
-| maximum-paths 4 ecmp 4 |
+| maximum-paths 16 ecmp 16 |
 
 ### Router BGP Peer Groups
 
@@ -622,7 +631,7 @@ router bgp 65111.200
    distance bgp 20 200 200
    graceful-restart restart-time 300
    graceful-restart
-   maximum-paths 4 ecmp 4
+   maximum-paths 16 ecmp 16
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0

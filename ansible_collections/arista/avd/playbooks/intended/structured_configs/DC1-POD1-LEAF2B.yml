@@ -6,7 +6,7 @@ router_bgp:
   - distance bgp 20 200 200
   - graceful-restart restart-time 300
   - graceful-restart
-  - maximum-paths 4 ecmp 4
+  - maximum-paths 16 ecmp 16
   peer_groups:
     MLAG-IPv4-UNDERLAY-PEER:
       type: ipv4
@@ -126,7 +126,7 @@ management_interfaces:
     description: oob_management
     shutdown: false
     vrf: mgmt
-    ip_address: 192.168.1.9/16
+    ip_address: 10.6.2.4/24
     gateway: 10.6.1.1
     type: oob
 management_api_http:
@@ -160,31 +160,13 @@ port_channel_interfaces:
     trunk_groups:
     - LEAF_PEER_L3
     - MLAG
-  Port-Channel16:
+  Port-Channel131:
     description: server-1_PortChannel
     type: switched
     shutdown: false
     mode: access
     vlans: 110
-    mlag: 16
-    service_profile: bar
-  Port-Channel17:
-    description: Set using structured_config on server adapter port-channel
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: 110
-    mlag: 17
-    service_profile: foo
-    struct_cfg:
-      description: Set using structured_config on server adapter port-channel
-  Port-Channel18:
-    description: server-1_PortChannel
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: 110
-    mlag: 18
+    mlag: 131
     service_profile: foo
     eos_cli: 'comment
 
@@ -193,13 +175,23 @@ port_channel_interfaces:
       EOF
 
       '
-  Port-Channel19:
+  Port-Channel121:
+    description: Set using structured_config on server adapter port-channel
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    mlag: 121
+    service_profile: foo
+    struct_cfg:
+      description: Set using structured_config on server adapter port-channel
+  Port-Channel141:
     description: server-1_PortChannel
     type: switched
     shutdown: false
     mode: access
     vlans: 110
-    mlag: 19
+    mlag: 141
     service_profile: foo
     eos_cli: 'comment
 
@@ -277,27 +269,27 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.17.1.31/31
-  Ethernet16:
+  Ethernet13/1:
     peer: server-1
-    peer_interface: Eth2
+    peer_interface: Eth6
     peer_type: server
-    description: server-1_Eth2
+    description: server-1_Eth6
     type: switched
     shutdown: false
     mode: access
     vlans: 110
     channel_group:
-      id: 16
+      id: 131
       mode: active
-    service_profile: bar
+    service_profile: foo
     eos_cli: 'comment
 
-      Comment created from raw_eos_cli under profile TENANT_A
+      Comment created from raw_eos_cli under profile NESTED_TENANT_A
 
       EOF
 
       '
-  Ethernet17:
+  Ethernet12/1:
     peer: server-1
     peer_interface: Eth4
     peer_type: server
@@ -307,7 +299,7 @@ ethernet_interfaces:
     mode: access
     vlans: 110
     channel_group:
-      id: 17
+      id: 121
       mode: active
     service_profile: foo
     eos_cli: 'comment
@@ -319,27 +311,7 @@ ethernet_interfaces:
       '
     struct_cfg:
       description: Set using structured_config on server adapter
-  Ethernet18:
-    peer: server-1
-    peer_interface: Eth6
-    peer_type: server
-    description: server-1_Eth6
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: 110
-    channel_group:
-      id: 18
-      mode: active
-    service_profile: foo
-    eos_cli: 'comment
-
-      Comment created from raw_eos_cli under profile NESTED_TENANT_A
-
-      EOF
-
-      '
-  Ethernet19:
+  Ethernet14/1:
     peer: server-1
     peer_interface: Eth8
     peer_type: server
@@ -349,7 +321,7 @@ ethernet_interfaces:
     mode: access
     vlans: 110
     channel_group:
-      id: 19
+      id: 141
       mode: active
     service_profile: foo
     eos_cli: 'comment
@@ -363,6 +335,10 @@ mlag_configuration:
   domain_id: RACK2_MLAG
   local_interface: Vlan4094
   peer_address: 172.20.1.4
+  peer_address_heartbeat:
+    peer_ip: 10.6.2.4
+    vrf: mgmt
+  dual_primary_detection_delay: 5
   peer_link: Port-Channel151
   reload_delay_mlag: 300
   reload_delay_non_mlag: 330

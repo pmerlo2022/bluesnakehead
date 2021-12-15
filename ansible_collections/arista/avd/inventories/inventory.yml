@@ -373,7 +373,7 @@ all:
                       type: l3leaf
                       ansible_host: 10.6.32.4
                       ansible_port: 22
-#                    DC2-POD1-L2LEAF1A:
+#                    DC2-POD1-L2LEAF2A:
 #                      type: l2leaf
 #                      ansible_host: 10.6.32.X
                     DC2-POD1-LEAF3A:

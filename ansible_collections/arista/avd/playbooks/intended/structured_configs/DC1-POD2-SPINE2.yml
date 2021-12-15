@@ -6,7 +6,7 @@ router_bgp:
   - distance bgp 20 200 200
   - graceful-restart restart-time 300
   - graceful-restart
-  - maximum-paths 4 ecmp 4
+  - maximum-paths 16 ecmp 16
   peer_groups:
     IPv4-UNDERLAY-PEERS:
       type: ipv4
@@ -21,29 +21,133 @@ router_bgp:
     connected:
       route_map: RM-CONN-2-BGP
   neighbors:
+    172.17.2.3:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.100'
+      description: DC1-POD2-LEAF1A_Ethernet30/1
+    172.17.2.11:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.100'
+      description: DC1-POD2-LEAF1B_Ethernet30/1
     172.17.2.19:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.200'
+      description: DC1-POD2-LEAF2A_Ethernet30/1
+    172.17.2.27:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.200'
+      description: DC1-POD2-LEAF2B_Ethernet30/1
+    172.17.2.35:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.300'
+      description: DC1-POD2-LEAF3A_Ethernet30/1
+    172.17.2.43:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.300'
+      description: DC1-POD2-LEAF3B_Ethernet30/1
+    172.17.2.51:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.400'
+      description: DC1-POD2-LEAF4A_Ethernet30/1
+    172.17.2.59:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.400'
+      description: DC1-POD2-LEAF4B_Ethernet30/1
+    172.17.2.67:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.500'
+      description: DC1-POD2-LEAF5A_Ethernet30/1
+    172.17.2.75:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.500'
+      description: DC1-POD2-LEAF5B_Ethernet30/1
+    172.17.2.83:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.600'
+      description: DC1-POD2-LEAF6A_Ethernet30/1
+    172.17.2.91:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.600'
+      description: DC1-POD2-LEAF6B_Ethernet30/1
+    172.17.2.99:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.700'
+      description: DC1-POD2-LEAF7A_Ethernet30/1
+    172.17.2.107:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.700'
+      description: DC1-POD2-LEAF7B_Ethernet30/1
+    172.17.2.115:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.800'
+      description: DC1-POD2-LEAF8A_Ethernet30/1
+    172.17.2.123:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.800'
+      description: DC1-POD2-LEAF8B_Ethernet30/1
+    172.17.2.131:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.900'
+      description: DC1-POD2-LEAF9A_Ethernet30/1
+    172.17.2.139:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.900'
+      description: DC1-POD2-LEAF9B_Ethernet30/1
+    172.17.2.147:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.1000'
+      description: DC1-POD2-LEAF10A_Ethernet30/1
+    172.17.2.155:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.1000'
+      description: DC1-POD2-LEAF10B_Ethernet30/1
+    172.17.2.163:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.1100'
+      description: DC1-POD2-LEAF11A_Ethernet30/1
+    172.17.2.171:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.1100'
+      description: DC1-POD2-LEAF11B_Ethernet30/1
+    172.17.2.179:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.1200'
+      description: DC1-POD2-LEAF12A_Ethernet30/1
+    172.17.2.187:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.1200'
+      description: DC1-POD2-LEAF12B_Ethernet30/1
+    172.17.2.195:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.1300'
+      description: DC1-POD2-LEAF13A_Ethernet30/1
+    172.17.2.203:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65112.1300'
+      description: DC1-POD2-LEAF13B_Ethernet30/1
+    172.17.2.211:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65112.1400'
       description: DC1-POD2-LEAF14A_Ethernet30/1
-    172.17.2.27:
+    172.17.2.219:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65112.1400'
       description: DC1-POD2-LEAF14B_Ethernet30/1
     172.16.2.2:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65100'
+      remote_as: '64101'
       description: SUPER-SPINE1_Ethernet6/1
     172.16.2.66:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65100'
+      remote_as: '64102'
       description: SUPER-SPINE2_Ethernet6/1
     172.16.2.130:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65100'
+      remote_as: '64103'
       description: SUPER-SPINE3_Ethernet6/1
     172.16.2.194:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65100'
+      remote_as: '64104'
       description: SUPER-SPINE4_Ethernet6/1
 static_routes:
 - vrf: mgmt
@@ -73,7 +177,7 @@ management_interfaces:
     description: oob_management
     shutdown: false
     vrf: mgmt
-    ip_address: 192.168.1.14/24
+    ip_address: 10.6.33.2/24
     gateway: 10.6.1.1
     type: oob
 management_api_http:
@@ -83,7 +187,319 @@ management_api_http:
 eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli
   under platform_settings vEOS-LAB\n"
 ethernet_interfaces:
-  Ethernet4:
+  Ethernet1/1:
+    peer: DC1-POD2-LEAF1A
+    peer_interface: Ethernet30/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF1A_Ethernet30/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.2/31
+  Ethernet2/1:
+    peer: DC1-POD2-LEAF1B
+    peer_interface: Ethernet30/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF1B_Ethernet30/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.10/31
+  Ethernet3/1:
+    peer: DC1-POD2-LEAF2A
+    peer_interface: Ethernet30/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF2A_Ethernet30/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.18/31
+  Ethernet4/1:
+    peer: DC1-POD2-LEAF2B
+    peer_interface: Ethernet30/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF2B_Ethernet30/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.26/31
+  Ethernet5/1:
+    peer: DC1-POD2-LEAF3A
+    peer_interface: Ethernet30/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF3A_Ethernet30/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.34/31
+  Ethernet6/1:
+    peer: DC1-POD2-LEAF3B
+    peer_interface: Ethernet30/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF3B_Ethernet30/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.42/31
+  Ethernet7/1:
+    peer: DC1-POD2-LEAF4A
+    peer_interface: Ethernet30/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF4A_Ethernet30/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.50/31
+  Ethernet8/1:
+    peer: DC1-POD2-LEAF4B
+    peer_interface: Ethernet30/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF4B_Ethernet30/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.58/31
+  Ethernet9/1:
+    peer: DC1-POD2-LEAF5A
+    peer_interface: Ethernet30/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF5A_Ethernet30/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.66/31
+  Ethernet10/1:
+    peer: DC1-POD2-LEAF5B
+    peer_interface: Ethernet30/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF5B_Ethernet30/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.74/31
+  Ethernet11/1:
+    peer: DC1-POD2-LEAF6A
+    peer_interface: Ethernet30/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF6A_Ethernet30/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.82/31
+  Ethernet12/1:
+    peer: DC1-POD2-LEAF6B
+    peer_interface: Ethernet30/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF6B_Ethernet30/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.90/31
+  Ethernet13/1:
+    peer: DC1-POD2-LEAF7A
+    peer_interface: Ethernet30/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF7A_Ethernet30/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.98/31
+  Ethernet14/1:
+    peer: DC1-POD2-LEAF7B
+    peer_interface: Ethernet30/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF7B_Ethernet30/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.106/31
+  Ethernet15/1:
+    peer: DC1-POD2-LEAF8A
+    peer_interface: Ethernet30/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF8A_Ethernet30/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.114/31
+  Ethernet16/1:
+    peer: DC1-POD2-LEAF8B
+    peer_interface: Ethernet30/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF8B_Ethernet30/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.122/31
+  Ethernet17/1:
+    peer: DC1-POD2-LEAF9A
+    peer_interface: Ethernet30/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF9A_Ethernet30/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.130/31
+  Ethernet18/1:
+    peer: DC1-POD2-LEAF9B
+    peer_interface: Ethernet30/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF9B_Ethernet30/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.138/31
+  Ethernet19/1:
+    peer: DC1-POD2-LEAF10A
+    peer_interface: Ethernet30/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF10A_Ethernet30/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.146/31
+  Ethernet20/1:
+    peer: DC1-POD2-LEAF10B
+    peer_interface: Ethernet30/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF10B_Ethernet30/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.154/31
+  Ethernet21/1:
+    peer: DC1-POD2-LEAF11A
+    peer_interface: Ethernet30/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF11A_Ethernet30/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.162/31
+  Ethernet22/1:
+    peer: DC1-POD2-LEAF11B
+    peer_interface: Ethernet30/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF11B_Ethernet30/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.170/31
+  Ethernet23/1:
+    peer: DC1-POD2-LEAF12A
+    peer_interface: Ethernet30/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF12A_Ethernet30/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.178/31
+  Ethernet24/1:
+    peer: DC1-POD2-LEAF12B
+    peer_interface: Ethernet30/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF12B_Ethernet30/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.186/31
+  Ethernet25/1:
+    peer: DC1-POD2-LEAF13A
+    peer_interface: Ethernet30/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF13A_Ethernet30/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.194/31
+  Ethernet26/1:
+    peer: DC1-POD2-LEAF13B
+    peer_interface: Ethernet30/1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF13B_Ethernet30/1
+    mtu: 9214
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.2.202/31
+  Ethernet27/1:
     peer: DC1-POD2-LEAF14A
     peer_interface: Ethernet30/1
     peer_type: l3leaf
@@ -94,8 +510,8 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.2.18/31
-  Ethernet5:
+    ip_address: 172.17.2.210/31
+  Ethernet28/1:
     peer: DC1-POD2-LEAF14B
     peer_interface: Ethernet30/1
     peer_type: l3leaf
@@ -106,7 +522,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.2.26/31
+    ip_address: 172.17.2.218/31
   Ethernet29/1:
     peer: SUPER-SPINE1
     peer_interface: Ethernet6/1

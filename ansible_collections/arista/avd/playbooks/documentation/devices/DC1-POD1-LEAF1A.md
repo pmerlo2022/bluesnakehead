@@ -59,7 +59,7 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management0 | oob_management | oob | mgmt | 192.168.1.7/24 Test without management IP | 10.6.1.1 |
+| Management0 | oob_management | oob | mgmt | 10.6.2.1/24 | 10.6.1.1 |
 
 #### IPv6
 
@@ -75,7 +75,7 @@ interface Management0
    description oob_management
    no shutdown
    vrf mgmt
-   ip address 192.168.1.7/24 Test without management IP
+   ip address 10.6.2.1/24
 ```
 
 ## Management API HTTP
@@ -157,7 +157,7 @@ mlag configuration
    domain-id RACK1_MLAG
    local-interface Vlan4094
    peer-address 172.20.1.1
-   peer-address heartbeat 192.168.1.8 vrf mgmt
+   peer-address heartbeat 10.6.2.1 vrf mgmt
    peer-link Port-Channel151
    dual-primary detection delay 5 action errdisable all-interfaces
    reload-delay mlag 300
@@ -235,7 +235,7 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet6 | P2P_LINK_TO_DC1-POD1-LEAF1B_Ethernet4 | routed | - | 11.1.0.0/31 | default | 9214 | false | - | - |
+| Ethernet28/1 | P2P_LINK_TO_DC1-POD1-LEAF1B_Ethernet28/1 | routed | - | 11.1.0.0/31 | default | 9214 | false | - | - |
 | Ethernet29/1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet1/1 | routed | - | 172.17.1.1/31 | default | 9214 | false | - | - |
 | Ethernet30/1 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet1/1 | routed | - | 172.17.1.3/31 | default | 9214 | false | - | - |
 | Ethernet31/1 | P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet1/1 | routed | - | 172.17.1.5/31 | default | 9214 | false | - | - |
@@ -244,15 +244,6 @@ vlan 4094
 ### Ethernet Interfaces Device Configuration
 
 ```eos
-!
-interface Ethernet6
-   description P2P_LINK_TO_DC1-POD1-LEAF1B_Ethernet4
-   no shutdown
-   mac security profile MACSEC_PROFILE
-   mtu 9214
-   no switchport
-   ip address 11.1.0.0/31
-   ptp enable
 !
 interface Ethernet15/1
    description MLAG_PEER_DC1-POD1-LEAF1B_Ethernet15/1
@@ -263,6 +254,15 @@ interface Ethernet16/1
    description MLAG_PEER_DC1-POD1-LEAF1B_Ethernet16/1
    no shutdown
    channel-group 151 mode active
+!
+interface Ethernet28/1
+   description P2P_LINK_TO_DC1-POD1-LEAF1B_Ethernet28/1
+   no shutdown
+   mac security profile MACSEC_PROFILE
+   mtu 9214
+   no switchport
+   ip address 11.1.0.0/31
+   ptp enable
 !
 interface Ethernet29/1
    description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet1/1
@@ -484,7 +484,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | distance bgp 20 200 200 |
 | graceful-restart restart-time 300 |
 | graceful-restart |
-| maximum-paths 4 ecmp 4 |
+| maximum-paths 16 ecmp 16 |
 
 ### Router BGP Peer Groups
 
@@ -547,7 +547,7 @@ router bgp 65111.100
    distance bgp 20 200 200
    graceful-restart restart-time 300
    graceful-restart
-   maximum-paths 4 ecmp 4
+   maximum-paths 16 ecmp 16
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0

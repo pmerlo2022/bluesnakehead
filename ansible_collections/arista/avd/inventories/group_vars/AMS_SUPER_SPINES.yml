@@ -12,20 +12,25 @@ super_spine:
   nodes:
     SUPER-SPINE1:
       id: 1
-      mgmt_ip: 10.6.0.1/24
+      bgp_as: 64101
+      mgmt_ip: "{{ ansible_host }}/24"
       # evpn_role: none
       # evpn_route_servers: []
     SUPER-SPINE2:
       id: 2
-      mgmt_ip: 10.6.0.2/24
+      bgp_as: 64102      
+      mgmt_ip: "{{ ansible_host }}/24"
       # evpn_role: none
       # evpn_route_servers: []
     SUPER-SPINE3:
       id: 3
-      mgmt_ip: 10.6.0.3/24
+      bgp_as: 64103
+      mgmt_ip: "{{ ansible_host }}/24"
     SUPER-SPINE4:
       id: 4
-      mgmt_ip: 10.6.0.4/24
+      bgp_as: 64104
+      mgmt_ip: "{{ ansible_host }}/24"
     SUPER-SPINE5:
       id: 5
-      mgmt_ip: 10.6.0.5/24
+      bgp_as: 64105
+      mgmt_ip: "{{ ansible_host }}/24"

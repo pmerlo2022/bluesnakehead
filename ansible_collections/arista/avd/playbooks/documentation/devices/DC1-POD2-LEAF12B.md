@@ -60,7 +60,7 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management0 | oob_management | oob | mgmt | 192.168.1.11/16 | 10.6.1.1 |
+| Management0 | oob_management | oob | mgmt | 10.6.34.24/24 | 10.6.1.1 |
 
 #### IPv6
 
@@ -76,7 +76,7 @@ interface Management0
    description oob_management
    no shutdown
    vrf mgmt
-   ip address 192.168.1.11/16
+   ip address 10.6.34.24/24
 ```
 
 ## Domain-list
@@ -159,9 +159,9 @@ snmp-server location AMS DC1 DC1_POD2 DC1-POD2-LEAF12B
 
 | Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
-| RACK12_MLAG | Vlan4094 | 172.20.2.4 | Port-Channel5 |
+| RACK12_MLAG | Vlan4094 | 172.20.2.44 | Port-Channel151 |
 
-Dual primary detection is disabled.
+Dual primary detection is enabled. The detection delay is 5 seconds.
 
 ## MLAG Device Configuration
 
@@ -170,8 +170,10 @@ Dual primary detection is disabled.
 mlag configuration
    domain-id RACK12_MLAG
    local-interface Vlan4094
-   peer-address 172.20.2.4
-   peer-link Port-Channel5
+   peer-address 172.20.2.44
+   peer-address heartbeat 10.6.34.24 vrf mgmt
+   peer-link Port-Channel151
+   dual-primary detection delay 5 action errdisable all-interfaces
    reload-delay mlag 300
    reload-delay non-mlag 330
 ```
@@ -238,8 +240,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | MLAG_PEER_DC1-POD2-LEAF12A_Ethernet5 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet6 | MLAG_PEER_DC1-POD2-LEAF12A_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet15/1 | MLAG_PEER_DC1-POD2-LEAF12A_Ethernet15/1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 151 |
+| Ethernet16/1 | MLAG_PEER_DC1-POD2-LEAF12A_Ethernet16/1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 151 |
 
 *Inherited from Port-Channel Interface
 
@@ -247,58 +249,58 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet29/1 | P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet5 | routed | - | 172.17.2.25/31 | default | 9214 | false | - | - |
-| Ethernet30/1 | P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet5 | routed | - | 172.17.2.27/31 | default | 9214 | false | - | - |
-| Ethernet31/1 | P2P_LINK_TO_DC1-POD2-SPINE3_Ethernet8 | routed | - | 172.17.2.29/31 | default | 9214 | false | - | - |
-| Ethernet32/1 | P2P_LINK_TO_DC1-POD2-SPINE4_Ethernet8 | routed | - | 172.17.2.31/31 | default | 9214 | false | - | - |
+| Ethernet29/1 | P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet24/1 | routed | - | 172.17.2.185/31 | default | 9214 | false | - | - |
+| Ethernet30/1 | P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet24/1 | routed | - | 172.17.2.187/31 | default | 9214 | false | - | - |
+| Ethernet31/1 | P2P_LINK_TO_DC1-POD2-SPINE3_Ethernet24/1 | routed | - | 172.17.2.189/31 | default | 9214 | false | - | - |
+| Ethernet32/1 | P2P_LINK_TO_DC1-POD2-SPINE4_Ethernet24/1 | routed | - | 172.17.2.191/31 | default | 9214 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
-interface Ethernet5
-   description MLAG_PEER_DC1-POD2-LEAF12A_Ethernet5
+interface Ethernet15/1
+   description MLAG_PEER_DC1-POD2-LEAF12A_Ethernet15/1
    no shutdown
-   channel-group 5 mode active
+   channel-group 151 mode active
 !
-interface Ethernet6
-   description MLAG_PEER_DC1-POD2-LEAF12A_Ethernet6
+interface Ethernet16/1
+   description MLAG_PEER_DC1-POD2-LEAF12A_Ethernet16/1
    no shutdown
-   channel-group 5 mode active
+   channel-group 151 mode active
 !
 interface Ethernet29/1
-   description P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet5
+   description P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet24/1
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.17.2.25/31
+   ip address 172.17.2.185/31
    ptp enable
    service-profile QOS-PROFILE
 !
 interface Ethernet30/1
-   description P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet5
+   description P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet24/1
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.17.2.27/31
+   ip address 172.17.2.187/31
    ptp enable
    service-profile QOS-PROFILE
 !
 interface Ethernet31/1
-   description P2P_LINK_TO_DC1-POD2-SPINE3_Ethernet8
+   description P2P_LINK_TO_DC1-POD2-SPINE3_Ethernet24/1
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.17.2.29/31
+   ip address 172.17.2.189/31
    ptp enable
    service-profile QOS-PROFILE
 !
 interface Ethernet32/1
-   description P2P_LINK_TO_DC1-POD2-SPINE4_Ethernet8
+   description P2P_LINK_TO_DC1-POD2-SPINE4_Ethernet24/1
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.17.2.31/31
+   ip address 172.17.2.191/31
    ptp enable
    service-profile QOS-PROFILE
 ```
@@ -311,14 +313,14 @@ interface Ethernet32/1
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_DC1-POD2-LEAF12A_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel151 | MLAG_PEER_DC1-POD2-LEAF12A_Po151 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
-interface Port-Channel5
-   description MLAG_PEER_DC1-POD2-LEAF12A_Po5
+interface Port-Channel151
+   description MLAG_PEER_DC1-POD2-LEAF12A_Po151
    no shutdown
    switchport
    switchport trunk allowed vlan 2-4094
@@ -336,8 +338,8 @@ interface Port-Channel5
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 10.4.2.6/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 10.5.2.5/32 |
+| Loopback0 | EVPN_Overlay_Peering | default | 10.4.2.26/32 |
+| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 10.5.2.25/32 |
 
 #### IPv6
 
@@ -354,12 +356,12 @@ interface Port-Channel5
 interface Loopback0
    description EVPN_Overlay_Peering
    no shutdown
-   ip address 10.4.2.6/32
+   ip address 10.4.2.26/32
 !
 interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    no shutdown
-   ip address 10.5.2.5/32
+   ip address 10.5.2.25/32
 ```
 
 ## VLAN Interfaces
@@ -374,7 +376,7 @@ interface Loopback1
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan4094 |  default  |  172.20.2.5/31  |  -  |  -  |  -  |  -  |  -  |
+| Vlan4094 |  default  |  172.20.2.45/31  |  -  |  -  |  -  |  -  |  -  |
 
 
 ### VLAN Interfaces Device Configuration
@@ -386,7 +388,7 @@ interface Vlan4094
    no shutdown
    mtu 9214
    no autostate
-   ip address 172.20.2.5/31
+   ip address 172.20.2.45/31
 ```
 
 ## VXLAN Interface
@@ -488,7 +490,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65112.1200|  10.4.2.6 |
+| 65112.1200|  10.4.2.26 |
 
 | BGP Tuning |
 | ---------- |
@@ -496,7 +498,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | distance bgp 20 200 200 |
 | graceful-restart restart-time 300 |
 | graceful-restart |
-| maximum-paths 4 ecmp 4 |
+| maximum-paths 16 ecmp 16 |
 
 ### Router BGP Peer Groups
 
@@ -536,11 +538,11 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | -------- | --------- | --- | -------------- | -------------- |
 | 10.4.2.3 | 65112.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 10.4.2.4 | 65112.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 172.17.2.24 | 65001.200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.17.2.26 | 65001.200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.17.2.28 | 65001.200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.17.2.30 | 65001.200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.20.2.4 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
+| 172.17.2.184 | 65001.200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.2.186 | 65001.200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.2.188 | 65001.200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.2.190 | 65001.200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.20.2.44 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
 
 ### Router BGP EVPN Address Family
 
@@ -552,19 +554,19 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| Common_VRF | 10.4.2.6:1025 | connected |
+| Common_VRF | 10.4.2.26:1025 | connected |
 
 ### Router BGP Device Configuration
 
 ```eos
 !
 router bgp 65112.1200
-   router-id 10.4.2.6
+   router-id 10.4.2.26
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    graceful-restart restart-time 300
    graceful-restart
-   maximum-paths 4 ecmp 4
+   maximum-paths 16 ecmp 16
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
@@ -592,20 +594,20 @@ router bgp 65112.1200
    neighbor 10.4.2.4 remote-as 65112.100
    neighbor 10.4.2.4 description DC1-POD2-LEAF1B
    neighbor 10.4.2.4 route-map RM-EVPN-FILTER-AS65112.100 out
-   neighbor 172.17.2.24 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.2.24 remote-as 65001.200
-   neighbor 172.17.2.24 description DC1-POD2-SPINE1_Ethernet5
-   neighbor 172.17.2.26 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.2.26 remote-as 65001.200
-   neighbor 172.17.2.26 description DC1-POD2-SPINE2_Ethernet5
-   neighbor 172.17.2.28 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.2.28 remote-as 65001.200
-   neighbor 172.17.2.28 description DC1-POD2-SPINE3_Ethernet8
-   neighbor 172.17.2.30 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.2.30 remote-as 65001.200
-   neighbor 172.17.2.30 description DC1-POD2-SPINE4_Ethernet8
-   neighbor 172.20.2.4 peer group MLAG-IPv4-UNDERLAY-PEER
-   neighbor 172.20.2.4 description DC1-POD2-LEAF12A
+   neighbor 172.17.2.184 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.2.184 remote-as 65001.200
+   neighbor 172.17.2.184 description DC1-POD2-SPINE1_Ethernet24/1
+   neighbor 172.17.2.186 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.2.186 remote-as 65001.200
+   neighbor 172.17.2.186 description DC1-POD2-SPINE2_Ethernet24/1
+   neighbor 172.17.2.188 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.2.188 remote-as 65001.200
+   neighbor 172.17.2.188 description DC1-POD2-SPINE3_Ethernet24/1
+   neighbor 172.17.2.190 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.2.190 remote-as 65001.200
+   neighbor 172.17.2.190 description DC1-POD2-SPINE4_Ethernet24/1
+   neighbor 172.20.2.44 peer group MLAG-IPv4-UNDERLAY-PEER
+   neighbor 172.20.2.44 description DC1-POD2-LEAF12A
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn
@@ -622,10 +624,10 @@ router bgp 65112.1200
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
    !
    vrf Common_VRF
-      rd 10.4.2.6:1025
+      rd 10.4.2.26:1025
       route-target import evpn 1025:1025
       route-target export evpn 1025:1025
-      router-id 10.4.2.6
+      router-id 10.4.2.26
       redistribute connected
       !
       comment
