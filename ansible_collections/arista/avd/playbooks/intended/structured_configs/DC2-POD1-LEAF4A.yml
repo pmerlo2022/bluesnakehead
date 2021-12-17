@@ -154,8 +154,8 @@ vlan_interfaces:
     no_autostate: true
     mtu: 9214
 port_channel_interfaces:
-  Port-Channel5:
-    description: MLAG_PEER_DC2-POD1-LEAF4B_Po5
+  Port-Channel151:
+    description: MLAG_PEER_DC2-POD1-LEAF4B_Po151
     type: switched
     shutdown: false
     vlans: 2-4094
@@ -164,26 +164,73 @@ port_channel_interfaces:
     trunk_groups:
     - LEAF_PEER_L3
     - MLAG
+  Port-Channel131:
+    description: server-1_PortChannel
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    mlag: 131
+    service_profile: bar
+    eos_cli: 'port-channel lacp fallback individual
+
+      '
+  Port-Channel121:
+    description: Set using structured_config on server adapter port-channel
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    mlag: 121
+    service_profile: foo
+    struct_cfg:
+      description: Set using structured_config on server adapter port-channel
+  Port-Channel111:
+    description: server-1_PortChannel
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    mlag: 111
+    service_profile: foo
+    eos_cli: 'comment
+
+      Comment created from raw_eos_cli under port_channel on profile NESTED_TENANT_A
+
+      EOF
+
+      '
+  Port-Channel101:
+    description: server-2_PortChannel
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    mlag: 101
+    service_profile: foo
+    eos_cli: 'port-channel lacp fallback individual
+
+      '
 ethernet_interfaces:
-  Ethernet5:
+  Ethernet15/1:
     peer: DC2-POD1-LEAF4B
-    peer_interface: Ethernet5
+    peer_interface: Ethernet15/1
     peer_type: mlag_peer
-    description: MLAG_PEER_DC2-POD1-LEAF4B_Ethernet5
+    description: MLAG_PEER_DC2-POD1-LEAF4B_Ethernet15/1
     type: switched
     shutdown: false
     channel_group:
-      id: 5
+      id: 151
       mode: active
-  Ethernet6:
+  Ethernet16/1:
     peer: DC2-POD1-LEAF4B
-    peer_interface: Ethernet6
+    peer_interface: Ethernet16/1
     peer_type: mlag_peer
-    description: MLAG_PEER_DC2-POD1-LEAF4B_Ethernet6
+    description: MLAG_PEER_DC2-POD1-LEAF4B_Ethernet16/1
     type: switched
     shutdown: false
     channel_group:
-      id: 5
+      id: 151
       mode: active
   Ethernet29/1:
     peer: DC2-POD1-SPINE1
@@ -233,6 +280,81 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.17.32.55/31
+  Ethernet13/1:
+    peer: server-1
+    peer_interface: Eth1
+    peer_type: server
+    description: server-1_Eth1
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    channel_group:
+      id: 131
+      mode: active
+    service_profile: bar
+    eos_cli: 'comment
+
+      Comment created from raw_eos_cli under profile TENANT_A
+
+      EOF
+
+      '
+  Ethernet12/1:
+    peer: server-1
+    peer_interface: Eth3
+    peer_type: server
+    description: Set using structured_config on server adapter
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    channel_group:
+      id: 121
+      mode: active
+    service_profile: foo
+    eos_cli: 'comment
+
+      Comment created from raw_eos_cli under adapter for switch Eth17
+
+      EOF
+
+      '
+    struct_cfg:
+      description: Set using structured_config on server adapter
+  Ethernet11/1:
+    peer: server-1
+    peer_interface: Eth5
+    peer_type: server
+    description: server-1_Eth5
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    channel_group:
+      id: 111
+      mode: active
+    service_profile: foo
+    eos_cli: 'comment
+
+      Comment created from raw_eos_cli under profile NESTED_TENANT_A
+
+      EOF
+
+      '
+  Ethernet10/1:
+    peer: server-2
+    peer_interface: eno3
+    peer_type: server
+    description: server-2_eno3
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    channel_group:
+      id: 101
+      mode: active
+    service_profile: foo
 mlag_configuration:
   domain_id: RACK4_MLAG
   local_interface: Vlan4094
@@ -241,7 +363,7 @@ mlag_configuration:
     peer_ip: 10.6.32.7
     vrf: mgmt
   dual_primary_detection_delay: 5
-  peer_link: Port-Channel5
+  peer_link: Port-Channel151
   reload_delay_mlag: 300
   reload_delay_non_mlag: 330
 route_maps:

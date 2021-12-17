@@ -154,8 +154,8 @@ vlan_interfaces:
     no_autostate: true
     mtu: 9214
 port_channel_interfaces:
-  Port-Channel5:
-    description: MLAG_PEER_DC2-POD1-LEAF7A_Po5
+  Port-Channel151:
+    description: MLAG_PEER_DC2-POD1-LEAF7A_Po151
     type: switched
     shutdown: false
     vlans: 2-4094
@@ -165,25 +165,25 @@ port_channel_interfaces:
     - LEAF_PEER_L3
     - MLAG
 ethernet_interfaces:
-  Ethernet5:
+  Ethernet15/1:
     peer: DC2-POD1-LEAF7A
-    peer_interface: Ethernet5
+    peer_interface: Ethernet15/1
     peer_type: mlag_peer
-    description: MLAG_PEER_DC2-POD1-LEAF7A_Ethernet5
+    description: MLAG_PEER_DC2-POD1-LEAF7A_Ethernet15/1
     type: switched
     shutdown: false
     channel_group:
-      id: 5
+      id: 151
       mode: active
-  Ethernet6:
+  Ethernet16/1:
     peer: DC2-POD1-LEAF7A
-    peer_interface: Ethernet6
+    peer_interface: Ethernet16/1
     peer_type: mlag_peer
-    description: MLAG_PEER_DC2-POD1-LEAF7A_Ethernet6
+    description: MLAG_PEER_DC2-POD1-LEAF7A_Ethernet16/1
     type: switched
     shutdown: false
     channel_group:
-      id: 5
+      id: 151
       mode: active
   Ethernet29/1:
     peer: DC2-POD1-SPINE1
@@ -241,7 +241,7 @@ mlag_configuration:
     peer_ip: 10.6.32.14
     vrf: mgmt
   dual_primary_detection_delay: 5
-  peer_link: Port-Channel5
+  peer_link: Port-Channel151
   reload_delay_mlag: 300
   reload_delay_non_mlag: 330
 route_maps:

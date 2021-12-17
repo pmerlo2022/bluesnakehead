@@ -72,7 +72,7 @@ l3leaf:
       interface Loopback1010
         description Loopback created from raw_eos_cli under l3leaf defaults in DC2 POD1
     mlag: true
-    mlag_interfaces: [ Ethernet5, Ethernet6 ]
+    mlag_interfaces: [ Ethernet15/1, Ethernet16/1 ]    
     mlag_peer_l3_ipv4_pool: 172.19.32.0/24
     mlag_peer_ipv4_pool: 172.20.32.0/24
   node_groups:

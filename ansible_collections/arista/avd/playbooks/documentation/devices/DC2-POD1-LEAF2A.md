@@ -161,7 +161,7 @@ snmp-server location AMS DC2 DC2_POD1 DC2-POD1-LEAF2A
 
 | Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
-| RACK2_MLAG | Vlan4094 | 172.20.32.5 | Port-Channel5 |
+| RACK2_MLAG | Vlan4094 | 172.20.32.5 | Port-Channel151 |
 
 Dual primary detection is enabled. The detection delay is 5 seconds.
 
@@ -174,7 +174,7 @@ mlag configuration
    local-interface Vlan4094
    peer-address 172.20.32.5
    peer-address heartbeat 10.6.32.3 vrf mgmt
-   peer-link Port-Channel5
+   peer-link Port-Channel151
    dual-primary detection delay 5 action errdisable all-interfaces
    reload-delay mlag 300
    reload-delay non-mlag 330
@@ -242,8 +242,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | MLAG_PEER_DC2-POD1-LEAF2B_Ethernet5 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet6 | MLAG_PEER_DC2-POD1-LEAF2B_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet15/1 | MLAG_PEER_DC2-POD1-LEAF2B_Ethernet15/1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 151 |
+| Ethernet16/1 | MLAG_PEER_DC2-POD1-LEAF2B_Ethernet16/1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 151 |
 
 *Inherited from Port-Channel Interface
 
@@ -260,15 +260,15 @@ vlan 4094
 
 ```eos
 !
-interface Ethernet5
-   description MLAG_PEER_DC2-POD1-LEAF2B_Ethernet5
+interface Ethernet15/1
+   description MLAG_PEER_DC2-POD1-LEAF2B_Ethernet15/1
    no shutdown
-   channel-group 5 mode active
+   channel-group 151 mode active
 !
-interface Ethernet6
-   description MLAG_PEER_DC2-POD1-LEAF2B_Ethernet6
+interface Ethernet16/1
+   description MLAG_PEER_DC2-POD1-LEAF2B_Ethernet16/1
    no shutdown
-   channel-group 5 mode active
+   channel-group 151 mode active
 !
 interface Ethernet29/1
    description P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet3/1
@@ -315,14 +315,14 @@ interface Ethernet32/1
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_DC2-POD1-LEAF2B_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel151 | MLAG_PEER_DC2-POD1-LEAF2B_Po151 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
-interface Port-Channel5
-   description MLAG_PEER_DC2-POD1-LEAF2B_Po5
+interface Port-Channel151
+   description MLAG_PEER_DC2-POD1-LEAF2B_Po151
    no shutdown
    switchport
    switchport trunk allowed vlan 2-4094

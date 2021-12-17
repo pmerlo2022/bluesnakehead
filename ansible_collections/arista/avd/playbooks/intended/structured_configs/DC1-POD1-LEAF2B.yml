@@ -160,46 +160,6 @@ port_channel_interfaces:
     trunk_groups:
     - LEAF_PEER_L3
     - MLAG
-  Port-Channel131:
-    description: server-1_PortChannel
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: 110
-    mlag: 131
-    service_profile: foo
-    eos_cli: 'comment
-
-      Comment created from raw_eos_cli under port_channel on profile NESTED_TENANT_A
-
-      EOF
-
-      '
-  Port-Channel121:
-    description: Set using structured_config on server adapter port-channel
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: 110
-    mlag: 121
-    service_profile: foo
-    struct_cfg:
-      description: Set using structured_config on server adapter port-channel
-  Port-Channel141:
-    description: server-1_PortChannel
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: 110
-    mlag: 141
-    service_profile: foo
-    eos_cli: 'comment
-
-      Comment created from raw_eos_cli under adapter port_channel for switch Po19
-
-      EOF
-
-      '
 ethernet_interfaces:
   Ethernet15/1:
     peer: DC1-POD1-LEAF2A
@@ -269,68 +229,6 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.17.1.31/31
-  Ethernet13/1:
-    peer: server-1
-    peer_interface: Eth6
-    peer_type: server
-    description: server-1_Eth6
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: 110
-    channel_group:
-      id: 131
-      mode: active
-    service_profile: foo
-    eos_cli: 'comment
-
-      Comment created from raw_eos_cli under profile NESTED_TENANT_A
-
-      EOF
-
-      '
-  Ethernet12/1:
-    peer: server-1
-    peer_interface: Eth4
-    peer_type: server
-    description: Set using structured_config on server adapter
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: 110
-    channel_group:
-      id: 121
-      mode: active
-    service_profile: foo
-    eos_cli: 'comment
-
-      Comment created from raw_eos_cli under adapter for switch Eth17
-
-      EOF
-
-      '
-    struct_cfg:
-      description: Set using structured_config on server adapter
-  Ethernet14/1:
-    peer: server-1
-    peer_interface: Eth8
-    peer_type: server
-    description: server-1_Eth8
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: 110
-    channel_group:
-      id: 141
-      mode: active
-    service_profile: foo
-    eos_cli: 'comment
-
-      Comment created from raw_eos_cli under profile NESTED_TENANT_A
-
-      EOF
-
-      '
 mlag_configuration:
   domain_id: RACK2_MLAG
   local_interface: Vlan4094

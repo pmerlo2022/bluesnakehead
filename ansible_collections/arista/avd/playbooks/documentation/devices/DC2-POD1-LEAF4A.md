@@ -159,7 +159,7 @@ snmp-server location AMS DC2 DC2_POD1 DC2-POD1-LEAF4A
 
 | Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
-| RACK4_MLAG | Vlan4094 | 172.20.32.13 | Port-Channel5 |
+| RACK4_MLAG | Vlan4094 | 172.20.32.13 | Port-Channel151 |
 
 Dual primary detection is enabled. The detection delay is 5 seconds.
 
@@ -172,7 +172,7 @@ mlag configuration
    local-interface Vlan4094
    peer-address 172.20.32.13
    peer-address heartbeat 10.6.32.7 vrf mgmt
-   peer-link Port-Channel5
+   peer-link Port-Channel151
    dual-primary detection delay 5 action errdisable all-interfaces
    reload-delay mlag 300
    reload-delay non-mlag 330
@@ -240,8 +240,12 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | MLAG_PEER_DC2-POD1-LEAF4B_Ethernet5 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet6 | MLAG_PEER_DC2-POD1-LEAF4B_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet10/1 | server-2_eno3 | *access | *110 | *- | *- | 101 |
+| Ethernet11/1 | server-1_Eth5 | *access | *110 | *- | *- | 111 |
+| Ethernet12/1 | Set using structured_config on server adapter | *access | *110 | *- | *- | 121 |
+| Ethernet13/1 | server-1_Eth1 | *access | *110 | *- | *- | 131 |
+| Ethernet15/1 | MLAG_PEER_DC2-POD1-LEAF4B_Ethernet15/1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 151 |
+| Ethernet16/1 | MLAG_PEER_DC2-POD1-LEAF4B_Ethernet16/1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 151 |
 
 *Inherited from Port-Channel Interface
 
@@ -258,15 +262,47 @@ vlan 4094
 
 ```eos
 !
-interface Ethernet5
-   description MLAG_PEER_DC2-POD1-LEAF4B_Ethernet5
+interface Ethernet10/1
+   description server-2_eno3
    no shutdown
-   channel-group 5 mode active
+   channel-group 101 mode active
 !
-interface Ethernet6
-   description MLAG_PEER_DC2-POD1-LEAF4B_Ethernet6
+interface Ethernet11/1
+   description server-1_Eth5
    no shutdown
-   channel-group 5 mode active
+   channel-group 111 mode active
+   comment
+   Comment created from raw_eos_cli under profile NESTED_TENANT_A
+   EOF
+
+!
+interface Ethernet12/1
+   description Set using structured_config on server adapter
+   no shutdown
+   channel-group 121 mode active
+   comment
+   Comment created from raw_eos_cli under adapter for switch Eth17
+   EOF
+
+!
+interface Ethernet13/1
+   description server-1_Eth1
+   no shutdown
+   channel-group 131 mode active
+   comment
+   Comment created from raw_eos_cli under profile TENANT_A
+   EOF
+
+!
+interface Ethernet15/1
+   description MLAG_PEER_DC2-POD1-LEAF4B_Ethernet15/1
+   no shutdown
+   channel-group 151 mode active
+!
+interface Ethernet16/1
+   description MLAG_PEER_DC2-POD1-LEAF4B_Ethernet16/1
+   no shutdown
+   channel-group 151 mode active
 !
 interface Ethernet29/1
    description P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet7/1
@@ -313,14 +349,58 @@ interface Ethernet32/1
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_DC2-POD1-LEAF4B_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel101 | server-2_PortChannel | switched | access | 110 | - | - | - | - | 101 | - |
+| Port-Channel111 | server-1_PortChannel | switched | access | 110 | - | - | - | - | 111 | - |
+| Port-Channel121 | Set using structured_config on server adapter port-channel | switched | access | 110 | - | - | - | - | 121 | - |
+| Port-Channel131 | server-1_PortChannel | switched | access | 110 | - | - | - | - | 131 | - |
+| Port-Channel151 | MLAG_PEER_DC2-POD1-LEAF4B_Po151 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
-interface Port-Channel5
-   description MLAG_PEER_DC2-POD1-LEAF4B_Po5
+interface Port-Channel101
+   description server-2_PortChannel
+   no shutdown
+   switchport
+   switchport access vlan 110
+   mlag 101
+   service-profile foo
+   port-channel lacp fallback individual
+
+!
+interface Port-Channel111
+   description server-1_PortChannel
+   no shutdown
+   switchport
+   switchport access vlan 110
+   mlag 111
+   service-profile foo
+   comment
+   Comment created from raw_eos_cli under port_channel on profile NESTED_TENANT_A
+   EOF
+
+!
+interface Port-Channel121
+   description Set using structured_config on server adapter port-channel
+   no shutdown
+   switchport
+   switchport access vlan 110
+   mlag 121
+   service-profile foo
+!
+interface Port-Channel131
+   description server-1_PortChannel
+   no shutdown
+   switchport
+   switchport access vlan 110
+   mlag 131
+   service-profile bar
+   port-channel lacp fallback individual
+
+!
+interface Port-Channel151
+   description MLAG_PEER_DC2-POD1-LEAF4B_Po151
    no shutdown
    switchport
    switchport trunk allowed vlan 2-4094
