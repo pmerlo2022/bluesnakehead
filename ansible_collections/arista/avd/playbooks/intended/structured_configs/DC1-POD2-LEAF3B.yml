@@ -86,14 +86,14 @@ router_bgp:
   vrfs:
     Common_VRF:
       router_id: 10.4.2.8
-      rd: 10.4.2.8:1025
+      rd: 10.4.2.8:2025
       route_targets:
         import:
           evpn:
-          - 1025:1025
+          - 2025:2025
         export:
           evpn:
-          - 1025:1025
+          - 2025:2025
       redistribute_routes:
       - connected
       eos_cli: 'comment
@@ -129,7 +129,7 @@ vrfs:
   mgmt:
     ip_routing: false
   Common_VRF:
-    tenant: Tenant_A
+    tenant: Tenant_B
     ip_routing: true
 management_interfaces:
   Management0:
@@ -145,7 +145,8 @@ management_api_http:
   enable_https: true
 eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli
   under platform_settings vEOS-LAB\n\ninterface Loopback1000\n  description Loopback
-  created from raw_eos_cli under VRF Common_VRF\n"
+  created from raw_eos_cli under VRF Common_VRF\n\ninterface Loopback2000\n  description
+  Loopback created from raw_eos_cli under VRF Common_VRF\n"
 vlans:
   4094:
     tenant: system
@@ -309,6 +310,6 @@ vxlan_interface:
       udp_port: 4789
       vrfs:
         Common_VRF:
-          vni: 1025
+          vni: 2025
 domain_list:
 - structured-config.set.under.vrf.common-vrf

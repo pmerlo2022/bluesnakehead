@@ -405,7 +405,7 @@ interface Vlan4094
 
 | VLAN | VNI |
 | ---- | --- |
-| Common_VRF | 1025 |
+| Common_VRF | 2025 |
 
 ### VXLAN Interface Device Configuration
 
@@ -416,7 +416,7 @@ interface Vxlan1
    vxlan source-interface Loopback1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
-   vxlan vrf Common_VRF vni 1025
+   vxlan vrf Common_VRF vni 2025
 ```
 
 # Routing
@@ -552,7 +552,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| Common_VRF | 10.4.1.23:1025 | connected |
+| Common_VRF | 10.4.1.23:2025 | connected |
 
 ### Router BGP Device Configuration
 
@@ -614,9 +614,9 @@ router bgp 65111.1100
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
    !
    vrf Common_VRF
-      rd 10.4.1.23:1025
-      route-target import evpn 1025:1025
-      route-target export evpn 1025:1025
+      rd 10.4.1.23:2025
+      route-target import evpn 2025:2025
+      route-target export evpn 2025:2025
       router-id 10.4.1.23
       redistribute connected
       !
@@ -735,6 +735,9 @@ vrf instance mgmt
 ```eos
 !
 interface Loopback1000
+  description Loopback created from raw_eos_cli under VRF Common_VRF
+
+interface Loopback2000
   description Loopback created from raw_eos_cli under VRF Common_VRF
 
 ```
