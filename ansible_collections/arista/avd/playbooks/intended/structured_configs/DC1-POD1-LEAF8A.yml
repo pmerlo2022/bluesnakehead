@@ -1,6 +1,6 @@
 router_bgp:
   as: '65111.800'
-  router_id: 10.4.1.17
+  router_id: 10.4.1.21
   bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
@@ -39,22 +39,22 @@ router_bgp:
       EVPN-OVERLAY-PEERS:
         activate: false
   neighbors:
-    172.20.1.29:
+    172.20.1.37:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: DC1-POD1-LEAF8B
-    172.17.1.112:
+    172.17.1.144:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65001.100'
       description: DC1-POD1-SPINE1_Ethernet15/1
-    172.17.1.114:
+    172.17.1.146:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65001.102'
       description: DC1-POD1-SPINE2_Ethernet15/1
-    172.17.1.116:
+    172.17.1.148:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65001.100'
       description: DC1-POD1-SPINE3_Ethernet15/1
-    172.17.1.118:
+    172.17.1.150:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65001.100'
       description: DC1-POD1-SPINE4_Ethernet15/1
@@ -74,9 +74,24 @@ router_bgp:
         default_route_target:
           only: true
   vrfs:
-    Common_VRF:
-      router_id: 10.4.1.17
-      rd: 10.4.1.17:2025
+    Cust_A_VRF:
+      router_id: 10.4.1.21
+      rd: 10.4.1.21:1025
+      route_targets:
+        import:
+          evpn:
+          - 1025:1025
+        export:
+          evpn:
+          - 1025:1025
+      neighbors:
+        172.20.1.37:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+      redistribute_routes:
+      - connected
+    Cust_B_VRF:
+      router_id: 10.4.1.21
+      rd: 10.4.1.21:2025
       route_targets:
         import:
           evpn:
@@ -84,15 +99,11 @@ router_bgp:
         export:
           evpn:
           - 2025:2025
+      neighbors:
+        172.20.1.37:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
-      eos_cli: 'comment
-
-        Comment created from raw_eos_cli under BGP for VRF Common_VRF
-
-        EOF
-
-        '
 static_routes:
 - vrf: mgmt
   destination_address_prefix: 0.0.0.0/0
@@ -118,8 +129,11 @@ local_users:
 vrfs:
   mgmt:
     ip_routing: false
-  Common_VRF:
-    tenant: Tenant_B
+  Cust_A_VRF:
+    tenant: Cust_A
+    ip_routing: true
+  Cust_B_VRF:
+    tenant: Cust_B
     ip_routing: true
 management_interfaces:
   Management0:
@@ -139,12 +153,38 @@ vlans:
     name: MLAG_PEER
     trunk_groups:
     - MLAG
+  4024:
+    tenant: Cust_A
+    name: MLAG_iBGP_Cust_A_VRF
+    trunk_groups:
+    - LEAF_PEER_L3
+  5024:
+    tenant: Cust_B
+    name: MLAG_iBGP_Cust_B_VRF
+    trunk_groups:
+    - LEAF_PEER_L3
 vlan_interfaces:
   Vlan4094:
     description: MLAG_PEER
     shutdown: false
-    ip_address: 172.20.1.28/31
+    ip_address: 172.20.1.36/31
     no_autostate: true
+    mtu: 9214
+  Vlan4024:
+    tenant: Cust_A
+    type: underlay_peering
+    shutdown: false
+    description: 'MLAG_PEER_L3_iBGP: vrf Cust_A_VRF'
+    vrf: Cust_A_VRF
+    ip_address: 172.20.1.36/31
+    mtu: 9214
+  Vlan5024:
+    tenant: Cust_B
+    type: underlay_peering
+    shutdown: false
+    description: 'MLAG_PEER_L3_iBGP: vrf Cust_B_VRF'
+    vrf: Cust_B_VRF
+    ip_address: 172.20.1.36/31
     mtu: 9214
 port_channel_interfaces:
   Port-Channel151:
@@ -153,7 +193,7 @@ port_channel_interfaces:
     shutdown: false
     vlans: 2-4094
     mode: trunk
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     trunk_groups:
     - LEAF_PEER_L3
     - MLAG
@@ -184,52 +224,52 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet15/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.1.113/31
+    ip_address: 172.17.1.145/31
   Ethernet30/1:
     peer: DC1-POD1-SPINE2
     peer_interface: Ethernet15/1
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet15/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.1.115/31
+    ip_address: 172.17.1.147/31
   Ethernet31/1:
     peer: DC1-POD1-SPINE3
     peer_interface: Ethernet15/1
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet15/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.1.117/31
+    ip_address: 172.17.1.149/31
   Ethernet32/1:
     peer: DC1-POD1-SPINE4
     peer_interface: Ethernet15/1
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet15/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.1.119/31
+    ip_address: 172.17.1.151/31
 mlag_configuration:
   domain_id: RACK8_MLAG
   local_interface: Vlan4094
-  peer_address: 172.20.1.29
+  peer_address: 172.20.1.37
   peer_address_heartbeat:
     peer_ip: 10.6.2.15
     vrf: mgmt
@@ -256,11 +296,11 @@ loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     shutdown: false
-    ip_address: 10.4.1.17/32
+    ip_address: 10.4.1.21/32
   Loopback1:
     description: VTEP_VXLAN_Tunnel_Source
     shutdown: false
-    ip_address: 10.5.1.17/32
+    ip_address: 10.5.1.21/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:
@@ -276,12 +316,6 @@ router_bfd:
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
-eos_cli: "interface Loopback1000\n  description Loopback created from raw_eos_cli
-  under VRF Common_VRF\n\ninterface Loopback2000\n  description Loopback created from
-  raw_eos_cli under VRF Common_VRF\n"
-struct_cfg:
-  domain_list:
-  - structured-config.set.under.vrf.common-vrf
 vxlan_interface:
   Vxlan1:
     description: DC1-POD1-LEAF8A_VTEP
@@ -290,7 +324,7 @@ vxlan_interface:
       virtual_router_encapsulation_mac_address: mlag-system-id
       udp_port: 4789
       vrfs:
-        Common_VRF:
+        Cust_A_VRF:
+          vni: 1025
+        Cust_B_VRF:
           vni: 2025
-domain_list:
-- structured-config.set.under.vrf.common-vrf

@@ -1,0 +1,12 @@
+---
+firewalls:
+  FIREWALL01:
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ E0, E1 ]
+        switch_ports: [ Ethernet20, Ethernet20 ]
+        switches: [ DC1-POD1-LEAF1A, DC1-POD1-LEAF1B ]
+        profile: TENANT_A
+        #port_channel:
+        #  description: PortChanne1
+        #  mode: active

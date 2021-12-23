@@ -246,7 +246,7 @@ port_channel_interfaces:
     shutdown: false
     vlans: 2-4094
     mode: trunk
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     trunk_groups:
     - LEAF_PEER_L3
     - MLAG
@@ -277,7 +277,7 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet2/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -289,7 +289,7 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet2/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -301,7 +301,7 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD2-SPINE3_Ethernet2/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -313,7 +313,7 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD2-SPINE4_Ethernet2/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed

@@ -110,7 +110,7 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet31/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -122,7 +122,7 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet31/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -134,7 +134,7 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet31/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -146,7 +146,7 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet31/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -158,7 +158,7 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet31/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -170,7 +170,7 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet31/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -182,7 +182,7 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD2-SPINE3_Ethernet31/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -194,7 +194,7 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-POD2-SPINE4_Ethernet31/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -206,7 +206,7 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet31/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -218,7 +218,7 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet31/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -230,7 +230,7 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC2-POD1-SPINE3_Ethernet31/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -242,7 +242,7 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC2-POD1-SPINE4_Ethernet31/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed

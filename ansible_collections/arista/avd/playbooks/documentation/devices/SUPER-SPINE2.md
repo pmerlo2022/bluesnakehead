@@ -197,7 +197,7 @@ interface Ethernet1/1
    no switchport
    ip address 172.16.1.8/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet2/1
    description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet30/1
@@ -206,7 +206,7 @@ interface Ethernet2/1
    no switchport
    ip address 172.16.1.10/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet3/1
    description P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet30/1
@@ -215,7 +215,7 @@ interface Ethernet3/1
    no switchport
    ip address 172.16.1.12/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet4/1
    description P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet30/1
@@ -224,7 +224,7 @@ interface Ethernet4/1
    no switchport
    ip address 172.16.1.14/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet5/1
    description P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet30/1
@@ -233,7 +233,7 @@ interface Ethernet5/1
    no switchport
    ip address 172.16.2.64/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet6/1
    description P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet30/1
@@ -242,7 +242,7 @@ interface Ethernet6/1
    no switchport
    ip address 172.16.2.66/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet7/1
    description P2P_LINK_TO_DC1-POD2-SPINE3_Ethernet30/1
@@ -251,7 +251,7 @@ interface Ethernet7/1
    no switchport
    ip address 172.16.2.68/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet8/1
    description P2P_LINK_TO_DC1-POD2-SPINE4_Ethernet30/1
@@ -260,7 +260,7 @@ interface Ethernet8/1
    no switchport
    ip address 172.16.2.70/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet9/1
    description P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet30/1
@@ -269,7 +269,7 @@ interface Ethernet9/1
    no switchport
    ip address 172.16.32.64/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet10/1
    description P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet30/1
@@ -278,7 +278,7 @@ interface Ethernet10/1
    no switchport
    ip address 172.16.32.66/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet11/1
    description P2P_LINK_TO_DC2-POD1-SPINE3_Ethernet30/1
@@ -287,7 +287,7 @@ interface Ethernet11/1
    no switchport
    ip address 172.16.32.68/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet12/1
    description P2P_LINK_TO_DC2-POD1-SPINE4_Ethernet30/1
@@ -296,7 +296,7 @@ interface Ethernet12/1
    no switchport
    ip address 172.16.32.70/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 ```
 
 ## Loopback Interfaces

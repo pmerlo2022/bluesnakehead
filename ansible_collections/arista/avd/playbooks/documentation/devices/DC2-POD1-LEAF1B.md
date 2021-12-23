@@ -269,7 +269,7 @@ interface Ethernet29/1
    no switchport
    ip address 172.17.32.9/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet30/1
    description P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet2/1
@@ -278,7 +278,7 @@ interface Ethernet30/1
    no switchport
    ip address 172.17.32.11/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet31/1
    description P2P_LINK_TO_DC2-POD1-SPINE3_Ethernet2/1
@@ -287,7 +287,7 @@ interface Ethernet31/1
    no switchport
    ip address 172.17.32.13/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet32/1
    description P2P_LINK_TO_DC2-POD1-SPINE4_Ethernet2/1
@@ -296,7 +296,7 @@ interface Ethernet32/1
    no switchport
    ip address 172.17.32.15/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 ```
 
 ## Port-Channel Interfaces
@@ -321,7 +321,7 @@ interface Port-Channel151
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 ```
 
 ## Loopback Interfaces
@@ -491,7 +491,6 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | Settings | Value |
 | -------- | ----- |
 | Address Family | evpn |
-| Next-hop unchanged | True |
 | Source | Loopback0 |
 | Bfd | true |
 | Ebgp multihop | 5 |
@@ -520,34 +519,6 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 | Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
 | -------- | --------- | --- | -------------- | -------------- |
-| 10.4.32.3 | 65211.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.4 | 65211.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.5 | 65112.200 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.6 | 65112.200 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.7 | 65112.300 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.8 | 65112.300 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.9 | 65112.400 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.10 | 65112.400 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.11 | 65112.500 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.12 | 65112.500 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.13 | 65112.600 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.14 | 65112.600 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.15 | 65112.700 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.16 | 65112.700 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.17 | 65112.800 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.18 | 65112.800 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.19 | 65112.900 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.20 | 65112.900 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.21 | 65211.1000 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.22 | 65211.1000 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.23 | 65112.1100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.24 | 65112.1100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.25 | 65112.1200 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.26 | 65112.1200 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.27 | 65112.1300 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.28 | 65112.1300 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.29 | 65112.1400 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.4.32.30 | 65112.1400 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 11.1.1.18 | 65101 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.32.8 | 65002.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.32.10 | 65002.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
@@ -573,7 +544,6 @@ router bgp 65211.100
    graceful-restart
    maximum-paths 16 ecmp 16
    neighbor EVPN-OVERLAY-PEERS peer group
-   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
    neighbor EVPN-OVERLAY-PEERS ebgp-multihop 5
@@ -588,90 +558,6 @@ router bgp 65211.100
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
-   neighbor 10.4.32.3 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.3 remote-as 65211.100
-   neighbor 10.4.32.3 description DC2-POD1-LEAF1A
-   neighbor 10.4.32.4 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.4 remote-as 65211.100
-   neighbor 10.4.32.4 description DC2-POD1-LEAF1B
-   neighbor 10.4.32.5 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.5 remote-as 65112.200
-   neighbor 10.4.32.5 description DC2-POD1-LEAF2A
-   neighbor 10.4.32.6 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.6 remote-as 65112.200
-   neighbor 10.4.32.6 description DC2-POD1-LEAF2B
-   neighbor 10.4.32.7 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.7 remote-as 65112.300
-   neighbor 10.4.32.7 description DC2-POD1-LEAF3A
-   neighbor 10.4.32.8 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.8 remote-as 65112.300
-   neighbor 10.4.32.8 description DC2-POD1-LEAF3B
-   neighbor 10.4.32.9 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.9 remote-as 65112.400
-   neighbor 10.4.32.9 description DC2-POD1-LEAF4A
-   neighbor 10.4.32.10 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.10 remote-as 65112.400
-   neighbor 10.4.32.10 description DC2-POD1-LEAF4B
-   neighbor 10.4.32.11 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.11 remote-as 65112.500
-   neighbor 10.4.32.11 description DC2-POD1-LEAF5A
-   neighbor 10.4.32.12 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.12 remote-as 65112.500
-   neighbor 10.4.32.12 description DC2-POD1-LEAF5B
-   neighbor 10.4.32.13 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.13 remote-as 65112.600
-   neighbor 10.4.32.13 description DC2-POD1-LEAF6A
-   neighbor 10.4.32.14 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.14 remote-as 65112.600
-   neighbor 10.4.32.14 description DC2-POD1-LEAF6B
-   neighbor 10.4.32.15 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.15 remote-as 65112.700
-   neighbor 10.4.32.15 description DC2-POD1-LEAF7A
-   neighbor 10.4.32.16 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.16 remote-as 65112.700
-   neighbor 10.4.32.16 description DC2-POD1-LEAF7B
-   neighbor 10.4.32.17 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.17 remote-as 65112.800
-   neighbor 10.4.32.17 description DC2-POD1-LEAF8A
-   neighbor 10.4.32.18 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.18 remote-as 65112.800
-   neighbor 10.4.32.18 description DC2-POD1-LEAF8B
-   neighbor 10.4.32.19 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.19 remote-as 65112.900
-   neighbor 10.4.32.19 description DC2-POD1-LEAF9A
-   neighbor 10.4.32.20 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.20 remote-as 65112.900
-   neighbor 10.4.32.20 description DC2-POD1-LEAF9B
-   neighbor 10.4.32.21 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.21 remote-as 65211.1000
-   neighbor 10.4.32.21 description DC2-POD1-LEAF10A
-   neighbor 10.4.32.22 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.22 remote-as 65211.1000
-   neighbor 10.4.32.22 description DC2-POD1-LEAF10B
-   neighbor 10.4.32.23 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.23 remote-as 65112.1100
-   neighbor 10.4.32.23 description DC2-POD1-LEAF11A
-   neighbor 10.4.32.24 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.24 remote-as 65112.1100
-   neighbor 10.4.32.24 description DC2-POD1-LEAF11B
-   neighbor 10.4.32.25 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.25 remote-as 65112.1200
-   neighbor 10.4.32.25 description DC2-POD1-LEAF12A
-   neighbor 10.4.32.26 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.26 remote-as 65112.1200
-   neighbor 10.4.32.26 description DC2-POD1-LEAF12B
-   neighbor 10.4.32.27 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.27 remote-as 65112.1300
-   neighbor 10.4.32.27 description DC2-POD1-LEAF13A
-   neighbor 10.4.32.28 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.28 remote-as 65112.1300
-   neighbor 10.4.32.28 description DC2-POD1-LEAF13B
-   neighbor 10.4.32.29 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.29 remote-as 65112.1400
-   neighbor 10.4.32.29 description DC2-POD1-LEAF14A
-   neighbor 10.4.32.30 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.4.32.30 remote-as 65112.1400
-   neighbor 10.4.32.30 description DC2-POD1-LEAF14B
    neighbor 11.1.1.18 peer group IPv4-UNDERLAY-PEERS
    neighbor 11.1.1.18 remote-as 65101
    neighbor 11.1.1.18 local-as 65102 no-prepend replace-as
@@ -697,7 +583,6 @@ router bgp 65211.100
    !
    address-family rt-membership
       neighbor EVPN-OVERLAY-PEERS activate
-      neighbor EVPN-OVERLAY-PEERS default-route-target only
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate

@@ -45,12 +45,26 @@ terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
 
 p2p_uplinks_mtu: 9214
 
-underlay_routing_protocol: BGP
-overlay_routing_protocol: BGP
+underlay_routing_protocol: EBGP
+overlay_routing_protocol: EBGP
+underlay_rfc5549: false
 
-evpn_ebgp_multihop: 3
+#3 is recommended for 3-stage.
+evpn_ebgp_multihop: 5
 
 evpn_short_esi_prefix: "0000:0000:"
+#evpn_hostflap_detection:
+  # If set to false it will disable EVPN host-flap detection
+#  enabled: < true | false | default -> true >
+
+  # Minimum number of MAC moves that indicate a MAC duplication issue
+#  threshold: < number | default 5 >
+
+  # Time (in seconds) to detect a MAC duplication issue
+#  window: < seconds | default 180 >
+# Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)
+# Requires use eBGP as overlay protocol.
+#evpn_overlay_bgp_rtc: < true | false , default -> false >
 
 # Underlay OSPF Defaults
 underlay_ospf_process_id: 100

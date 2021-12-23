@@ -218,7 +218,7 @@ interface Ethernet1/1
    no switchport
    ip address 172.17.32.4/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet2/1
    description P2P_LINK_TO_DC2-POD1-LEAF1B_Ethernet31/1
@@ -227,7 +227,7 @@ interface Ethernet2/1
    no switchport
    ip address 172.17.32.12/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet3/1
    description P2P_LINK_TO_DC2-POD1-LEAF2A_Ethernet31/1
@@ -236,7 +236,7 @@ interface Ethernet3/1
    no switchport
    ip address 172.17.32.20/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet4/1
    description P2P_LINK_TO_DC2-POD1-LEAF2B_Ethernet31/1
@@ -245,7 +245,7 @@ interface Ethernet4/1
    no switchport
    ip address 172.17.32.28/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet5/1
    description P2P_LINK_TO_DC2-POD1-LEAF3A_Ethernet31/1
@@ -254,7 +254,7 @@ interface Ethernet5/1
    no switchport
    ip address 172.17.32.36/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet6/1
    description P2P_LINK_TO_DC2-POD1-LEAF3B_Ethernet31/1
@@ -263,7 +263,7 @@ interface Ethernet6/1
    no switchport
    ip address 172.17.32.44/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet7/1
    description P2P_LINK_TO_DC2-POD1-LEAF4A_Ethernet31/1
@@ -272,7 +272,7 @@ interface Ethernet7/1
    no switchport
    ip address 172.17.32.52/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet8/1
    description P2P_LINK_TO_DC2-POD1-LEAF4B_Ethernet31/1
@@ -281,7 +281,7 @@ interface Ethernet8/1
    no switchport
    ip address 172.17.32.60/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet9/1
    description P2P_LINK_TO_DC2-POD1-LEAF5A_Ethernet31/1
@@ -290,7 +290,7 @@ interface Ethernet9/1
    no switchport
    ip address 172.17.32.68/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet10/1
    description P2P_LINK_TO_DC2-POD1-LEAF5B_Ethernet31/1
@@ -299,7 +299,7 @@ interface Ethernet10/1
    no switchport
    ip address 172.17.32.76/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet11/1
    description P2P_LINK_TO_DC2-POD1-LEAF6A_Ethernet31/1
@@ -308,7 +308,7 @@ interface Ethernet11/1
    no switchport
    ip address 172.17.32.84/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet12/1
    description P2P_LINK_TO_DC2-POD1-LEAF6B_Ethernet31/1
@@ -317,7 +317,7 @@ interface Ethernet12/1
    no switchport
    ip address 172.17.32.92/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet13/1
    description P2P_LINK_TO_DC2-POD1-LEAF7A_Ethernet31/1
@@ -326,7 +326,7 @@ interface Ethernet13/1
    no switchport
    ip address 172.17.32.100/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet14/1
    description P2P_LINK_TO_DC2-POD1-LEAF7B_Ethernet31/1
@@ -335,7 +335,7 @@ interface Ethernet14/1
    no switchport
    ip address 172.17.32.108/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet15/1
    description P2P_LINK_TO_DC2-POD1-LEAF8A_Ethernet31/1
@@ -344,7 +344,7 @@ interface Ethernet15/1
    no switchport
    ip address 172.17.32.116/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet16/1
    description P2P_LINK_TO_DC2-POD1-LEAF8B_Ethernet31/1
@@ -353,7 +353,7 @@ interface Ethernet16/1
    no switchport
    ip address 172.17.32.124/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet17/1
    description P2P_LINK_TO_DC2-POD1-LEAF9A_Ethernet31/1
@@ -362,7 +362,7 @@ interface Ethernet17/1
    no switchport
    ip address 172.17.32.132/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet18/1
    description P2P_LINK_TO_DC2-POD1-LEAF9B_Ethernet31/1
@@ -371,7 +371,7 @@ interface Ethernet18/1
    no switchport
    ip address 172.17.32.140/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet19/1
    description P2P_LINK_TO_DC2-POD1-LEAF10A_Ethernet31/1
@@ -380,7 +380,7 @@ interface Ethernet19/1
    no switchport
    ip address 172.17.32.148/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet20/1
    description P2P_LINK_TO_DC2-POD1-LEAF10B_Ethernet31/1
@@ -389,7 +389,7 @@ interface Ethernet20/1
    no switchport
    ip address 172.17.32.156/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet21/1
    description P2P_LINK_TO_DC2-POD1-LEAF11A_Ethernet31/1
@@ -398,7 +398,7 @@ interface Ethernet21/1
    no switchport
    ip address 172.17.32.164/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet22/1
    description P2P_LINK_TO_DC2-POD1-LEAF11B_Ethernet31/1
@@ -407,7 +407,7 @@ interface Ethernet22/1
    no switchport
    ip address 172.17.32.172/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet23/1
    description P2P_LINK_TO_DC2-POD1-LEAF12A_Ethernet31/1
@@ -416,7 +416,7 @@ interface Ethernet23/1
    no switchport
    ip address 172.17.32.180/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet24/1
    description P2P_LINK_TO_DC2-POD1-LEAF12B_Ethernet31/1
@@ -425,7 +425,7 @@ interface Ethernet24/1
    no switchport
    ip address 172.17.32.188/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet25/1
    description P2P_LINK_TO_DC2-POD1-LEAF13A_Ethernet31/1
@@ -434,7 +434,7 @@ interface Ethernet25/1
    no switchport
    ip address 172.17.32.196/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet26/1
    description P2P_LINK_TO_DC2-POD1-LEAF13B_Ethernet31/1
@@ -443,7 +443,7 @@ interface Ethernet26/1
    no switchport
    ip address 172.17.32.204/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet27/1
    description P2P_LINK_TO_DC2-POD1-LEAF14A_Ethernet31/1
@@ -452,7 +452,7 @@ interface Ethernet27/1
    no switchport
    ip address 172.17.32.212/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet28/1
    description P2P_LINK_TO_DC2-POD1-LEAF14B_Ethernet31/1
@@ -461,7 +461,7 @@ interface Ethernet28/1
    no switchport
    ip address 172.17.32.220/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet29/1
    description P2P_LINK_TO_SUPER-SPINE1_Ethernet11/1
@@ -470,7 +470,7 @@ interface Ethernet29/1
    no switchport
    ip address 172.16.32.5/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet30/1
    description P2P_LINK_TO_SUPER-SPINE2_Ethernet11/1
@@ -479,7 +479,7 @@ interface Ethernet30/1
    no switchport
    ip address 172.16.32.69/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet31/1
    description P2P_LINK_TO_SUPER-SPINE3_Ethernet11/1
@@ -488,7 +488,7 @@ interface Ethernet31/1
    no switchport
    ip address 172.16.32.133/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 !
 interface Ethernet32/1
    description P2P_LINK_TO_SUPER-SPINE4_Ethernet11/1
@@ -497,7 +497,7 @@ interface Ethernet32/1
    no switchport
    ip address 172.16.32.197/31
    ptp enable
-   service-profile QOS-PROFILE
+   service-profile P2P-QOS-PROFILE
 ```
 
 ## Loopback Interfaces

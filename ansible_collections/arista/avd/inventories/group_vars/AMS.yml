@@ -10,7 +10,7 @@ mgmt_interface_vrf: mgmt
 mgmt_destination_networks:
   - 0.0.0.0/0
 
-p2p_uplinks_qos_profile: QOS-PROFILE
+p2p_uplinks_qos_profile: P2P-QOS-PROFILE
 
 local_users:
   admin:
@@ -111,7 +111,7 @@ node_type_keys:
   l3leaf:
     type: l3leaf
     connected_endpoints: true
-    default_evpn_role: server
+    default_evpn_role: client
     mlag_support: true
     # is l2 a local vlan, or trunk to an l2leaf?
     network_services:

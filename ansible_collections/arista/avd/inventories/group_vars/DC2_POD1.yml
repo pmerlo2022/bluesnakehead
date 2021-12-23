@@ -49,7 +49,7 @@ l3leaf:
     bgp_as: 65555
     virtual_router_mac_address: 00:1c:73:00:dc:01  
     platform: vEOS-LAB
-    evpn_role: server
+    evpn_role: client
     evpn_route_servers: [ DC2-POD1-LEAF1A, DC2-POD1-LEAF1B ]
     spanning_tree_mode: rstp
     spanning_tree_priority: 4096
@@ -82,7 +82,7 @@ l3leaf:
       mlag: true
       mlag_dual_primary_detection: true
       mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
-      evpn_role: server
+      #evpn_role: server
       filter:
         tenants: []
         tags: []
@@ -99,7 +99,7 @@ l3leaf:
     RACK2_MLAG:
       platform: vEOS-LAB
       bgp_as: "65112.200"
-      evpn_role: server
+      #evpn_role: server
       mlag: true
       mlag_dual_primary_detection: true
       mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.

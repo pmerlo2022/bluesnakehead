@@ -193,7 +193,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF1A_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -205,7 +205,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF1B_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -217,7 +217,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF2A_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -229,7 +229,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF2B_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -241,7 +241,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF3A_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -253,7 +253,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF3B_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -265,7 +265,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF4A_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -277,7 +277,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF4B_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -289,7 +289,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF5A_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -301,7 +301,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF5B_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -313,7 +313,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF6A_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -325,7 +325,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF6B_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -337,7 +337,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF7A_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -349,7 +349,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF7B_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -361,7 +361,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF8A_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -373,7 +373,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF8B_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -385,7 +385,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF9A_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -397,7 +397,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF9B_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -409,7 +409,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF10A_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -421,7 +421,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF10B_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -433,7 +433,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF11A_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -445,7 +445,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF11B_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -457,7 +457,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF12A_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -469,7 +469,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF12B_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -481,7 +481,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF13A_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -493,7 +493,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF13B_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -505,7 +505,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF14A_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -517,7 +517,7 @@ ethernet_interfaces:
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-POD2-LEAF14B_Ethernet30/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -529,7 +529,7 @@ ethernet_interfaces:
     peer_type: super-spine
     description: P2P_LINK_TO_SUPER-SPINE1_Ethernet6/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -541,7 +541,7 @@ ethernet_interfaces:
     peer_type: super-spine
     description: P2P_LINK_TO_SUPER-SPINE2_Ethernet6/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -553,7 +553,7 @@ ethernet_interfaces:
     peer_type: super-spine
     description: P2P_LINK_TO_SUPER-SPINE3_Ethernet6/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -565,7 +565,7 @@ ethernet_interfaces:
     peer_type: super-spine
     description: P2P_LINK_TO_SUPER-SPINE4_Ethernet6/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed

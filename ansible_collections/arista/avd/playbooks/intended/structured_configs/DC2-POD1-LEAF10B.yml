@@ -26,7 +26,6 @@ router_bgp:
       ebgp_multihop: '5'
       send_community: all
       maximum_routes: 0
-      next_hop_unchanged: true
   address_family_ipv4:
     peer_groups:
       MLAG-IPv4-UNDERLAY-PEER:
@@ -55,14 +54,6 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65002.100'
       description: DC2-POD1-SPINE4_Ethernet20/1
-    10.4.32.3:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC2-POD1-LEAF1A
-      remote_as: '65211.100'
-    10.4.32.4:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC2-POD1-LEAF1B
-      remote_as: '65211.100'
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
@@ -74,10 +65,23 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
-        default_route_target:
-          only: true
   vrfs:
-    Common_VRF:
+    Cust_A_VRF:
+      router_id: 10.4.32.22
+      rd: 10.4.32.22:1025
+      route_targets:
+        import:
+          evpn:
+          - 1025:1025
+        export:
+          evpn:
+          - 1025:1025
+      neighbors:
+        172.20.32.36:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+      redistribute_routes:
+      - connected
+    Cust_B_VRF:
       router_id: 10.4.32.22
       rd: 10.4.32.22:2025
       route_targets:
@@ -87,15 +91,11 @@ router_bgp:
         export:
           evpn:
           - 2025:2025
+      neighbors:
+        172.20.32.36:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
-      eos_cli: 'comment
-
-        Comment created from raw_eos_cli under BGP for VRF Common_VRF
-
-        EOF
-
-        '
 static_routes:
 - vrf: mgmt
   destination_address_prefix: 0.0.0.0/0
@@ -121,8 +121,11 @@ local_users:
 vrfs:
   mgmt:
     ip_routing: false
-  Common_VRF:
-    tenant: Tenant_B
+  Cust_A_VRF:
+    tenant: Cust_A
+    ip_routing: true
+  Cust_B_VRF:
+    tenant: Cust_B
     ip_routing: true
 management_interfaces:
   Management0:
@@ -138,21 +141,45 @@ management_api_http:
   enable_https: true
 eos_cli: "interface Loopback1010\n  description Loopback created from raw_eos_cli
   under l3leaf defaults in DC2 POD1\n\ninterface Loopback1111\n  description Loopback
-  created from raw_eos_cli under platform_settings vEOS-LAB\n\ninterface Loopback1000\n
-  \ description Loopback created from raw_eos_cli under VRF Common_VRF\n\ninterface
-  Loopback2000\n  description Loopback created from raw_eos_cli under VRF Common_VRF\n"
+  created from raw_eos_cli under platform_settings vEOS-LAB\n"
 vlans:
   4094:
     tenant: system
     name: MLAG_PEER
     trunk_groups:
     - MLAG
+  4024:
+    tenant: Cust_A
+    name: MLAG_iBGP_Cust_A_VRF
+    trunk_groups:
+    - LEAF_PEER_L3
+  5024:
+    tenant: Cust_B
+    name: MLAG_iBGP_Cust_B_VRF
+    trunk_groups:
+    - LEAF_PEER_L3
 vlan_interfaces:
   Vlan4094:
     description: MLAG_PEER
     shutdown: false
     ip_address: 172.20.32.37/31
     no_autostate: true
+    mtu: 9214
+  Vlan4024:
+    tenant: Cust_A
+    type: underlay_peering
+    shutdown: false
+    description: 'MLAG_PEER_L3_iBGP: vrf Cust_A_VRF'
+    vrf: Cust_A_VRF
+    ip_address: 172.20.32.37/31
+    mtu: 9214
+  Vlan5024:
+    tenant: Cust_B
+    type: underlay_peering
+    shutdown: false
+    description: 'MLAG_PEER_L3_iBGP: vrf Cust_B_VRF'
+    vrf: Cust_B_VRF
+    ip_address: 172.20.32.37/31
     mtu: 9214
 port_channel_interfaces:
   Port-Channel151:
@@ -161,7 +188,7 @@ port_channel_interfaces:
     shutdown: false
     vlans: 2-4094
     mode: trunk
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     trunk_groups:
     - LEAF_PEER_L3
     - MLAG
@@ -192,7 +219,7 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet20/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -204,7 +231,7 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet20/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -216,7 +243,7 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC2-POD1-SPINE3_Ethernet20/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -228,7 +255,7 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC2-POD1-SPINE4_Ethernet20/1
     mtu: 9214
-    service_profile: QOS-PROFILE
+    service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
@@ -284,9 +311,6 @@ router_bfd:
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
-struct_cfg:
-  domain_list:
-  - structured-config.set.under.vrf.common-vrf
 vxlan_interface:
   Vxlan1:
     description: DC2-POD1-LEAF10B_VTEP
@@ -295,7 +319,7 @@ vxlan_interface:
       virtual_router_encapsulation_mac_address: mlag-system-id
       udp_port: 4789
       vrfs:
-        Common_VRF:
+        Cust_A_VRF:
+          vni: 1025
+        Cust_B_VRF:
           vni: 2025
-domain_list:
-- structured-config.set.under.vrf.common-vrf

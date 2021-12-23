@@ -501,3 +501,11 @@ all:
         DC1_POD1_LEAFS:
         DC1_POD2_LEAFS:
         DC2_POD1_LEAFS:
+# Using this for edge's like mgmt
+    ROUTERS:
+      children:
+        DC1_POD1_LEAFS:
+        
+    FIREWALLS:
+      children:
+        DC1_POD1_LEAFS:        

@@ -1,6 +1,8 @@
 Node Type,Node,Node Interface,Peer Type,Peer,Peer Interface
 l3leaf,DC1-POD1-LEAF1A,Ethernet15/1,mlag_peer,DC1-POD1-LEAF1B,Ethernet15/1
 l3leaf,DC1-POD1-LEAF1A,Ethernet16/1,mlag_peer,DC1-POD1-LEAF1B,Ethernet16/1
+l3leaf,DC1-POD1-LEAF1A,Ethernet20,firewall,FIREWALL01,E0
+l3leaf,DC1-POD1-LEAF1A,Ethernet21,router,ROUTER01,Mgmt_Eth0
 l3leaf,DC1-POD1-LEAF1A,Ethernet28/1,l3leaf,DC1-POD1-LEAF1B,Ethernet28/1
 l3leaf,DC1-POD1-LEAF1A,Ethernet29/1,spine,DC1-POD1-SPINE1,Ethernet1/1
 l3leaf,DC1-POD1-LEAF1A,Ethernet30/1,spine,DC1-POD1-SPINE2,Ethernet1/1
@@ -8,6 +10,8 @@ l3leaf,DC1-POD1-LEAF1A,Ethernet31/1,spine,DC1-POD1-SPINE3,Ethernet1/1
 l3leaf,DC1-POD1-LEAF1A,Ethernet32/1,spine,DC1-POD1-SPINE4,Ethernet1/1
 l3leaf,DC1-POD1-LEAF1B,Ethernet15/1,mlag_peer,DC1-POD1-LEAF1A,Ethernet15/1
 l3leaf,DC1-POD1-LEAF1B,Ethernet16/1,mlag_peer,DC1-POD1-LEAF1A,Ethernet16/1
+l3leaf,DC1-POD1-LEAF1B,Ethernet20,firewall,FIREWALL01,E1
+l3leaf,DC1-POD1-LEAF1B,Ethernet21,router,ROUTER01,Mgmt_Eth1
 l3leaf,DC1-POD1-LEAF1B,Ethernet28/1,l3leaf,DC1-POD1-LEAF1A,Ethernet28/1
 l3leaf,DC1-POD1-LEAF1B,Ethernet29/1,spine,DC1-POD1-SPINE1,Ethernet2/1
 l3leaf,DC1-POD1-LEAF1B,Ethernet30/1,spine,DC1-POD1-SPINE2,Ethernet2/1
@@ -37,12 +41,14 @@ l3leaf,DC1-POD1-LEAF3B,Ethernet29/1,spine,DC1-POD1-SPINE1,Ethernet6/1
 l3leaf,DC1-POD1-LEAF3B,Ethernet30/1,spine,DC1-POD1-SPINE2,Ethernet6/1
 l3leaf,DC1-POD1-LEAF3B,Ethernet31/1,spine,DC1-POD1-SPINE3,Ethernet6/1
 l3leaf,DC1-POD1-LEAF3B,Ethernet32/1,spine,DC1-POD1-SPINE4,Ethernet6/1
+l3leaf,DC1-POD1-LEAF4A,Ethernet10/1,server,server-2,eno3
 l3leaf,DC1-POD1-LEAF4A,Ethernet15/1,mlag_peer,DC1-POD1-LEAF4B,Ethernet15/1
 l3leaf,DC1-POD1-LEAF4A,Ethernet16/1,mlag_peer,DC1-POD1-LEAF4B,Ethernet16/1
 l3leaf,DC1-POD1-LEAF4A,Ethernet29/1,spine,DC1-POD1-SPINE1,Ethernet7/1
 l3leaf,DC1-POD1-LEAF4A,Ethernet30/1,spine,DC1-POD1-SPINE2,Ethernet7/1
 l3leaf,DC1-POD1-LEAF4A,Ethernet31/1,spine,DC1-POD1-SPINE3,Ethernet7/1
 l3leaf,DC1-POD1-LEAF4A,Ethernet32/1,spine,DC1-POD1-SPINE4,Ethernet7/1
+l3leaf,DC1-POD1-LEAF4B,Ethernet10/1,server,server-2,eno4
 l3leaf,DC1-POD1-LEAF4B,Ethernet15/1,mlag_peer,DC1-POD1-LEAF4A,Ethernet15/1
 l3leaf,DC1-POD1-LEAF4B,Ethernet16/1,mlag_peer,DC1-POD1-LEAF4A,Ethernet16/1
 l3leaf,DC1-POD1-LEAF4B,Ethernet29/1,spine,DC1-POD1-SPINE1,Ethernet8/1
@@ -632,20 +638,16 @@ l3leaf,DC2-POD1-LEAF3B,Ethernet29/1,spine,DC2-POD1-SPINE1,Ethernet6/1
 l3leaf,DC2-POD1-LEAF3B,Ethernet30/1,spine,DC2-POD1-SPINE2,Ethernet6/1
 l3leaf,DC2-POD1-LEAF3B,Ethernet31/1,spine,DC2-POD1-SPINE3,Ethernet6/1
 l3leaf,DC2-POD1-LEAF3B,Ethernet32/1,spine,DC2-POD1-SPINE4,Ethernet6/1
-l3leaf,DC2-POD1-LEAF4A,Ethernet10/1,server,server-2,eno3
-l3leaf,DC2-POD1-LEAF4A,Ethernet11/1,server,server-1,Eth5
-l3leaf,DC2-POD1-LEAF4A,Ethernet12/1,server,server-1,Eth3
-l3leaf,DC2-POD1-LEAF4A,Ethernet13/1,server,server-1,Eth1
+l3leaf,DC2-POD1-LEAF4A,Ethernet12/1,server,server-1,eno3
+l3leaf,DC2-POD1-LEAF4A,Ethernet13/1,server,server-1,eno1
 l3leaf,DC2-POD1-LEAF4A,Ethernet15/1,mlag_peer,DC2-POD1-LEAF4B,Ethernet15/1
 l3leaf,DC2-POD1-LEAF4A,Ethernet16/1,mlag_peer,DC2-POD1-LEAF4B,Ethernet16/1
 l3leaf,DC2-POD1-LEAF4A,Ethernet29/1,spine,DC2-POD1-SPINE1,Ethernet7/1
 l3leaf,DC2-POD1-LEAF4A,Ethernet30/1,spine,DC2-POD1-SPINE2,Ethernet7/1
 l3leaf,DC2-POD1-LEAF4A,Ethernet31/1,spine,DC2-POD1-SPINE3,Ethernet7/1
 l3leaf,DC2-POD1-LEAF4A,Ethernet32/1,spine,DC2-POD1-SPINE4,Ethernet7/1
-l3leaf,DC2-POD1-LEAF4B,Ethernet10/1,server,server-2,eno4
-l3leaf,DC2-POD1-LEAF4B,Ethernet11/1,server,server-1,Eth6
-l3leaf,DC2-POD1-LEAF4B,Ethernet12/1,server,server-1,Eth4
-l3leaf,DC2-POD1-LEAF4B,Ethernet13/1,server,server-1,Eth2
+l3leaf,DC2-POD1-LEAF4B,Ethernet12/1,server,server-1,eno4
+l3leaf,DC2-POD1-LEAF4B,Ethernet13/1,server,server-1,eno2
 l3leaf,DC2-POD1-LEAF4B,Ethernet15/1,mlag_peer,DC2-POD1-LEAF4A,Ethernet15/1
 l3leaf,DC2-POD1-LEAF4B,Ethernet16/1,mlag_peer,DC2-POD1-LEAF4A,Ethernet16/1
 l3leaf,DC2-POD1-LEAF4B,Ethernet29/1,spine,DC2-POD1-SPINE1,Ethernet8/1
