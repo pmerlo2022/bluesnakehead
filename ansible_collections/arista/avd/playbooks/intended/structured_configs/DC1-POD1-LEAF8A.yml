@@ -29,7 +29,6 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
-      next_hop_unchanged: true
   address_family_ipv4:
     peer_groups:
       MLAG-IPv4-UNDERLAY-PEER:
@@ -71,8 +70,6 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
-        default_route_target:
-          only: true
   vrfs:
     Cust_A_VRF:
       router_id: 10.4.1.21

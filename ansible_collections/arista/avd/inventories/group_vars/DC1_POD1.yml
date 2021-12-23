@@ -59,7 +59,9 @@ l3leaf:
     bgp_as: "65555"
     virtual_router_mac_address: 00:1c:73:00:dc:01
     platform: 7280R
-    evpn_role: server
+    evpn_role: client
+#client    neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
+#server    neighbor EVPN-OVERLAY-PEERS default-route-target only
 #    evpn_route_servers: [ DC1-POD1-LEAF1A, DC1-POD1-LEAF1B ]
     igmp_snooping_enabled: true
     spanning_tree_mode: rstp

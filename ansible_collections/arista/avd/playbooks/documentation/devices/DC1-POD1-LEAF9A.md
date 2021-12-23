@@ -525,7 +525,6 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | Settings | Value |
 | -------- | ----- |
 | Address Family | evpn |
-| Next-hop unchanged | True |
 | Source | Loopback0 |
 | Bfd | true |
 | Ebgp multihop | 5 |
@@ -587,7 +586,6 @@ router bgp 65111.900
    graceful-restart
    maximum-paths 16 ecmp 16
    neighbor EVPN-OVERLAY-PEERS peer group
-   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
    neighbor EVPN-OVERLAY-PEERS ebgp-multihop 5
@@ -627,7 +625,6 @@ router bgp 65111.900
    !
    address-family rt-membership
       neighbor EVPN-OVERLAY-PEERS activate
-      neighbor EVPN-OVERLAY-PEERS default-route-target only
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
