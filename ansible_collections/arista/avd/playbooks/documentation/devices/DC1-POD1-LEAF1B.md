@@ -228,8 +228,8 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet15/1 | MLAG_PEER_DC1-POD1-LEAF1A_Ethernet15/1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 151 |
 | Ethernet16/1 | MLAG_PEER_DC1-POD1-LEAF1A_Ethernet16/1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 151 |
-| Ethernet20 |  FIREWALL01_E1 | access | 110 | - | - | - |
-| Ethernet21 |  ROUTER01_Mgmt_Eth1 | access | 110 | - | - | - |
+| Ethernet20 |  FIREWALL01_E1 | access | 100 | - | - | - |
+| Ethernet21 |  ROUTER01_Mgmt_Eth1 | access | 100 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -261,7 +261,7 @@ interface Ethernet20
    description FIREWALL01_E1
    no shutdown
    switchport
-   switchport access vlan 110
+   switchport access vlan 100
    switchport mode access
    service-profile foo
    comment
@@ -273,7 +273,7 @@ interface Ethernet21
    description ROUTER01_Mgmt_Eth1
    no shutdown
    switchport
-   switchport access vlan 110
+   switchport access vlan 100
    switchport mode access
    service-profile foo
    comment
@@ -519,6 +519,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | Settings | Value |
 | -------- | ----- |
 | Address Family | evpn |
+| Next-hop unchanged | True |
 | Source | Loopback0 |
 | Bfd | true |
 | Ebgp multihop | 5 |
@@ -574,6 +575,7 @@ router bgp 65111.100
    graceful-restart
    maximum-paths 16 ecmp 16
    neighbor EVPN-OVERLAY-PEERS peer group
+   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
    neighbor EVPN-OVERLAY-PEERS ebgp-multihop 5
@@ -618,6 +620,7 @@ router bgp 65111.100
    !
    address-family rt-membership
       neighbor EVPN-OVERLAY-PEERS activate
+      neighbor EVPN-OVERLAY-PEERS default-route-target only
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate

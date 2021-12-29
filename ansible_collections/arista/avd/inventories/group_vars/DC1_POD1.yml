@@ -59,7 +59,7 @@ l3leaf:
     bgp_as: "65555"
     virtual_router_mac_address: 00:1c:73:00:dc:01
     platform: 7280R
-    evpn_role: client
+    evpn_role: server
 #client    neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
 #server    neighbor EVPN-OVERLAY-PEERS default-route-target only
 #    evpn_route_servers: [ DC1-POD1-LEAF1A, DC1-POD1-LEAF1B ]
@@ -81,9 +81,10 @@ l3leaf:
       - 'distance bgp 20 200 200'
       - 'graceful-restart restart-time 300'
       - 'graceful-restart'
+# filter matches tags specified in TENANT_NETWORKS.yml. This is where we associate vrfs/racks. Vlans in servers would match specific nodes. I'll have to check 'tag' capabilites there
     filter:
       always_include_vrfs_in_tenants: [ 'all' ] #Testing that we configure all VRFs even with no VLANs.
-      tags: []
+      tags: [ opzone ]
     mlag: true
     mlag_interfaces: [ Ethernet15/1, Ethernet16/1 ]    
     mlag_peer_l3_ipv4_pool: 172.19.1.0/24

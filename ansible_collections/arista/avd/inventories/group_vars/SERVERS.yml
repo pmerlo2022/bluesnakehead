@@ -1,4 +1,5 @@
 ---
+#Consider making these based on a hw profile
 port_profiles:
   NESTED_TENANT_A:
     parent_profile: TENANT_A
@@ -20,7 +21,7 @@ port_profiles:
     #l2_mtu: <l2_mtu - if defined this profile should only be used for platforms support the l2 mtu  cli >
     #native_vlan: <native vland ID>
     #vlans: <vlans as a string>
-    vlans: "110"
+    vlans: "100"
     #spanning_tree_portfast: <edge | network >
     #spanning_tree_bpdufilter: < true | false >
     #spanning_tree_bpduguard: < true | false >
@@ -57,7 +58,7 @@ port_profiles:
 
   TENANT_B:
     mode: access
-    vlans: "110"
+    vlans: "67"
     qos_profile: "foo"
     port_channel:
       raw_eos_cli: port-channel lacp fallback individual

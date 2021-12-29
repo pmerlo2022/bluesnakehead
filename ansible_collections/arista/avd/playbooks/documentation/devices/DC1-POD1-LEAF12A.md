@@ -204,25 +204,53 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 4024 | MLAG_iBGP_Cust_A_VRF | LEAF_PEER_L3 |
+| 67 | Cust_B_OP_Zone_1 | - |
+| 100 | Cust_A_OP_Zone_1 | - |
+| 112 | Cust_A_OP_Zone_3 | - |
+| 113 | SVI_with_no_vxlan | - |
+| 211 | Cust_B_OP_Zone_2 | - |
+| 212 | Cust_B_OP_Zone_3 | - |
+| 213 | SVI_with_no_vxlan | - |
+| 3124 | MLAG_iBGP_Cust_A_VRF | LEAF_PEER_L3 |
+| 3224 | MLAG_iBGP_Cust_B_VRF | LEAF_PEER_L3 |
 | 4094 | MLAG_PEER | MLAG |
-| 5024 | MLAG_iBGP_Cust_B_VRF | LEAF_PEER_L3 |
 
 ## VLANs Device Configuration
 
 ```eos
 !
-vlan 4024
+vlan 67
+   name Cust_B_OP_Zone_1
+!
+vlan 100
+   name Cust_A_OP_Zone_1
+!
+vlan 112
+   name Cust_A_OP_Zone_3
+!
+vlan 113
+   name SVI_with_no_vxlan
+!
+vlan 211
+   name Cust_B_OP_Zone_2
+!
+vlan 212
+   name Cust_B_OP_Zone_3
+!
+vlan 213
+   name SVI_with_no_vxlan
+!
+vlan 3124
    name MLAG_iBGP_Cust_A_VRF
+   trunk group LEAF_PEER_L3
+!
+vlan 3224
+   name MLAG_iBGP_Cust_B_VRF
    trunk group LEAF_PEER_L3
 !
 vlan 4094
    name MLAG_PEER
    trunk group MLAG
-!
-vlan 5024
-   name MLAG_iBGP_Cust_B_VRF
-   trunk group LEAF_PEER_L3
 ```
 
 # Interfaces
@@ -365,28 +393,95 @@ interface Loopback1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4024 |  MLAG_PEER_L3_iBGP: vrf Cust_A_VRF  |  Cust_A_VRF  |  9214  |  false  |
+| Vlan67 |  set from structured_config on svi (was Cust_B_OP_Zone_1)  |  Cust_B_VRF  |  -  |  false  |
+| Vlan100 |  set from structured_config on svi (was Cust_A_OP_Zone_1)  |  Cust_A_VRF  |  -  |  false  |
+| Vlan112 |  Cust_A_OP_Zone_3  |  Cust_A_VRF  |  -  |  false  |
+| Vlan113 |  SVI_with_no_vxlan  |  Cust_A_VRF  |  -  |  false  |
+| Vlan211 |  Cust_B_OP_Zone_2  |  Cust_B_VRF  |  -  |  true  |
+| Vlan212 |  Cust_B_OP_Zone_3  |  Cust_B_VRF  |  -  |  false  |
+| Vlan213 |  SVI_with_no_vxlan  |  Cust_B_VRF  |  -  |  false  |
+| Vlan3124 |  MLAG_PEER_L3_iBGP: vrf Cust_A_VRF  |  Cust_A_VRF  |  9214  |  false  |
+| Vlan3224 |  MLAG_PEER_L3_iBGP: vrf Cust_B_VRF  |  Cust_B_VRF  |  9214  |  false  |
 | Vlan4094 |  MLAG_PEER  |  default  |  9214  |  false  |
-| Vlan5024 |  MLAG_PEER_L3_iBGP: vrf Cust_B_VRF  |  Cust_B_VRF  |  9214  |  false  |
 
 #### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan4024 |  Cust_A_VRF  |  172.20.1.52/31  |  -  |  -  |  -  |  -  |  -  |
+| Vlan67 |  Cust_B_VRF  |  -  |  10.32.1.1/24  |  -  |  -  |  -  |  -  |
+| Vlan100 |  Cust_A_VRF  |  -  |  10.0.10.1/24  |  -  |  -  |  -  |  -  |
+| Vlan112 |  Cust_A_VRF  |  -  |  10.1.12.1/24  |  -  |  -  |  -  |  -  |
+| Vlan113 |  Cust_A_VRF  |  -  |  10.1.13.1/24  |  -  |  -  |  -  |  -  |
+| Vlan211 |  Cust_B_VRF  |  -  |  10.32.11.1/24  |  -  |  -  |  -  |  -  |
+| Vlan212 |  Cust_B_VRF  |  -  |  10.32.12.1/24  |  -  |  -  |  -  |  -  |
+| Vlan213 |  Cust_B_VRF  |  -  |  10.32.13.1/24  |  -  |  -  |  -  |  -  |
+| Vlan3124 |  Cust_A_VRF  |  172.20.1.52/31  |  -  |  -  |  -  |  -  |  -  |
+| Vlan3224 |  Cust_B_VRF  |  172.20.1.52/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  172.20.1.52/31  |  -  |  -  |  -  |  -  |  -  |
-| Vlan5024 |  Cust_B_VRF  |  172.20.1.52/31  |  -  |  -  |  -  |  -  |  -  |
 
 
 ### VLAN Interfaces Device Configuration
 
 ```eos
 !
-interface Vlan4024
+interface Vlan67
+   description set from structured_config on svi (was Cust_B_OP_Zone_1)
+   no shutdown
+   vrf Cust_B_VRF
+   ip address virtual 10.32.1.1/24
+!
+interface Vlan100
+   description set from structured_config on svi (was Cust_A_OP_Zone_1)
+   no shutdown
+   vrf Cust_A_VRF
+   ip address virtual 10.0.10.1/24
+!
+interface Vlan112
+   description Cust_A_OP_Zone_3
+   no shutdown
+   vrf Cust_A_VRF
+   ip address virtual 10.1.12.1/24
+   comment
+   Comment created from raw_eos_cli under SVI 112 in VRF Common_VRF
+   EOF
+
+!
+interface Vlan113
+   description SVI_with_no_vxlan
+   no shutdown
+   vrf Cust_A_VRF
+   ip address virtual 10.1.13.1/24
+!
+interface Vlan211
+   description Cust_B_OP_Zone_2
+   shutdown
+   vrf Cust_B_VRF
+   ip address virtual 10.32.11.1/24
+!
+interface Vlan212
+   description Cust_B_OP_Zone_3
+   no shutdown
+   vrf Cust_B_VRF
+   ip address virtual 10.32.12.1/24
+!
+interface Vlan213
+   description SVI_with_no_vxlan
+   no shutdown
+   vrf Cust_B_VRF
+   ip address virtual 10.32.13.1/24
+!
+interface Vlan3124
    description MLAG_PEER_L3_iBGP: vrf Cust_A_VRF
    no shutdown
    mtu 9214
    vrf Cust_A_VRF
+   ip address 172.20.1.52/31
+!
+interface Vlan3224
+   description MLAG_PEER_L3_iBGP: vrf Cust_B_VRF
+   no shutdown
+   mtu 9214
+   vrf Cust_B_VRF
    ip address 172.20.1.52/31
 !
 interface Vlan4094
@@ -394,13 +489,6 @@ interface Vlan4094
    no shutdown
    mtu 9214
    no autostate
-   ip address 172.20.1.52/31
-!
-interface Vlan5024
-   description MLAG_PEER_L3_iBGP: vrf Cust_B_VRF
-   no shutdown
-   mtu 9214
-   vrf Cust_B_VRF
    ip address 172.20.1.52/31
 ```
 
@@ -414,12 +502,22 @@ interface Vlan5024
 
 #### EVPN MLAG Shared Router MAC : mlag-system-id
 
+#### VLAN to VNI and Flood List Mappings
+
+| VLAN | VNI | Flood List |
+| ---- | --- | ---------- |
+| 67 | 20067 | - |
+| 100 | 10100 | - |
+| 112 | 10112 | - |
+| 211 | 20211 | - |
+| 212 | 20212 | - |
+
 #### VRF to VNI Mappings
 
 | VLAN | VNI |
 | ---- | --- |
-| Cust_A_VRF | 1025 |
-| Cust_B_VRF | 2025 |
+| Cust_A_VRF | 125 |
+| Cust_B_VRF | 225 |
 
 ### VXLAN Interface Device Configuration
 
@@ -430,8 +528,13 @@ interface Vxlan1
    vxlan source-interface Loopback1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
-   vxlan vrf Cust_A_VRF vni 1025
-   vxlan vrf Cust_B_VRF vni 2025
+   vxlan vlan 67 vni 20067
+   vxlan vlan 100 vni 10100
+   vxlan vlan 112 vni 10112
+   vxlan vlan 211 vni 20211
+   vxlan vlan 212 vni 20212
+   vxlan vrf Cust_A_VRF vni 125
+   vxlan vrf Cust_B_VRF vni 225
 ```
 
 # Routing
@@ -525,6 +628,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | Settings | Value |
 | -------- | ----- |
 | Address Family | evpn |
+| Next-hop unchanged | True |
 | Source | Loopback0 |
 | Bfd | true |
 | Ebgp multihop | 5 |
@@ -567,12 +671,22 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 #### Router BGP EVPN MAC-VRFs
 
+##### VLAN Based
+
+| VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
+| ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
+| 67 | 10.4.1.29:20067 | 20067:20067 | - | - | learned |
+| 100 | 10.4.1.29:10100 | 10100:10100 | - | - | learned |
+| 112 | 10.4.1.29:10112 | 10112:10112 | - | - | learned |
+| 211 | 10.4.1.29:20211 | 20211:20211 | - | - | learned |
+| 212 | 10.4.1.29:20212 | 20212:20212 | - | - | learned |
+
 #### Router BGP EVPN VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| Cust_A_VRF | 10.4.1.29:1025 | connected |
-| Cust_B_VRF | 10.4.1.29:2025 | connected |
+| Cust_A_VRF | 10.4.1.29:125 | connected |
+| Cust_B_VRF | 10.4.1.29:225 | connected |
 
 ### Router BGP Device Configuration
 
@@ -586,6 +700,7 @@ router bgp 65111.1200
    graceful-restart
    maximum-paths 16 ecmp 16
    neighbor EVPN-OVERLAY-PEERS peer group
+   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
    neighbor EVPN-OVERLAY-PEERS ebgp-multihop 5
@@ -619,12 +734,38 @@ router bgp 65111.1200
    neighbor 172.20.1.53 description DC1-POD1-LEAF12B
    redistribute connected route-map RM-CONN-2-BGP
    !
+   vlan 67
+      rd 10.4.1.29:20067
+      route-target both 20067:20067
+      redistribute learned
+   !
+   vlan 100
+      rd 10.4.1.29:10100
+      route-target both 10100:10100
+      redistribute learned
+   !
+   vlan 112
+      rd 10.4.1.29:10112
+      route-target both 10112:10112
+      redistribute learned
+   !
+   vlan 211
+      rd 10.4.1.29:20211
+      route-target both 20211:20211
+      redistribute learned
+   !
+   vlan 212
+      rd 10.4.1.29:20212
+      route-target both 20212:20212
+      redistribute learned
+   !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
       route import match-failure action discard
    !
    address-family rt-membership
       neighbor EVPN-OVERLAY-PEERS activate
+      neighbor EVPN-OVERLAY-PEERS default-route-target only
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
@@ -632,17 +773,17 @@ router bgp 65111.1200
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
    !
    vrf Cust_A_VRF
-      rd 10.4.1.29:1025
-      route-target import evpn 1025:1025
-      route-target export evpn 1025:1025
+      rd 10.4.1.29:125
+      route-target import evpn 125:125
+      route-target export evpn 125:125
       router-id 10.4.1.29
       neighbor 172.20.1.53 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
    !
    vrf Cust_B_VRF
-      rd 10.4.1.29:2025
-      route-target import evpn 2025:2025
-      route-target export evpn 2025:2025
+      rd 10.4.1.29:225
+      route-target import evpn 225:225
+      route-target export evpn 225:225
       router-id 10.4.1.29
       neighbor 172.20.1.53 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
@@ -675,9 +816,14 @@ router bfd
 IGMP snooping is globally enabled.
 
 
+| VLAN | IGMP Snooping |
+| --- | --------------- |
+| 100 | enabled |
+
 ### IP IGMP Snooping Device Configuration
 
 ```eos
+!
 ```
 
 # Filters

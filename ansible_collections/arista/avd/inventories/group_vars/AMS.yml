@@ -111,9 +111,9 @@ node_type_keys:
   l3leaf:
     type: l3leaf
     connected_endpoints: true
-    default_evpn_role: client
+    default_evpn_role: server
     mlag_support: true
-    # is l2 a local vlan, or trunk to an l2leaf?
+    # these should, among other things, trigger the processing of vlans and svis in the templates
     network_services:
       l2: true
       l3: true

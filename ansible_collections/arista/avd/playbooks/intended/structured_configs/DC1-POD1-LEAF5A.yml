@@ -29,6 +29,7 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
+      next_hop_unchanged: true
   address_family_ipv4:
     peer_groups:
       MLAG-IPv4-UNDERLAY-PEER:
@@ -70,17 +71,19 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
+        default_route_target:
+          only: true
   vrfs:
     Cust_A_VRF:
       router_id: 10.4.1.15
-      rd: 10.4.1.15:1025
+      rd: 10.4.1.15:125
       route_targets:
         import:
           evpn:
-          - 1025:1025
+          - 125:125
         export:
           evpn:
-          - 1025:1025
+          - 125:125
       neighbors:
         172.20.1.25:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -88,19 +91,60 @@ router_bgp:
       - connected
     Cust_B_VRF:
       router_id: 10.4.1.15
-      rd: 10.4.1.15:2025
+      rd: 10.4.1.15:225
       route_targets:
         import:
           evpn:
-          - 2025:2025
+          - 225:225
         export:
           evpn:
-          - 2025:2025
+          - 225:225
       neighbors:
         172.20.1.25:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+  vlans:
+    100:
+      tenant: Cust_A
+      rd: 10.4.1.15:10100
+      route_targets:
+        both:
+        - 10100:10100
+      redistribute_routes:
+      - learned
+    112:
+      tenant: Cust_A
+      rd: 10.4.1.15:10112
+      route_targets:
+        both:
+        - 10112:10112
+      redistribute_routes:
+      - learned
+    67:
+      tenant: Cust_B
+      rd: 10.4.1.15:20067
+      route_targets:
+        both:
+        - 20067:20067
+      redistribute_routes:
+      - learned
+    211:
+      tenant: Cust_B
+      rd: 10.4.1.15:20211
+      route_targets:
+        both:
+        - 20211:20211
+      redistribute_routes:
+      - learned
+    212:
+      tenant: Cust_B
+      rd: 10.4.1.15:20212
+      route_targets:
+        both:
+        - 20212:20212
+      redistribute_routes:
+      - learned
 static_routes:
 - vrf: mgmt
   destination_address_prefix: 0.0.0.0/0
@@ -152,12 +196,33 @@ vlans:
     name: MLAG_PEER
     trunk_groups:
     - MLAG
-  4024:
+  100:
+    tenant: Cust_A
+    name: Cust_A_OP_Zone_1
+  112:
+    tenant: Cust_A
+    name: Cust_A_OP_Zone_3
+  113:
+    tenant: Cust_A
+    name: SVI_with_no_vxlan
+  3124:
     tenant: Cust_A
     name: MLAG_iBGP_Cust_A_VRF
     trunk_groups:
     - LEAF_PEER_L3
-  5024:
+  67:
+    tenant: Cust_B
+    name: Cust_B_OP_Zone_1
+  211:
+    tenant: Cust_B
+    name: Cust_B_OP_Zone_2
+  212:
+    tenant: Cust_B
+    name: Cust_B_OP_Zone_3
+  213:
+    tenant: Cust_B
+    name: SVI_with_no_vxlan
+  3224:
     tenant: Cust_B
     name: MLAG_iBGP_Cust_B_VRF
     trunk_groups:
@@ -169,7 +234,40 @@ vlan_interfaces:
     ip_address: 172.20.1.24/31
     no_autostate: true
     mtu: 9214
-  Vlan4024:
+  Vlan100:
+    tenant: Cust_A
+    tags:
+    - opzone
+    description: set from structured_config on svi (was Cust_A_OP_Zone_1)
+    shutdown: false
+    vrf: Cust_A_VRF
+    ip_address_virtual: 10.0.10.1/24
+    struct_cfg:
+      description: set from structured_config on svi (was Cust_A_OP_Zone_1)
+  Vlan112:
+    tenant: Cust_A
+    tags:
+    - opzone
+    description: Cust_A_OP_Zone_3
+    shutdown: false
+    vrf: Cust_A_VRF
+    ip_address_virtual: 10.1.12.1/24
+    eos_cli: 'comment
+
+      Comment created from raw_eos_cli under SVI 112 in VRF Common_VRF
+
+      EOF
+
+      '
+  Vlan113:
+    tenant: Cust_A
+    tags:
+    - opzone
+    description: SVI_with_no_vxlan
+    shutdown: false
+    vrf: Cust_A_VRF
+    ip_address_virtual: 10.1.13.1/24
+  Vlan3124:
     tenant: Cust_A
     type: underlay_peering
     shutdown: false
@@ -177,7 +275,41 @@ vlan_interfaces:
     vrf: Cust_A_VRF
     ip_address: 172.20.1.24/31
     mtu: 9214
-  Vlan5024:
+  Vlan67:
+    tenant: Cust_B
+    tags:
+    - opzone
+    description: set from structured_config on svi (was Cust_B_OP_Zone_1)
+    shutdown: false
+    vrf: Cust_B_VRF
+    ip_address_virtual: 10.32.1.1/24
+    struct_cfg:
+      description: set from structured_config on svi (was Cust_B_OP_Zone_1)
+  Vlan211:
+    tenant: Cust_B
+    tags:
+    - opzone
+    description: Cust_B_OP_Zone_2
+    shutdown: true
+    vrf: Cust_B_VRF
+    ip_address_virtual: 10.32.11.1/24
+  Vlan212:
+    tenant: Cust_B
+    tags:
+    - opzone
+    description: Cust_B_OP_Zone_3
+    shutdown: false
+    vrf: Cust_B_VRF
+    ip_address_virtual: 10.32.12.1/24
+  Vlan213:
+    tenant: Cust_B
+    tags:
+    - opzone
+    description: SVI_with_no_vxlan
+    shutdown: false
+    vrf: Cust_B_VRF
+    ip_address_virtual: 10.32.13.1/24
+  Vlan3224:
     tenant: Cust_B
     type: underlay_peering
     shutdown: false
@@ -314,6 +446,9 @@ router_bfd:
     multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true
+  vlans:
+    100:
+      enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 vxlan_interface:
   Vxlan1:
@@ -322,8 +457,19 @@ vxlan_interface:
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
       udp_port: 4789
+      vlans:
+        100:
+          vni: 10100
+        112:
+          vni: 10112
+        67:
+          vni: 20067
+        211:
+          vni: 20211
+        212:
+          vni: 20212
       vrfs:
         Cust_A_VRF:
-          vni: 1025
+          vni: 125
         Cust_B_VRF:
-          vni: 2025
+          vni: 225

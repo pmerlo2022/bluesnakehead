@@ -22,6 +22,7 @@ default_node_type_keys:
       uplink_type: port-channel
     super_spine:
       type: super-spine
+      default_evpn_role: none
     overlay_controller:
       type: overlay-controller
       default_evpn_role: server
