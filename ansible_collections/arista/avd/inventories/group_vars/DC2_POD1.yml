@@ -93,8 +93,8 @@ l3leaf:
       mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
       #evpn_role: server
       filter:
-        tenants: []
-        tags: []
+        tenants: [Cust_A, Cust_B]
+        tags: [Cust_B_opzone]
         always_include_vrfs_in_tenants: [ 'all' ] #Testing that we respect the empty tenants list, so no VRFs will be configured.
       nodes:
         DC2-POD1-LEAF1A:

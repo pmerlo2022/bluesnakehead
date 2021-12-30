@@ -58,7 +58,7 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65002.100'
       description: DC2-POD1-SPINE4_Ethernet2/1
-    11.1.1.18:
+    200.200.200.102:
       remote_as: '65101'
       description: DC2-POD1-LEAF1A
       peer_group: IPv4-UNDERLAY-PEERS
@@ -76,6 +76,62 @@ router_bgp:
         activate: true
         default_route_target:
           only: true
+  vrfs:
+    Cust_A_VRF:
+      router_id: 10.4.32.4
+      rd: 10.4.32.4:100
+      route_targets:
+        import:
+          evpn:
+          - 100:100
+        export:
+          evpn:
+          - 100:100
+      neighbors:
+        172.20.32.0:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+      redistribute_routes:
+      - connected
+    Cust_B_opzone:
+      router_id: 10.4.32.4
+      rd: 10.4.32.4:200
+      route_targets:
+        import:
+          evpn:
+          - 200:200
+        export:
+          evpn:
+          - 200:200
+      neighbors:
+        172.20.32.0:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+      redistribute_routes:
+      - connected
+  vlans:
+    67:
+      tenant: Cust_B
+      rd: 10.4.32.4:20067
+      route_targets:
+        both:
+        - 20067:20067
+      redistribute_routes:
+      - learned
+    211:
+      tenant: Cust_B
+      rd: 10.4.32.4:20211
+      route_targets:
+        both:
+        - 20211:20211
+      redistribute_routes:
+      - learned
+    212:
+      tenant: Cust_B
+      rd: 10.4.32.4:20212
+      route_targets:
+        both:
+        - 20212:20212
+      redistribute_routes:
+      - learned
 static_routes:
 - vrf: mgmt
   destination_address_prefix: 0.0.0.0/0
@@ -101,6 +157,12 @@ local_users:
 vrfs:
   mgmt:
     ip_routing: false
+  Cust_A_VRF:
+    tenant: Cust_A
+    ip_routing: true
+  Cust_B_opzone:
+    tenant: Cust_B
+    ip_routing: true
 management_interfaces:
   Management0:
     description: oob_management
@@ -122,12 +184,92 @@ vlans:
     name: MLAG_PEER
     trunk_groups:
     - MLAG
+  3099:
+    tenant: Cust_A
+    name: MLAG_iBGP_Cust_A_VRF
+    trunk_groups:
+    - LEAF_PEER_L3
+  67:
+    tenant: Cust_B
+    name: Cust_B_OP_Zone_1
+  211:
+    tenant: Cust_B
+    name: Cust_B_OP_Zone_2
+  212:
+    tenant: Cust_B
+    name: Cust_B_OP_Zone_3
+  213:
+    tenant: Cust_B
+    name: SVI_with_no_vxlan
+  3199:
+    tenant: Cust_B
+    name: MLAG_iBGP_Cust_B_opzone
+    trunk_groups:
+    - LEAF_PEER_L3
 vlan_interfaces:
   Vlan4094:
     description: MLAG_PEER
     shutdown: false
     ip_address: 172.20.32.1/31
     no_autostate: true
+    mtu: 9214
+  Vlan3099:
+    tenant: Cust_A
+    type: underlay_peering
+    shutdown: false
+    description: 'MLAG_PEER_L3_iBGP: vrf Cust_A_VRF'
+    vrf: Cust_A_VRF
+    ip_address: 172.20.32.1/31
+    mtu: 9214
+  Vlan67:
+    tenant: Cust_B
+    tags:
+    - Cust_B_opzone
+    description: set from structured_config on svi (was Cust_B_OP_Zone_1)
+    shutdown: false
+    vrf: Cust_B_opzone
+    ip_address_virtual: 10.32.1.1/24
+    ip_helpers:
+      10.32.1.10: {}
+    struct_cfg:
+      description: set from structured_config on svi (was Cust_B_OP_Zone_1)
+  Vlan211:
+    tenant: Cust_B
+    tags:
+    - Cust_B_opzone
+    description: Cust_B_OP_Zone_2
+    shutdown: true
+    vrf: Cust_B_opzone
+    ip_address_virtual: 10.32.11.1/24
+    ip_helpers:
+      10.32.11.10: {}
+  Vlan212:
+    tenant: Cust_B
+    tags:
+    - Cust_B_opzone
+    description: Cust_B_OP_Zone_3
+    shutdown: false
+    vrf: Cust_B_opzone
+    ip_address_virtual: 10.32.12.1/24
+    ip_helpers:
+      10.32.12.10: {}
+  Vlan213:
+    tenant: Cust_B
+    tags:
+    - Cust_B_opzone
+    description: SVI_with_no_vxlan
+    shutdown: false
+    vrf: Cust_B_opzone
+    ip_address_virtual: 10.32.13.1/24
+    ip_helpers:
+      10.32.13.10: {}
+  Vlan3199:
+    tenant: Cust_B
+    type: underlay_peering
+    shutdown: false
+    description: 'MLAG_PEER_L3_iBGP: vrf Cust_B_opzone'
+    vrf: Cust_B_opzone
+    ip_address: 172.20.32.1/31
     mtu: 9214
 port_channel_interfaces:
   Port-Channel151:
@@ -217,7 +359,7 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     mtu: 9214
-    ip_address: 11.1.1.19/31
+    ip_address: 200.200.200.202/24
 mlag_configuration:
   domain_id: RACK1_MLAG
   local_interface: Vlan4094
@@ -275,3 +417,15 @@ vxlan_interface:
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
       udp_port: 4789
+      vlans:
+        67:
+          vni: 20067
+        211:
+          vni: 20211
+        212:
+          vni: 20212
+      vrfs:
+        Cust_A_VRF:
+          vni: 100
+        Cust_B_opzone:
+          vni: 200

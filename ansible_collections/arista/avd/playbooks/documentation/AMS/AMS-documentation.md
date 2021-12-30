@@ -619,7 +619,7 @@
 
 | Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address |
 | ---- | -------------- | --------------- | --------- | -------------- | --------------- |
-| DC1-POD1-LEAF1A | Ethernet28/1 | 11.1.0.0/31 | DC1-POD1-LEAF1B | Ethernet28/1 | 11.1.0.1/31 |
+| DC1-POD1-LEAF1A | Ethernet28/1 | 200.200.200.104/24 | DC1-POD1-LEAF1B | Ethernet28/1 | 200.200.200.204/24 |
 | DC1-POD1-LEAF1A | Ethernet29/1 | 172.17.1.33/31 | DC1-POD1-SPINE1 | Ethernet1/1 | 172.17.1.32/31 |
 | DC1-POD1-LEAF1A | Ethernet30/1 | 172.17.1.35/31 | DC1-POD1-SPINE2 | Ethernet1/1 | 172.17.1.34/31 |
 | DC1-POD1-LEAF1A | Ethernet31/1 | 172.17.1.37/31 | DC1-POD1-SPINE3 | Ethernet1/1 | 172.17.1.36/31 |
@@ -876,7 +876,7 @@
 | DC1-POD2-SPINE4 | Ethernet30/1 | 172.16.2.71/31 | SUPER-SPINE2 | Ethernet8/1 | 172.16.2.70/31 |
 | DC1-POD2-SPINE4 | Ethernet31/1 | 172.16.2.135/31 | SUPER-SPINE3 | Ethernet8/1 | 172.16.2.134/31 |
 | DC1-POD2-SPINE4 | Ethernet32/1 | 172.16.2.199/31 | SUPER-SPINE4 | Ethernet8/1 | 172.16.2.198/31 |
-| DC2-POD1-LEAF1A | Ethernet28/1 | 11.1.1.18/31 | DC2-POD1-LEAF1B | Ethernet28/1 | 11.1.1.19/31 |
+| DC2-POD1-LEAF1A | Ethernet28/1 | 200.200.200.102/24 | DC2-POD1-LEAF1B | Ethernet28/1 | 200.200.200.202/24 |
 | DC2-POD1-LEAF1A | Ethernet29/1 | 172.17.32.1/31 | DC2-POD1-SPINE1 | Ethernet1/1 | 172.17.32.0/31 |
 | DC2-POD1-LEAF1A | Ethernet30/1 | 172.17.32.3/31 | DC2-POD1-SPINE2 | Ethernet1/1 | 172.17.32.2/31 |
 | DC2-POD1-LEAF1A | Ethernet31/1 | 172.17.32.5/31 | DC2-POD1-SPINE3 | Ethernet1/1 | 172.17.32.4/31 |

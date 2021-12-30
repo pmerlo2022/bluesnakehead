@@ -58,7 +58,7 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65001.100'
       description: DC1-POD1-SPINE4_Ethernet2/1
-    11.1.0.0:
+    200.200.200.104:
       remote_as: '64101'
       description: DC1-POD1-LEAF1A
       peer_group: IPv4-UNDERLAY-PEERS
@@ -219,7 +219,7 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     mtu: 9214
-    ip_address: 11.1.0.1/31
+    ip_address: 200.200.200.204/24
     mac_security:
       profile: MACSEC_PROFILE
     ptp:

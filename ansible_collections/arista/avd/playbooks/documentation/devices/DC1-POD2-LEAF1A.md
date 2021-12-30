@@ -235,7 +235,7 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet28/1 | P2P_LINK_TO_DC2-POD2-LEAF1B_Ethernet28/1 | routed | - | 11.1.2.2/31 | default | 9214 | false | - | - |
+| Ethernet28/1 | P2P_LINK_TO_DC2-POD2-LEAF1B_Ethernet28/1 | routed | - | 200.200.200.103/24 | default | 9214 | false | - | - |
 | Ethernet29/1 | P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet1/1 | routed | - | 172.17.2.1/31 | default | 9214 | false | - | - |
 | Ethernet30/1 | P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet1/1 | routed | - | 172.17.2.3/31 | default | 9214 | false | - | - |
 | Ethernet31/1 | P2P_LINK_TO_DC1-POD2-SPINE3_Ethernet1/1 | routed | - | 172.17.2.5/31 | default | 9214 | false | - | - |
@@ -260,7 +260,7 @@ interface Ethernet28/1
    no shutdown
    mtu 9214
    no switchport
-   ip address 11.1.2.2/31
+   ip address 200.200.200.103/24
 !
 interface Ethernet29/1
    description P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet1/1
@@ -548,12 +548,12 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | 10.4.2.28 | 65112.1300 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 10.4.2.29 | 65112.1400 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 10.4.2.30 | 65112.1400 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 11.1.2.3 | 64202 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.2.0 | 65001.200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.2.2 | 65001.200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.2.4 | 65001.200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.2.6 | 65001.200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.20.2.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
+| 200.200.200.203 | 64202 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
@@ -679,10 +679,6 @@ router bgp 65112.100
    neighbor 10.4.2.30 peer group EVPN-OVERLAY-PEERS
    neighbor 10.4.2.30 remote-as 65112.1400
    neighbor 10.4.2.30 description DC1-POD2-LEAF14B
-   neighbor 11.1.2.3 peer group IPv4-UNDERLAY-PEERS
-   neighbor 11.1.2.3 remote-as 64202
-   neighbor 11.1.2.3 local-as 64201 no-prepend replace-as
-   neighbor 11.1.2.3 description DC2-POD2-LEAF1B
    neighbor 172.17.2.0 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.2.0 remote-as 65001.200
    neighbor 172.17.2.0 description DC1-POD2-SPINE1_Ethernet1/1
@@ -697,6 +693,10 @@ router bgp 65112.100
    neighbor 172.17.2.6 description DC1-POD2-SPINE4_Ethernet1/1
    neighbor 172.20.2.1 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 172.20.2.1 description DC1-POD2-LEAF1B
+   neighbor 200.200.200.203 peer group IPv4-UNDERLAY-PEERS
+   neighbor 200.200.200.203 remote-as 64202
+   neighbor 200.200.200.203 local-as 64201 no-prepend replace-as
+   neighbor 200.200.200.203 description DC2-POD2-LEAF1B
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

@@ -172,7 +172,7 @@ router_bgp:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD2-LEAF14B
       remote_as: '65112.1400'
-    11.1.2.3:
+    200.200.200.203:
       remote_as: '64202'
       description: DC2-POD2-LEAF1B
       peer_group: IPv4-UNDERLAY-PEERS
@@ -332,7 +332,7 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     mtu: 9214
-    ip_address: 11.1.2.2/31
+    ip_address: 200.200.200.103/24
 mlag_configuration:
   domain_id: RACK1_MLAG
   local_interface: Vlan4094

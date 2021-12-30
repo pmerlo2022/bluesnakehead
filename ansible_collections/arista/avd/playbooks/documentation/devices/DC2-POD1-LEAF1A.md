@@ -205,11 +205,37 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
+| 67 | Cust_B_OP_Zone_1 | - |
+| 211 | Cust_B_OP_Zone_2 | - |
+| 212 | Cust_B_OP_Zone_3 | - |
+| 213 | SVI_with_no_vxlan | - |
+| 3099 | MLAG_iBGP_Cust_A_VRF | LEAF_PEER_L3 |
+| 3199 | MLAG_iBGP_Cust_B_opzone | LEAF_PEER_L3 |
 | 4094 | MLAG_PEER | MLAG |
 
 ## VLANs Device Configuration
 
 ```eos
+!
+vlan 67
+   name Cust_B_OP_Zone_1
+!
+vlan 211
+   name Cust_B_OP_Zone_2
+!
+vlan 212
+   name Cust_B_OP_Zone_3
+!
+vlan 213
+   name SVI_with_no_vxlan
+!
+vlan 3099
+   name MLAG_iBGP_Cust_A_VRF
+   trunk group LEAF_PEER_L3
+!
+vlan 3199
+   name MLAG_iBGP_Cust_B_opzone
+   trunk group LEAF_PEER_L3
 !
 vlan 4094
    name MLAG_PEER
@@ -235,7 +261,7 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet28/1 | P2P_LINK_TO_DC2-POD1-LEAF1B_Ethernet28/1 | routed | - | 11.1.1.18/31 | default | 9214 | false | - | - |
+| Ethernet28/1 | P2P_LINK_TO_DC2-POD1-LEAF1B_Ethernet28/1 | routed | - | 200.200.200.102/24 | default | 9214 | false | - | - |
 | Ethernet29/1 | P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet1/1 | routed | - | 172.17.32.1/31 | default | 9214 | false | - | - |
 | Ethernet30/1 | P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet1/1 | routed | - | 172.17.32.3/31 | default | 9214 | false | - | - |
 | Ethernet31/1 | P2P_LINK_TO_DC2-POD1-SPINE3_Ethernet1/1 | routed | - | 172.17.32.5/31 | default | 9214 | false | - | - |
@@ -260,7 +286,7 @@ interface Ethernet28/1
    no shutdown
    mtu 9214
    no switchport
-   ip address 11.1.1.18/31
+   ip address 200.200.200.102/24
 !
 interface Ethernet29/1
    description P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet1/1
@@ -364,18 +390,72 @@ interface Loopback1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
+| Vlan67 |  set from structured_config on svi (was Cust_B_OP_Zone_1)  |  Cust_B_opzone  |  -  |  false  |
+| Vlan211 |  Cust_B_OP_Zone_2  |  Cust_B_opzone  |  -  |  true  |
+| Vlan212 |  Cust_B_OP_Zone_3  |  Cust_B_opzone  |  -  |  false  |
+| Vlan213 |  SVI_with_no_vxlan  |  Cust_B_opzone  |  -  |  false  |
+| Vlan3099 |  MLAG_PEER_L3_iBGP: vrf Cust_A_VRF  |  Cust_A_VRF  |  9214  |  false  |
+| Vlan3199 |  MLAG_PEER_L3_iBGP: vrf Cust_B_opzone  |  Cust_B_opzone  |  9214  |  false  |
 | Vlan4094 |  MLAG_PEER  |  default  |  9214  |  false  |
 
 #### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Vlan67 |  Cust_B_opzone  |  -  |  10.32.1.1/24  |  -  |  -  |  -  |  -  |
+| Vlan211 |  Cust_B_opzone  |  -  |  10.32.11.1/24  |  -  |  -  |  -  |  -  |
+| Vlan212 |  Cust_B_opzone  |  -  |  10.32.12.1/24  |  -  |  -  |  -  |  -  |
+| Vlan213 |  Cust_B_opzone  |  -  |  10.32.13.1/24  |  -  |  -  |  -  |  -  |
+| Vlan3099 |  Cust_A_VRF  |  172.20.32.0/31  |  -  |  -  |  -  |  -  |  -  |
+| Vlan3199 |  Cust_B_opzone  |  172.20.32.0/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  172.20.32.0/31  |  -  |  -  |  -  |  -  |  -  |
 
 
 ### VLAN Interfaces Device Configuration
 
 ```eos
+!
+interface Vlan67
+   description set from structured_config on svi (was Cust_B_OP_Zone_1)
+   no shutdown
+   vrf Cust_B_opzone
+   ip address virtual 10.32.1.1/24
+   ip helper-address 10.32.1.10
+!
+interface Vlan211
+   description Cust_B_OP_Zone_2
+   shutdown
+   vrf Cust_B_opzone
+   ip address virtual 10.32.11.1/24
+   ip helper-address 10.32.11.10
+!
+interface Vlan212
+   description Cust_B_OP_Zone_3
+   no shutdown
+   vrf Cust_B_opzone
+   ip address virtual 10.32.12.1/24
+   ip helper-address 10.32.12.10
+!
+interface Vlan213
+   description SVI_with_no_vxlan
+   no shutdown
+   vrf Cust_B_opzone
+   ip address virtual 10.32.13.1/24
+   ip helper-address 10.32.13.10
+!
+interface Vlan3099
+   description MLAG_PEER_L3_iBGP: vrf Cust_A_VRF
+   no shutdown
+   mtu 9214
+   vrf Cust_A_VRF
+   ip address 172.20.32.0/31
+!
+interface Vlan3199
+   description MLAG_PEER_L3_iBGP: vrf Cust_B_opzone
+   no shutdown
+   mtu 9214
+   vrf Cust_B_opzone
+   ip address 172.20.32.0/31
 !
 interface Vlan4094
    description MLAG_PEER
@@ -395,6 +475,21 @@ interface Vlan4094
 
 #### EVPN MLAG Shared Router MAC : mlag-system-id
 
+#### VLAN to VNI and Flood List Mappings
+
+| VLAN | VNI | Flood List |
+| ---- | --- | ---------- |
+| 67 | 20067 | - |
+| 211 | 20211 | - |
+| 212 | 20212 | - |
+
+#### VRF to VNI Mappings
+
+| VLAN | VNI |
+| ---- | --- |
+| Cust_A_VRF | 100 |
+| Cust_B_opzone | 200 |
+
 ### VXLAN Interface Device Configuration
 
 ```eos
@@ -404,6 +499,11 @@ interface Vxlan1
    vxlan source-interface Loopback1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
+   vxlan vlan 67 vni 20067
+   vxlan vlan 211 vni 20211
+   vxlan vlan 212 vni 20212
+   vxlan vrf Cust_A_VRF vni 100
+   vxlan vrf Cust_B_opzone vni 200
 ```
 
 # Routing
@@ -435,13 +535,17 @@ ip virtual-router mac-address 00:1c:73:00:dc:01
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| mgmt | false |
+| default | true|| Cust_A_VRF | true |
+| Cust_B_opzone | true |
+| mgmt | false |
 
 ### IP Routing Device Configuration
 
 ```eos
 !
 ip routing
+ip routing vrf Cust_A_VRF
+ip routing vrf Cust_B_opzone
 no ip routing vrf mgmt
 ```
 ## IPv6 Routing
@@ -450,7 +554,9 @@ no ip routing vrf mgmt
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false || mgmt | false |
+| default | false || Cust_A_VRF | false |
+| Cust_B_opzone | false |
+| mgmt | false |
 
 
 ## Static Routes
@@ -520,18 +626,33 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 | Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
 | -------- | --------- | --- | -------------- | -------------- |
-| 11.1.1.19 | 65102 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.32.0 | 65002.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.32.2 | 65002.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.32.4 | 65002.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.32.6 | 65002.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.20.32.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
+| 200.200.200.202 | 65102 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.20.32.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Cust_A_VRF | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
+| 172.20.32.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Cust_B_opzone | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
 
 ### Router BGP EVPN Address Family
 
 #### Router BGP EVPN MAC-VRFs
 
+##### VLAN Based
+
+| VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
+| ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
+| 67 | 10.4.32.3:20067 | 20067:20067 | - | - | learned |
+| 211 | 10.4.32.3:20211 | 20211:20211 | - | - | learned |
+| 212 | 10.4.32.3:20212 | 20212:20212 | - | - | learned |
+
 #### Router BGP EVPN VRFs
+
+| VRF | Route-Distinguisher | Redistribute |
+| --- | ------------------- | ------------ |
+| Cust_A_VRF | 10.4.32.3:100 | connected |
+| Cust_B_opzone | 10.4.32.3:200 | connected |
 
 ### Router BGP Device Configuration
 
@@ -563,10 +684,6 @@ router bgp 65211.100
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
-   neighbor 11.1.1.19 peer group IPv4-UNDERLAY-PEERS
-   neighbor 11.1.1.19 remote-as 65102
-   neighbor 11.1.1.19 local-as 65101 no-prepend replace-as
-   neighbor 11.1.1.19 description DC2-POD1-LEAF1B
    neighbor 172.17.32.0 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.32.0 remote-as 65002.100
    neighbor 172.17.32.0 description DC2-POD1-SPINE1_Ethernet1/1
@@ -581,7 +698,26 @@ router bgp 65211.100
    neighbor 172.17.32.6 description DC2-POD1-SPINE4_Ethernet1/1
    neighbor 172.20.32.1 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 172.20.32.1 description DC2-POD1-LEAF1B
+   neighbor 200.200.200.202 peer group IPv4-UNDERLAY-PEERS
+   neighbor 200.200.200.202 remote-as 65102
+   neighbor 200.200.200.202 local-as 65101 no-prepend replace-as
+   neighbor 200.200.200.202 description DC2-POD1-LEAF1B
    redistribute connected route-map RM-CONN-2-BGP
+   !
+   vlan 67
+      rd 10.4.32.3:20067
+      route-target both 20067:20067
+      redistribute learned
+   !
+   vlan 211
+      rd 10.4.32.3:20211
+      route-target both 20211:20211
+      redistribute learned
+   !
+   vlan 212
+      rd 10.4.32.3:20212
+      route-target both 20212:20212
+      redistribute learned
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
@@ -594,6 +730,22 @@ router bgp 65211.100
       no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
+   !
+   vrf Cust_A_VRF
+      rd 10.4.32.3:100
+      route-target import evpn 100:100
+      route-target export evpn 100:100
+      router-id 10.4.32.3
+      neighbor 172.20.32.1 peer group MLAG-IPv4-UNDERLAY-PEER
+      redistribute connected
+   !
+   vrf Cust_B_opzone
+      rd 10.4.32.3:200
+      route-target import evpn 200:200
+      route-target export evpn 200:200
+      router-id 10.4.32.3
+      neighbor 172.20.32.1 peer group MLAG-IPv4-UNDERLAY-PEER
+      redistribute connected
 ```
 
 # BFD
@@ -686,11 +838,17 @@ route-map RM-MLAG-PEER-IN permit 10
 
 | VRF Name | IP Routing |
 | -------- | ---------- |
+| Cust_A_VRF | enabled |
+| Cust_B_opzone | enabled |
 | mgmt | disabled |
 
 ## VRF Instances Device Configuration
 
 ```eos
+!
+vrf instance Cust_A_VRF
+!
+vrf instance Cust_B_opzone
 !
 vrf instance mgmt
 ```

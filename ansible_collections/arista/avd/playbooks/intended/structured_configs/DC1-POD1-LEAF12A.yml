@@ -76,29 +76,29 @@ router_bgp:
   vrfs:
     Cust_A_VRF:
       router_id: 10.4.1.29
-      rd: 10.4.1.29:125
+      rd: 10.4.1.29:100
       route_targets:
         import:
           evpn:
-          - 125:125
+          - 100:100
         export:
           evpn:
-          - 125:125
+          - 100:100
       neighbors:
         172.20.1.53:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
-    Cust_B_VRF:
+    Cust_B_opzone:
       router_id: 10.4.1.29
-      rd: 10.4.1.29:225
+      rd: 10.4.1.29:200
       route_targets:
         import:
           evpn:
-          - 225:225
+          - 200:200
         export:
           evpn:
-          - 225:225
+          - 200:200
       neighbors:
         172.20.1.53:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -119,30 +119,6 @@ router_bgp:
       route_targets:
         both:
         - 10112:10112
-      redistribute_routes:
-      - learned
-    67:
-      tenant: Cust_B
-      rd: 10.4.1.29:20067
-      route_targets:
-        both:
-        - 20067:20067
-      redistribute_routes:
-      - learned
-    211:
-      tenant: Cust_B
-      rd: 10.4.1.29:20211
-      route_targets:
-        both:
-        - 20211:20211
-      redistribute_routes:
-      - learned
-    212:
-      tenant: Cust_B
-      rd: 10.4.1.29:20212
-      route_targets:
-        both:
-        - 20212:20212
       redistribute_routes:
       - learned
 static_routes:
@@ -173,7 +149,7 @@ vrfs:
   Cust_A_VRF:
     tenant: Cust_A
     ip_routing: true
-  Cust_B_VRF:
+  Cust_B_opzone:
     tenant: Cust_B
     ip_routing: true
 management_interfaces:
@@ -203,26 +179,14 @@ vlans:
   113:
     tenant: Cust_A
     name: SVI_with_no_vxlan
-  3124:
+  3099:
     tenant: Cust_A
     name: MLAG_iBGP_Cust_A_VRF
     trunk_groups:
     - LEAF_PEER_L3
-  67:
+  3199:
     tenant: Cust_B
-    name: Cust_B_OP_Zone_1
-  211:
-    tenant: Cust_B
-    name: Cust_B_OP_Zone_2
-  212:
-    tenant: Cust_B
-    name: Cust_B_OP_Zone_3
-  213:
-    tenant: Cust_B
-    name: SVI_with_no_vxlan
-  3224:
-    tenant: Cust_B
-    name: MLAG_iBGP_Cust_B_VRF
+    name: MLAG_iBGP_Cust_B_opzone
     trunk_groups:
     - LEAF_PEER_L3
 vlan_interfaces:
@@ -240,6 +204,9 @@ vlan_interfaces:
     shutdown: false
     vrf: Cust_A_VRF
     ip_address_virtual: 10.0.10.1/24
+    ip_helpers:
+      10.0.10.10: {}
+      10.1.10.10: {}
     struct_cfg:
       description: set from structured_config on svi (was Cust_A_OP_Zone_1)
   Vlan112:
@@ -250,6 +217,8 @@ vlan_interfaces:
     shutdown: false
     vrf: Cust_A_VRF
     ip_address_virtual: 10.1.12.1/24
+    ip_helpers:
+      10.1.12.10: {}
     eos_cli: 'comment
 
       Comment created from raw_eos_cli under SVI 112 in VRF Common_VRF
@@ -265,7 +234,7 @@ vlan_interfaces:
     shutdown: false
     vrf: Cust_A_VRF
     ip_address_virtual: 10.1.13.1/24
-  Vlan3124:
+  Vlan3099:
     tenant: Cust_A
     type: underlay_peering
     shutdown: false
@@ -273,46 +242,12 @@ vlan_interfaces:
     vrf: Cust_A_VRF
     ip_address: 172.20.1.52/31
     mtu: 9214
-  Vlan67:
-    tenant: Cust_B
-    tags:
-    - opzone
-    description: set from structured_config on svi (was Cust_B_OP_Zone_1)
-    shutdown: false
-    vrf: Cust_B_VRF
-    ip_address_virtual: 10.32.1.1/24
-    struct_cfg:
-      description: set from structured_config on svi (was Cust_B_OP_Zone_1)
-  Vlan211:
-    tenant: Cust_B
-    tags:
-    - opzone
-    description: Cust_B_OP_Zone_2
-    shutdown: true
-    vrf: Cust_B_VRF
-    ip_address_virtual: 10.32.11.1/24
-  Vlan212:
-    tenant: Cust_B
-    tags:
-    - opzone
-    description: Cust_B_OP_Zone_3
-    shutdown: false
-    vrf: Cust_B_VRF
-    ip_address_virtual: 10.32.12.1/24
-  Vlan213:
-    tenant: Cust_B
-    tags:
-    - opzone
-    description: SVI_with_no_vxlan
-    shutdown: false
-    vrf: Cust_B_VRF
-    ip_address_virtual: 10.32.13.1/24
-  Vlan3224:
+  Vlan3199:
     tenant: Cust_B
     type: underlay_peering
     shutdown: false
-    description: 'MLAG_PEER_L3_iBGP: vrf Cust_B_VRF'
-    vrf: Cust_B_VRF
+    description: 'MLAG_PEER_L3_iBGP: vrf Cust_B_opzone'
+    vrf: Cust_B_opzone
     ip_address: 172.20.1.52/31
     mtu: 9214
 port_channel_interfaces:
@@ -460,14 +395,8 @@ vxlan_interface:
           vni: 10100
         112:
           vni: 10112
-        67:
-          vni: 20067
-        211:
-          vni: 20211
-        212:
-          vni: 20212
       vrfs:
         Cust_A_VRF:
-          vni: 125
-        Cust_B_VRF:
-          vni: 225
+          vni: 100
+        Cust_B_opzone:
+          vni: 200

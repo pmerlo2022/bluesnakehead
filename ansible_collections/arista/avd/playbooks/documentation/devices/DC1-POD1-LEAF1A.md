@@ -237,7 +237,7 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet28/1 | P2P_LINK_TO_DC1-POD1-LEAF1B_Ethernet28/1 | routed | - | 11.1.0.0/31 | default | 9214 | false | - | - |
+| Ethernet28/1 | P2P_LINK_TO_DC1-POD1-LEAF1B_Ethernet28/1 | routed | - | 200.200.200.104/24 | default | 9214 | false | - | - |
 | Ethernet29/1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet1/1 | routed | - | 172.17.1.33/31 | default | 9214 | false | - | - |
 | Ethernet30/1 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet1/1 | routed | - | 172.17.1.35/31 | default | 9214 | false | - | - |
 | Ethernet31/1 | P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet1/1 | routed | - | 172.17.1.37/31 | default | 9214 | false | - | - |
@@ -287,7 +287,7 @@ interface Ethernet28/1
    mac security profile MACSEC_PROFILE
    mtu 9214
    no switchport
-   ip address 11.1.0.0/31
+   ip address 200.200.200.104/24
    ptp enable
 !
 interface Ethernet29/1
@@ -548,12 +548,12 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 | Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
 | -------- | --------- | --- | -------------- | -------------- |
-| 11.1.0.1 | 64102 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.1.32 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.1.34 | 65001.102 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.1.36 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.1.38 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.20.1.9 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
+| 200.200.200.204 | 64102 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
@@ -593,11 +593,6 @@ router bgp 65111.100
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
-   neighbor 11.1.0.1 peer group IPv4-UNDERLAY-PEERS
-   neighbor 11.1.0.1 remote-as 64102
-   neighbor 11.1.0.1 local-as 64101 no-prepend replace-as
-   neighbor 11.1.0.1 description DC1-POD1-LEAF1B
-   neighbor 11.1.0.1 bfd
    neighbor 172.17.1.32 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.1.32 remote-as 65001.100
    neighbor 172.17.1.32 description DC1-POD1-SPINE1_Ethernet1/1
@@ -612,6 +607,11 @@ router bgp 65111.100
    neighbor 172.17.1.38 description DC1-POD1-SPINE4_Ethernet1/1
    neighbor 172.20.1.9 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 172.20.1.9 description DC1-POD1-LEAF1B
+   neighbor 200.200.200.204 peer group IPv4-UNDERLAY-PEERS
+   neighbor 200.200.200.204 remote-as 64102
+   neighbor 200.200.200.204 local-as 64101 no-prepend replace-as
+   neighbor 200.200.200.204 description DC1-POD1-LEAF1B
+   neighbor 200.200.200.204 bfd
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn
