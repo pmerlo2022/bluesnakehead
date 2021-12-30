@@ -19,10 +19,10 @@ tenants:
 #            source_vrf: < VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF >
         svis:
           100:
-            name: Cust_A_OP_Zone_1
+            name: Cust_A_Data
             description: optional for svi instead of vlan name
             #i wonder if these tags are the L3 SVI and L2 VLAN based on filters applied to node_types
-            tags: [opzone]
+            tags: [Cust_A_opzone]
             enabled: true
             #anycast
             ip_address_virtual: 10.0.10.1/24
@@ -36,17 +36,17 @@ tenants:
 #              DC1-POD1-LEAF2A:
 #                structured_config:
 #                  description: set from structured_config on svi for DC1-POD1-LEAF2A (was Cust_A_OP_Zone_1)
-          111:
+          167:
 #            vni_override: 50111
-            name: Cust_A_OP_Zone_2
-            tags: [DC2-POD1-LEAF4A]
+            name: Cust_A_M2C2
+            tags: [Cust_A_opzone]
             ip_address_virtual: 10.1.11.1/24
             ip_helpers:
-              10.1.11.10:
-          "112":
+              - 10.1.11.10
+          "133":
 #            vni_override: 50112
-            name: Cust_A_OP_Zone_3
-            tags: [opzone]
+            name: Cust_A_OP_M2
+            tags: [Cust_A_opzone]
             enabled: true
             ip_address_virtual: 10.1.12.1/24
             ip_helpers:
@@ -55,40 +55,19 @@ tenants:
               comment
               Comment created from raw_eos_cli under SVI 112 in VRF Common_VRF
               EOF
-          "113":
-            name: SVI_with_no_vxlan
-            tags: [opzone]
-            enabled: True
-            ip_address_virtual: 10.1.13.1/24
-            vxlan: False
-#examples of vrf specific cli options
-#        raw_eos_cli: |
-#          interface Loopback1000
-#            description Loopback created from raw_eos_cli under VRF Common_VRF
-#        structured_config:
-#          domain_list:
-#            - structured-config.set.under.vrf.common-vrf
-#        bgp:
-#          raw_eos_cli: |
-#            comment
-#            Comment created from raw_eos_cli under BGP for VRF Common_VRF
-#            EOF
-
+            vxlan: true
     # These are pure L2 vlans - so no SVI on l3leafs
     l2vlans:
-      "1500":
+      "666":
 #        vni_override: 2500
-        name: web-l2-vlan
-        tags: [web]
-      "1600":
-#        vni_override: 2600
-        name: web-l2-vlan-2
-        tags: [web]
-      1601:
-        name: l2vlan_with_no_vxlan
-        tags: [web]
+        name: bitbucket
+        tags: [bitbucket]
         vxlan: False
-        
+      "999":
+#        vni_override: 2600
+        name: vmotion
+        tags: [vmotion]
+        vxlan: False      
   Cust_B:
     mac_vrf_vni_base: 20000
     enable_mlag_ibgp_peering_vrfs: true
@@ -96,8 +75,8 @@ tenants:
       Cust_B_opzone:
         vrf_vni: 200
         svis:
-          "67":
-            name: Cust_B_OP_Zone_1
+          "200":
+            name: Cust_B_Data
             tags: [Cust_B_opzone]
             enabled: true
             ip_address_virtual: 10.32.1.1/24
@@ -105,44 +84,26 @@ tenants:
               - 10.32.1.10
             structured_config:
               description: set from structured_config on svi (was Cust_B_OP_Zone_1) 
-          "211":
+          "267":
 #            vni_override: 50211
-            name: Cust_B_OP_Zone_2
+            name: Cust_B_M2C2
             tags: [Cust_B_opzone]
             ip_address_virtual: 10.32.11.1/24
             ip_helpers:
               - 10.32.11.10
-          "212":
+          "233":
 #            vni_override: 50212
-            name: Cust_B_OP_Zone_3
+            name: Cust_B_M2
             tags: [Cust_B_opzone]
             enabled: true
             ip_address_virtual: 10.32.12.1/24
             ip_helpers:
               - 10.32.12.10
-          213:
-            name: SVI_with_no_vxlan
-            tags: [Cust_B_opzone]
-            enabled: True
-            ip_address_virtual: 10.32.13.1/24
-            ip_helpers:
-              - 10.32.13.10
-            vxlan: False
-
-    # These are pure L2 vlans - so no SVI on l3leafs
-    l2vlans:
-      "2520":
+#    l2vlans:
+#      "2520":
 #        vni_override: 2500
-        name: web-l2-vlan
-        tags: [web]
-      "2620":
-#        vni_override: 2600
-        name: web-l2-vlan-2
-        tags: [web]
-      2621:
-        name: l2vlan_with_no_vxlan
-        tags: [web]
-        vxlan: False
+#        name: web-l2-vlan
+#        tags: [web]
         # List of L3 interfaces | Optional.
         # This will create IP routed interface inside VRF. Length of interfaces, nodes and ip_addresses must match.
 #    l3_interfaces:

@@ -84,7 +84,7 @@ l3leaf:
 # filter matches tags specified in TENANT_NETWORKS.yml. This is where we associate vrfs/racks. Vlans in servers would match specific nodes. I'll have to check 'tag' capabilites there
     filter:
       always_include_vrfs_in_tenants: [ 'all' ] #Testing that we configure all VRFs even with no VLANs.
-      tags: [ opzone ]
+      tags: [ Cust_A_opzone ]
     mlag: true
     mlag_interfaces: [ Ethernet15/1, Ethernet16/1 ]    
     mlag_peer_l3_ipv4_pool: 172.19.1.0/24

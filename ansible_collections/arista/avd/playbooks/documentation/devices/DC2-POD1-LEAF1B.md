@@ -205,10 +205,9 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 67 | Cust_B_OP_Zone_1 | - |
-| 211 | Cust_B_OP_Zone_2 | - |
-| 212 | Cust_B_OP_Zone_3 | - |
-| 213 | SVI_with_no_vxlan | - |
+| 200 | Cust_B_Data | - |
+| 233 | Cust_B_M2 | - |
+| 267 | Cust_B_M2C2 | - |
 | 3099 | MLAG_iBGP_Cust_A_VRF | LEAF_PEER_L3 |
 | 3199 | MLAG_iBGP_Cust_B_opzone | LEAF_PEER_L3 |
 | 4094 | MLAG_PEER | MLAG |
@@ -217,17 +216,14 @@ vlan internal order ascending range 1006 1199
 
 ```eos
 !
-vlan 67
-   name Cust_B_OP_Zone_1
+vlan 200
+   name Cust_B_Data
 !
-vlan 211
-   name Cust_B_OP_Zone_2
+vlan 233
+   name Cust_B_M2
 !
-vlan 212
-   name Cust_B_OP_Zone_3
-!
-vlan 213
-   name SVI_with_no_vxlan
+vlan 267
+   name Cust_B_M2C2
 !
 vlan 3099
    name MLAG_iBGP_Cust_A_VRF
@@ -390,10 +386,9 @@ interface Loopback1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan67 |  set from structured_config on svi (was Cust_B_OP_Zone_1)  |  Cust_B_opzone  |  -  |  false  |
-| Vlan211 |  Cust_B_OP_Zone_2  |  Cust_B_opzone  |  -  |  true  |
-| Vlan212 |  Cust_B_OP_Zone_3  |  Cust_B_opzone  |  -  |  false  |
-| Vlan213 |  SVI_with_no_vxlan  |  Cust_B_opzone  |  -  |  false  |
+| Vlan200 |  set from structured_config on svi (was Cust_B_OP_Zone_1)  |  Cust_B_opzone  |  -  |  false  |
+| Vlan233 |  Cust_B_M2  |  Cust_B_opzone  |  -  |  false  |
+| Vlan267 |  Cust_B_M2C2  |  Cust_B_opzone  |  -  |  true  |
 | Vlan3099 |  MLAG_PEER_L3_iBGP: vrf Cust_A_VRF  |  Cust_A_VRF  |  9214  |  false  |
 | Vlan3199 |  MLAG_PEER_L3_iBGP: vrf Cust_B_opzone  |  Cust_B_opzone  |  9214  |  false  |
 | Vlan4094 |  MLAG_PEER  |  default  |  9214  |  false  |
@@ -402,10 +397,9 @@ interface Loopback1
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan67 |  Cust_B_opzone  |  -  |  10.32.1.1/24  |  -  |  -  |  -  |  -  |
-| Vlan211 |  Cust_B_opzone  |  -  |  10.32.11.1/24  |  -  |  -  |  -  |  -  |
-| Vlan212 |  Cust_B_opzone  |  -  |  10.32.12.1/24  |  -  |  -  |  -  |  -  |
-| Vlan213 |  Cust_B_opzone  |  -  |  10.32.13.1/24  |  -  |  -  |  -  |  -  |
+| Vlan200 |  Cust_B_opzone  |  -  |  10.32.1.1/24  |  -  |  -  |  -  |  -  |
+| Vlan233 |  Cust_B_opzone  |  -  |  10.32.12.1/24  |  -  |  -  |  -  |  -  |
+| Vlan267 |  Cust_B_opzone  |  -  |  10.32.11.1/24  |  -  |  -  |  -  |  -  |
 | Vlan3099 |  Cust_A_VRF  |  172.20.32.1/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan3199 |  Cust_B_opzone  |  172.20.32.1/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  172.20.32.1/31  |  -  |  -  |  -  |  -  |  -  |
@@ -415,33 +409,26 @@ interface Loopback1
 
 ```eos
 !
-interface Vlan67
+interface Vlan200
    description set from structured_config on svi (was Cust_B_OP_Zone_1)
    no shutdown
    vrf Cust_B_opzone
    ip address virtual 10.32.1.1/24
    ip helper-address 10.32.1.10
 !
-interface Vlan211
-   description Cust_B_OP_Zone_2
-   shutdown
-   vrf Cust_B_opzone
-   ip address virtual 10.32.11.1/24
-   ip helper-address 10.32.11.10
-!
-interface Vlan212
-   description Cust_B_OP_Zone_3
+interface Vlan233
+   description Cust_B_M2
    no shutdown
    vrf Cust_B_opzone
    ip address virtual 10.32.12.1/24
    ip helper-address 10.32.12.10
 !
-interface Vlan213
-   description SVI_with_no_vxlan
-   no shutdown
+interface Vlan267
+   description Cust_B_M2C2
+   shutdown
    vrf Cust_B_opzone
-   ip address virtual 10.32.13.1/24
-   ip helper-address 10.32.13.10
+   ip address virtual 10.32.11.1/24
+   ip helper-address 10.32.11.10
 !
 interface Vlan3099
    description MLAG_PEER_L3_iBGP: vrf Cust_A_VRF
@@ -479,9 +466,9 @@ interface Vlan4094
 
 | VLAN | VNI | Flood List |
 | ---- | --- | ---------- |
-| 67 | 20067 | - |
-| 211 | 20211 | - |
-| 212 | 20212 | - |
+| 200 | 20200 | - |
+| 233 | 20233 | - |
+| 267 | 20267 | - |
 
 #### VRF to VNI Mappings
 
@@ -499,9 +486,9 @@ interface Vxlan1
    vxlan source-interface Loopback1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
-   vxlan vlan 67 vni 20067
-   vxlan vlan 211 vni 20211
-   vxlan vlan 212 vni 20212
+   vxlan vlan 200 vni 20200
+   vxlan vlan 233 vni 20233
+   vxlan vlan 267 vni 20267
    vxlan vrf Cust_A_VRF vni 100
    vxlan vrf Cust_B_opzone vni 200
 ```
@@ -643,9 +630,9 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-| 67 | 10.4.32.4:20067 | 20067:20067 | - | - | learned |
-| 211 | 10.4.32.4:20211 | 20211:20211 | - | - | learned |
-| 212 | 10.4.32.4:20212 | 20212:20212 | - | - | learned |
+| 200 | 10.4.32.4:20200 | 20200:20200 | - | - | learned |
+| 233 | 10.4.32.4:20233 | 20233:20233 | - | - | learned |
+| 267 | 10.4.32.4:20267 | 20267:20267 | - | - | learned |
 
 #### Router BGP EVPN VRFs
 
@@ -704,19 +691,19 @@ router bgp 65211.100
    neighbor 200.200.200.102 description DC2-POD1-LEAF1A
    redistribute connected route-map RM-CONN-2-BGP
    !
-   vlan 67
-      rd 10.4.32.4:20067
-      route-target both 20067:20067
+   vlan 200
+      rd 10.4.32.4:20200
+      route-target both 20200:20200
       redistribute learned
    !
-   vlan 211
-      rd 10.4.32.4:20211
-      route-target both 20211:20211
+   vlan 233
+      rd 10.4.32.4:20233
+      route-target both 20233:20233
       redistribute learned
    !
-   vlan 212
-      rd 10.4.32.4:20212
-      route-target both 20212:20212
+   vlan 267
+      rd 10.4.32.4:20267
+      route-target both 20267:20267
       redistribute learned
    !
    address-family evpn

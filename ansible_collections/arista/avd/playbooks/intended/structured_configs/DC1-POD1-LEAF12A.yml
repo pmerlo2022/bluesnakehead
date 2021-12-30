@@ -113,12 +113,20 @@ router_bgp:
         - 10100:10100
       redistribute_routes:
       - learned
-    112:
+    133:
       tenant: Cust_A
-      rd: 10.4.1.29:10112
+      rd: 10.4.1.29:10133
       route_targets:
         both:
-        - 10112:10112
+        - 10133:10133
+      redistribute_routes:
+      - learned
+    167:
+      tenant: Cust_A
+      rd: 10.4.1.29:10167
+      route_targets:
+        both:
+        - 10167:10167
       redistribute_routes:
       - learned
 static_routes:
@@ -172,13 +180,13 @@ vlans:
     - MLAG
   100:
     tenant: Cust_A
-    name: Cust_A_OP_Zone_1
-  112:
+    name: Cust_A_Data
+  133:
     tenant: Cust_A
-    name: Cust_A_OP_Zone_3
-  113:
+    name: Cust_A_OP_M2
+  167:
     tenant: Cust_A
-    name: SVI_with_no_vxlan
+    name: Cust_A_M2C2
   3099:
     tenant: Cust_A
     name: MLAG_iBGP_Cust_A_VRF
@@ -199,7 +207,7 @@ vlan_interfaces:
   Vlan100:
     tenant: Cust_A
     tags:
-    - opzone
+    - Cust_A_opzone
     description: set from structured_config on svi (was Cust_A_OP_Zone_1)
     shutdown: false
     vrf: Cust_A_VRF
@@ -209,11 +217,11 @@ vlan_interfaces:
       10.1.10.10: {}
     struct_cfg:
       description: set from structured_config on svi (was Cust_A_OP_Zone_1)
-  Vlan112:
+  Vlan133:
     tenant: Cust_A
     tags:
-    - opzone
-    description: Cust_A_OP_Zone_3
+    - Cust_A_opzone
+    description: Cust_A_OP_M2
     shutdown: false
     vrf: Cust_A_VRF
     ip_address_virtual: 10.1.12.1/24
@@ -226,14 +234,16 @@ vlan_interfaces:
       EOF
 
       '
-  Vlan113:
+  Vlan167:
     tenant: Cust_A
     tags:
-    - opzone
-    description: SVI_with_no_vxlan
-    shutdown: false
+    - Cust_A_opzone
+    description: Cust_A_M2C2
+    shutdown: true
     vrf: Cust_A_VRF
-    ip_address_virtual: 10.1.13.1/24
+    ip_address_virtual: 10.1.11.1/24
+    ip_helpers:
+      10.1.11.10: {}
   Vlan3099:
     tenant: Cust_A
     type: underlay_peering
@@ -393,8 +403,10 @@ vxlan_interface:
       vlans:
         100:
           vni: 10100
-        112:
-          vni: 10112
+        133:
+          vni: 10133
+        167:
+          vni: 10167
       vrfs:
         Cust_A_VRF:
           vni: 100

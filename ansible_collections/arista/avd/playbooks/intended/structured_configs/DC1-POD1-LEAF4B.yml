@@ -113,12 +113,20 @@ router_bgp:
         - 10100:10100
       redistribute_routes:
       - learned
-    112:
+    133:
       tenant: Cust_A
-      rd: 10.4.1.14:10112
+      rd: 10.4.1.14:10133
       route_targets:
         both:
-        - 10112:10112
+        - 10133:10133
+      redistribute_routes:
+      - learned
+    167:
+      tenant: Cust_A
+      rd: 10.4.1.14:10167
+      route_targets:
+        both:
+        - 10167:10167
       redistribute_routes:
       - learned
 static_routes:
@@ -174,13 +182,13 @@ vlans:
     - MLAG
   100:
     tenant: Cust_A
-    name: Cust_A_OP_Zone_1
-  112:
+    name: Cust_A_Data
+  133:
     tenant: Cust_A
-    name: Cust_A_OP_Zone_3
-  113:
+    name: Cust_A_OP_M2
+  167:
     tenant: Cust_A
-    name: SVI_with_no_vxlan
+    name: Cust_A_M2C2
   3099:
     tenant: Cust_A
     name: MLAG_iBGP_Cust_A_VRF
@@ -201,7 +209,7 @@ vlan_interfaces:
   Vlan100:
     tenant: Cust_A
     tags:
-    - opzone
+    - Cust_A_opzone
     description: set from structured_config on svi (was Cust_A_OP_Zone_1)
     shutdown: false
     vrf: Cust_A_VRF
@@ -211,11 +219,11 @@ vlan_interfaces:
       10.1.10.10: {}
     struct_cfg:
       description: set from structured_config on svi (was Cust_A_OP_Zone_1)
-  Vlan112:
+  Vlan133:
     tenant: Cust_A
     tags:
-    - opzone
-    description: Cust_A_OP_Zone_3
+    - Cust_A_opzone
+    description: Cust_A_OP_M2
     shutdown: false
     vrf: Cust_A_VRF
     ip_address_virtual: 10.1.12.1/24
@@ -228,14 +236,16 @@ vlan_interfaces:
       EOF
 
       '
-  Vlan113:
+  Vlan167:
     tenant: Cust_A
     tags:
-    - opzone
-    description: SVI_with_no_vxlan
-    shutdown: false
+    - Cust_A_opzone
+    description: Cust_A_M2C2
+    shutdown: true
     vrf: Cust_A_VRF
-    ip_address_virtual: 10.1.13.1/24
+    ip_address_virtual: 10.1.11.1/24
+    ip_helpers:
+      10.1.11.10: {}
   Vlan3099:
     tenant: Cust_A
     type: underlay_peering
@@ -263,6 +273,36 @@ port_channel_interfaces:
     trunk_groups:
     - LEAF_PEER_L3
     - MLAG
+  Port-Channel131:
+    description: server-1_data
+    type: switched
+    shutdown: false
+    mode: access
+    mtu: 9000
+    vlans: 100
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: true
+    mlag: 131
+    service_profile: data
+    eos_cli: 'port-channel lacp fallback individual
+
+      '
+  Port-Channel121:
+    description: server-1_m2c2
+    type: switched
+    shutdown: false
+    mode: access
+    mtu: 1500
+    vlans: 67
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: true
+    mlag: 121
+    service_profile: m2c2
+    eos_cli: 'port-channel lacp fallback individual
+
+      '
   Port-Channel101:
     description: server-2_PortChannel
     type: switched
@@ -270,6 +310,17 @@ port_channel_interfaces:
     mode: access
     vlans: 67
     mlag: 101
+    service_profile: foo
+    eos_cli: 'port-channel lacp fallback individual
+
+      '
+  Port-Channel91:
+    description: server-3_PortChannel
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 67
+    mlag: 91
     service_profile: foo
     eos_cli: 'port-channel lacp fallback individual
 
@@ -343,6 +394,50 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.17.1.95/31
+  Ethernet13/1:
+    peer: server-1
+    peer_interface: eno2
+    peer_type: server
+    description: server-1_eno2
+    speed: 100g
+    mtu: 9000
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 100
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: true
+    channel_group:
+      id: 131
+      mode: active
+    flowcontrol:
+      received: true
+    service_profile: data
+    ptp:
+      enable: true
+  Ethernet12/1:
+    peer: server-1
+    peer_interface: eno4
+    peer_type: server
+    description: server-1_eno4
+    speed: forced 25gfull
+    mtu: 1500
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 67
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: true
+    channel_group:
+      id: 121
+      mode: active
+    flowcontrol:
+      received: true
+    service_profile: m2c2
+    ptp:
+      enable: true
   Ethernet10/1:
     peer: server-2
     peer_interface: eno4
@@ -354,6 +449,19 @@ ethernet_interfaces:
     vlans: 67
     channel_group:
       id: 101
+      mode: active
+    service_profile: foo
+  Ethernet9/1:
+    peer: server-3
+    peer_interface: eno4
+    peer_type: server
+    description: server-3_eno4
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 67
+    channel_group:
+      id: 91
       mode: active
     service_profile: foo
 mlag_configuration:
@@ -419,8 +527,10 @@ vxlan_interface:
       vlans:
         100:
           vni: 10100
-        112:
-          vni: 10112
+        133:
+          vni: 10133
+        167:
+          vni: 10167
       vrfs:
         Cust_A_VRF:
           vni: 100

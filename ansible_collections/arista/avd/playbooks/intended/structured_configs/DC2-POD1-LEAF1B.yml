@@ -108,28 +108,28 @@ router_bgp:
       redistribute_routes:
       - connected
   vlans:
-    67:
+    200:
       tenant: Cust_B
-      rd: 10.4.32.4:20067
+      rd: 10.4.32.4:20200
       route_targets:
         both:
-        - 20067:20067
+        - 20200:20200
       redistribute_routes:
       - learned
-    211:
+    233:
       tenant: Cust_B
-      rd: 10.4.32.4:20211
+      rd: 10.4.32.4:20233
       route_targets:
         both:
-        - 20211:20211
+        - 20233:20233
       redistribute_routes:
       - learned
-    212:
+    267:
       tenant: Cust_B
-      rd: 10.4.32.4:20212
+      rd: 10.4.32.4:20267
       route_targets:
         both:
-        - 20212:20212
+        - 20267:20267
       redistribute_routes:
       - learned
 static_routes:
@@ -189,18 +189,15 @@ vlans:
     name: MLAG_iBGP_Cust_A_VRF
     trunk_groups:
     - LEAF_PEER_L3
-  67:
+  200:
     tenant: Cust_B
-    name: Cust_B_OP_Zone_1
-  211:
+    name: Cust_B_Data
+  233:
     tenant: Cust_B
-    name: Cust_B_OP_Zone_2
-  212:
+    name: Cust_B_M2
+  267:
     tenant: Cust_B
-    name: Cust_B_OP_Zone_3
-  213:
-    tenant: Cust_B
-    name: SVI_with_no_vxlan
+    name: Cust_B_M2C2
   3199:
     tenant: Cust_B
     name: MLAG_iBGP_Cust_B_opzone
@@ -221,7 +218,7 @@ vlan_interfaces:
     vrf: Cust_A_VRF
     ip_address: 172.20.32.1/31
     mtu: 9214
-  Vlan67:
+  Vlan200:
     tenant: Cust_B
     tags:
     - Cust_B_opzone
@@ -233,36 +230,26 @@ vlan_interfaces:
       10.32.1.10: {}
     struct_cfg:
       description: set from structured_config on svi (was Cust_B_OP_Zone_1)
-  Vlan211:
+  Vlan233:
     tenant: Cust_B
     tags:
     - Cust_B_opzone
-    description: Cust_B_OP_Zone_2
-    shutdown: true
-    vrf: Cust_B_opzone
-    ip_address_virtual: 10.32.11.1/24
-    ip_helpers:
-      10.32.11.10: {}
-  Vlan212:
-    tenant: Cust_B
-    tags:
-    - Cust_B_opzone
-    description: Cust_B_OP_Zone_3
+    description: Cust_B_M2
     shutdown: false
     vrf: Cust_B_opzone
     ip_address_virtual: 10.32.12.1/24
     ip_helpers:
       10.32.12.10: {}
-  Vlan213:
+  Vlan267:
     tenant: Cust_B
     tags:
     - Cust_B_opzone
-    description: SVI_with_no_vxlan
-    shutdown: false
+    description: Cust_B_M2C2
+    shutdown: true
     vrf: Cust_B_opzone
-    ip_address_virtual: 10.32.13.1/24
+    ip_address_virtual: 10.32.11.1/24
     ip_helpers:
-      10.32.13.10: {}
+      10.32.11.10: {}
   Vlan3199:
     tenant: Cust_B
     type: underlay_peering
@@ -418,12 +405,12 @@ vxlan_interface:
       virtual_router_encapsulation_mac_address: mlag-system-id
       udp_port: 4789
       vlans:
-        67:
-          vni: 20067
-        211:
-          vni: 20211
-        212:
-          vni: 20212
+        200:
+          vni: 20200
+        233:
+          vni: 20233
+        267:
+          vni: 20267
       vrfs:
         Cust_A_VRF:
           vni: 100

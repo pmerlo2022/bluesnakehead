@@ -111,76 +111,44 @@ router_bgp:
         - 10100:10100
       redistribute_routes:
       - learned
-    111:
+    133:
       tenant: Cust_A
-      rd: 10.4.32.7:10111
+      rd: 10.4.32.7:10133
       route_targets:
         both:
-        - 10111:10111
+        - 10133:10133
       redistribute_routes:
       - learned
-    112:
+    167:
       tenant: Cust_A
-      rd: 10.4.32.7:10112
+      rd: 10.4.32.7:10167
       route_targets:
         both:
-        - 10112:10112
+        - 10167:10167
       redistribute_routes:
       - learned
-    1500:
-      tenant: Cust_A
-      rd: 10.4.32.7:11500
-      route_targets:
-        both:
-        - 11500:11500
-      redistribute_routes:
-      - learned
-    1600:
-      tenant: Cust_A
-      rd: 10.4.32.7:11600
-      route_targets:
-        both:
-        - 11600:11600
-      redistribute_routes:
-      - learned
-    67:
+    200:
       tenant: Cust_B
-      rd: 10.4.32.7:20067
+      rd: 10.4.32.7:20200
       route_targets:
         both:
-        - 20067:20067
+        - 20200:20200
       redistribute_routes:
       - learned
-    211:
+    233:
       tenant: Cust_B
-      rd: 10.4.32.7:20211
+      rd: 10.4.32.7:20233
       route_targets:
         both:
-        - 20211:20211
+        - 20233:20233
       redistribute_routes:
       - learned
-    212:
+    267:
       tenant: Cust_B
-      rd: 10.4.32.7:20212
+      rd: 10.4.32.7:20267
       route_targets:
         both:
-        - 20212:20212
-      redistribute_routes:
-      - learned
-    2520:
-      tenant: Cust_B
-      rd: 10.4.32.7:22520
-      route_targets:
-        both:
-        - 22520:22520
-      redistribute_routes:
-      - learned
-    2620:
-      tenant: Cust_B
-      rd: 10.4.32.7:22620
-      route_targets:
-        both:
-        - 22620:22620
+        - 20267:20267
       redistribute_routes:
       - learned
 static_routes:
@@ -237,56 +205,38 @@ vlans:
     - MLAG
   100:
     tenant: Cust_A
-    name: Cust_A_OP_Zone_1
-  111:
+    name: Cust_A_Data
+  133:
     tenant: Cust_A
-    name: Cust_A_OP_Zone_2
-  112:
+    name: Cust_A_OP_M2
+  167:
     tenant: Cust_A
-    name: Cust_A_OP_Zone_3
-  113:
-    tenant: Cust_A
-    name: SVI_with_no_vxlan
+    name: Cust_A_M2C2
   3099:
     tenant: Cust_A
     name: MLAG_iBGP_Cust_A_VRF
     trunk_groups:
     - LEAF_PEER_L3
-  1500:
+  666:
     tenant: Cust_A
-    name: web-l2-vlan
-  1600:
+    name: bitbucket
+  999:
     tenant: Cust_A
-    name: web-l2-vlan-2
-  1601:
-    tenant: Cust_A
-    name: l2vlan_with_no_vxlan
-  67:
+    name: vmotion
+  200:
     tenant: Cust_B
-    name: Cust_B_OP_Zone_1
-  211:
+    name: Cust_B_Data
+  233:
     tenant: Cust_B
-    name: Cust_B_OP_Zone_2
-  212:
+    name: Cust_B_M2
+  267:
     tenant: Cust_B
-    name: Cust_B_OP_Zone_3
-  213:
-    tenant: Cust_B
-    name: SVI_with_no_vxlan
+    name: Cust_B_M2C2
   3199:
     tenant: Cust_B
     name: MLAG_iBGP_Cust_B_opzone
     trunk_groups:
     - LEAF_PEER_L3
-  2520:
-    tenant: Cust_B
-    name: web-l2-vlan
-  2620:
-    tenant: Cust_B
-    name: web-l2-vlan-2
-  2621:
-    tenant: Cust_B
-    name: l2vlan_with_no_vxlan
 vlan_interfaces:
   Vlan4094:
     description: MLAG_PEER
@@ -297,7 +247,7 @@ vlan_interfaces:
   Vlan100:
     tenant: Cust_A
     tags:
-    - opzone
+    - Cust_A_opzone
     description: set from structured_config on svi (was Cust_A_OP_Zone_1)
     shutdown: false
     vrf: Cust_A_VRF
@@ -307,21 +257,11 @@ vlan_interfaces:
       10.1.10.10: {}
     struct_cfg:
       description: set from structured_config on svi (was Cust_A_OP_Zone_1)
-  Vlan111:
+  Vlan133:
     tenant: Cust_A
     tags:
-    - DC2-POD1-LEAF4A
-    description: Cust_A_OP_Zone_2
-    shutdown: true
-    vrf: Cust_A_VRF
-    ip_address_virtual: 10.1.11.1/24
-    ip_helpers:
-      10.1.11.10: {}
-  Vlan112:
-    tenant: Cust_A
-    tags:
-    - opzone
-    description: Cust_A_OP_Zone_3
+    - Cust_A_opzone
+    description: Cust_A_OP_M2
     shutdown: false
     vrf: Cust_A_VRF
     ip_address_virtual: 10.1.12.1/24
@@ -334,14 +274,16 @@ vlan_interfaces:
       EOF
 
       '
-  Vlan113:
+  Vlan167:
     tenant: Cust_A
     tags:
-    - opzone
-    description: SVI_with_no_vxlan
-    shutdown: false
+    - Cust_A_opzone
+    description: Cust_A_M2C2
+    shutdown: true
     vrf: Cust_A_VRF
-    ip_address_virtual: 10.1.13.1/24
+    ip_address_virtual: 10.1.11.1/24
+    ip_helpers:
+      10.1.11.10: {}
   Vlan3099:
     tenant: Cust_A
     type: underlay_peering
@@ -350,7 +292,7 @@ vlan_interfaces:
     vrf: Cust_A_VRF
     ip_address: 172.20.32.8/31
     mtu: 9214
-  Vlan67:
+  Vlan200:
     tenant: Cust_B
     tags:
     - Cust_B_opzone
@@ -362,36 +304,26 @@ vlan_interfaces:
       10.32.1.10: {}
     struct_cfg:
       description: set from structured_config on svi (was Cust_B_OP_Zone_1)
-  Vlan211:
+  Vlan233:
     tenant: Cust_B
     tags:
     - Cust_B_opzone
-    description: Cust_B_OP_Zone_2
-    shutdown: true
-    vrf: Cust_B_opzone
-    ip_address_virtual: 10.32.11.1/24
-    ip_helpers:
-      10.32.11.10: {}
-  Vlan212:
-    tenant: Cust_B
-    tags:
-    - Cust_B_opzone
-    description: Cust_B_OP_Zone_3
+    description: Cust_B_M2
     shutdown: false
     vrf: Cust_B_opzone
     ip_address_virtual: 10.32.12.1/24
     ip_helpers:
       10.32.12.10: {}
-  Vlan213:
+  Vlan267:
     tenant: Cust_B
     tags:
     - Cust_B_opzone
-    description: SVI_with_no_vxlan
-    shutdown: false
+    description: Cust_B_M2C2
+    shutdown: true
     vrf: Cust_B_opzone
-    ip_address_virtual: 10.32.13.1/24
+    ip_address_virtual: 10.32.11.1/24
     ip_helpers:
-      10.32.13.10: {}
+      10.32.11.10: {}
   Vlan3199:
     tenant: Cust_B
     type: underlay_peering
@@ -543,24 +475,16 @@ vxlan_interface:
       vlans:
         100:
           vni: 10100
-        111:
-          vni: 10111
-        112:
-          vni: 10112
-        1500:
-          vni: 11500
-        1600:
-          vni: 11600
-        67:
-          vni: 20067
-        211:
-          vni: 20211
-        212:
-          vni: 20212
-        2520:
-          vni: 22520
-        2620:
-          vni: 22620
+        133:
+          vni: 10133
+        167:
+          vni: 10167
+        200:
+          vni: 20200
+        233:
+          vni: 20233
+        267:
+          vni: 20267
       vrfs:
         Cust_A_VRF:
           vni: 100

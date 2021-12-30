@@ -204,9 +204,9 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 100 | Cust_A_OP_Zone_1 | - |
-| 112 | Cust_A_OP_Zone_3 | - |
-| 113 | SVI_with_no_vxlan | - |
+| 100 | Cust_A_Data | - |
+| 133 | Cust_A_OP_M2 | - |
+| 167 | Cust_A_M2C2 | - |
 | 3099 | MLAG_iBGP_Cust_A_VRF | LEAF_PEER_L3 |
 | 3199 | MLAG_iBGP_Cust_B_opzone | LEAF_PEER_L3 |
 | 4094 | MLAG_PEER | MLAG |
@@ -216,13 +216,13 @@ vlan internal order ascending range 1006 1199
 ```eos
 !
 vlan 100
-   name Cust_A_OP_Zone_1
+   name Cust_A_Data
 !
-vlan 112
-   name Cust_A_OP_Zone_3
+vlan 133
+   name Cust_A_OP_M2
 !
-vlan 113
-   name SVI_with_no_vxlan
+vlan 167
+   name Cust_A_M2C2
 !
 vlan 3099
    name MLAG_iBGP_Cust_A_VRF
@@ -378,8 +378,8 @@ interface Loopback1
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan100 |  set from structured_config on svi (was Cust_A_OP_Zone_1)  |  Cust_A_VRF  |  -  |  false  |
-| Vlan112 |  Cust_A_OP_Zone_3  |  Cust_A_VRF  |  -  |  false  |
-| Vlan113 |  SVI_with_no_vxlan  |  Cust_A_VRF  |  -  |  false  |
+| Vlan133 |  Cust_A_OP_M2  |  Cust_A_VRF  |  -  |  false  |
+| Vlan167 |  Cust_A_M2C2  |  Cust_A_VRF  |  -  |  true  |
 | Vlan3099 |  MLAG_PEER_L3_iBGP: vrf Cust_A_VRF  |  Cust_A_VRF  |  9214  |  false  |
 | Vlan3199 |  MLAG_PEER_L3_iBGP: vrf Cust_B_opzone  |  Cust_B_opzone  |  9214  |  false  |
 | Vlan4094 |  MLAG_PEER  |  default  |  9214  |  false  |
@@ -389,8 +389,8 @@ interface Loopback1
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
 | Vlan100 |  Cust_A_VRF  |  -  |  10.0.10.1/24  |  -  |  -  |  -  |  -  |
-| Vlan112 |  Cust_A_VRF  |  -  |  10.1.12.1/24  |  -  |  -  |  -  |  -  |
-| Vlan113 |  Cust_A_VRF  |  -  |  10.1.13.1/24  |  -  |  -  |  -  |  -  |
+| Vlan133 |  Cust_A_VRF  |  -  |  10.1.12.1/24  |  -  |  -  |  -  |  -  |
+| Vlan167 |  Cust_A_VRF  |  -  |  10.1.11.1/24  |  -  |  -  |  -  |  -  |
 | Vlan3099 |  Cust_A_VRF  |  172.20.1.44/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan3199 |  Cust_B_opzone  |  172.20.1.44/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  172.20.1.44/31  |  -  |  -  |  -  |  -  |  -  |
@@ -408,8 +408,8 @@ interface Vlan100
    ip helper-address 10.0.10.10
    ip helper-address 10.1.10.10
 !
-interface Vlan112
-   description Cust_A_OP_Zone_3
+interface Vlan133
+   description Cust_A_OP_M2
    no shutdown
    vrf Cust_A_VRF
    ip address virtual 10.1.12.1/24
@@ -419,11 +419,12 @@ interface Vlan112
    EOF
 
 !
-interface Vlan113
-   description SVI_with_no_vxlan
-   no shutdown
+interface Vlan167
+   description Cust_A_M2C2
+   shutdown
    vrf Cust_A_VRF
-   ip address virtual 10.1.13.1/24
+   ip address virtual 10.1.11.1/24
+   ip helper-address 10.1.11.10
 !
 interface Vlan3099
    description MLAG_PEER_L3_iBGP: vrf Cust_A_VRF
@@ -462,7 +463,8 @@ interface Vlan4094
 | VLAN | VNI | Flood List |
 | ---- | --- | ---------- |
 | 100 | 10100 | - |
-| 112 | 10112 | - |
+| 133 | 10133 | - |
+| 167 | 10167 | - |
 
 #### VRF to VNI Mappings
 
@@ -481,7 +483,8 @@ interface Vxlan1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
    vxlan vlan 100 vni 10100
-   vxlan vlan 112 vni 10112
+   vxlan vlan 133 vni 10133
+   vxlan vlan 167 vni 10167
    vxlan vrf Cust_A_VRF vni 100
    vxlan vrf Cust_B_opzone vni 200
 ```
@@ -625,7 +628,8 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
 | 100 | 10.4.1.25:10100 | 10100:10100 | - | - | learned |
-| 112 | 10.4.1.25:10112 | 10112:10112 | - | - | learned |
+| 133 | 10.4.1.25:10133 | 10133:10133 | - | - | learned |
+| 167 | 10.4.1.25:10167 | 10167:10167 | - | - | learned |
 
 #### Router BGP EVPN VRFs
 
@@ -685,9 +689,14 @@ router bgp 65111.1000
       route-target both 10100:10100
       redistribute learned
    !
-   vlan 112
-      rd 10.4.1.25:10112
-      route-target both 10112:10112
+   vlan 133
+      rd 10.4.1.25:10133
+      route-target both 10133:10133
+      redistribute learned
+   !
+   vlan 167
+      rd 10.4.1.25:10167
+      route-target both 10167:10167
       redistribute learned
    !
    address-family evpn
