@@ -115,7 +115,7 @@
 | DC2_POD1 | spine | DC2-POD1-SPINE2 | 10.6.65.2/24 | vEOS-LAB | Provisioned |
 | DC2_POD1 | spine | DC2-POD1-SPINE3 | 10.6.65.3/24 | vEOS-LAB | Provisioned |
 | DC2_POD1 | spine | DC2-POD1-SPINE4 | 10.6.65.4/24 | vEOS-LAB | Provisioned |
-| AMS | super-spine | SUPER-SPINE1 | 10.6.0.1/24 | 7280R | Provisioned |
+| AMS | super-spine | SUPER-SPINE1 | 10.6.0.1/24 | 7060 | Provisioned |
 | AMS | super-spine | SUPER-SPINE2 | 10.6.0.2/24 | 7280R | Provisioned |
 | AMS | super-spine | SUPER-SPINE3 | 10.6.0.3/24 | 7280R | Provisioned |
 | AMS | super-spine | SUPER-SPINE4 | 10.6.0.4/24 | 7280R | Provisioned |

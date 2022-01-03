@@ -12,6 +12,7 @@ super_spine:
   nodes:
     SUPER-SPINE1:
       id: 1
+      platform: 7060
       bgp_as: 64101
       mgmt_ip: "{{ ansible_host }}/24"
       # evpn_role: none

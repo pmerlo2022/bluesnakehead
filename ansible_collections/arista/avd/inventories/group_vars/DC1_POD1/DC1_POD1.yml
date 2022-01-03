@@ -5,6 +5,12 @@ pod_name: DC1_POD1
 # We are doing 2x100 each leaf to each spine
 max_l3leaf_to_spine_links: 4
 
+mgmt_gateway: 10.64.1.1
+mgmt_interface: Management0
+mgmt_interface_vrf: mgmt
+mgmt_destination_networks:
+  - 0.0.0.0/0
+  
 spine:
   defaults:
     platform: vEOS-LAB

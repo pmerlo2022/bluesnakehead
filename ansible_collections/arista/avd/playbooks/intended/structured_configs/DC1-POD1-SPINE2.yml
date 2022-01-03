@@ -152,7 +152,7 @@ router_bgp:
 static_routes:
 - vrf: mgmt
   destination_address_prefix: 0.0.0.0/0
-  gateway: 10.6.1.1
+  gateway: 10.64.1.1
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -178,7 +178,7 @@ management_interfaces:
     shutdown: false
     vrf: mgmt
     ip_address: 10.6.1.2/24
-    gateway: 10.6.1.1
+    gateway: 10.64.1.1
     type: oob
 management_api_http:
   enable_vrfs:

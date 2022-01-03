@@ -257,7 +257,7 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet28/1 | P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet28/1 | routed | - | 200.200.200.202/24 | default | 9214 | false | - | - |
+| Ethernet28/1 | P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet28/1 | routed | - | 200.200.200.202/24 | default | 1180 | false | - | - |
 | Ethernet29/1 | P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet2/1 | routed | - | 172.17.32.9/31 | default | 9214 | false | - | - |
 | Ethernet30/1 | P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet2/1 | routed | - | 172.17.32.11/31 | default | 9214 | false | - | - |
 | Ethernet31/1 | P2P_LINK_TO_DC2-POD1-SPINE3_Ethernet2/1 | routed | - | 172.17.32.13/31 | default | 9214 | false | - | - |
@@ -280,7 +280,7 @@ interface Ethernet16/1
 interface Ethernet28/1
    description P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet28/1
    no shutdown
-   mtu 9214
+   mtu 1180
    no switchport
    ip address 200.200.200.202/24
 !

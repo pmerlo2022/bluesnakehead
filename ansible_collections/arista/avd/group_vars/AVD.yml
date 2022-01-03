@@ -1,4 +1,5 @@
 ---
+# this file isn't used anywhere, to my knowledge or testing
 # local users
 local_users:
   # Username with no password configured
