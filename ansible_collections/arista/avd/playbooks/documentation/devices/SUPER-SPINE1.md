@@ -45,7 +45,7 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management0 | oob_management | oob | mgmt | 10.6.0.1/24 | 10.6.1.1 |
+| Management0 | oob_management | oob | mgmt | 10.6.0.1/24 | 10.6.0.1 |
 
 #### IPv6
 
@@ -178,9 +178,7 @@ vlan internal order ascending range 1006 1199
 | Ethernet3/1 | P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet29/1 | routed | - | 172.16.1.4/31 | default | 9214 | false | - | - |
 | Ethernet4/1 | P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet29/1 | routed | - | 172.16.1.6/31 | default | 9214 | false | - | - |
 | Ethernet5/1 | P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet29/1 | routed | - | 172.16.2.0/31 | default | 9214 | false | - | - |
-| Ethernet6/1 | P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet29/1 | routed | - | 172.16.2.2/31 | default | 9214 | false | - | - |
-| Ethernet7/1 | P2P_LINK_TO_DC1-POD2-SPINE3_Ethernet29/1 | routed | - | 172.16.2.4/31 | default | 9214 | false | - | - |
-| Ethernet8/1 | P2P_LINK_TO_DC1-POD2-SPINE4_Ethernet29/1 | routed | - | 172.16.2.6/31 | default | 9214 | false | - | - |
+| Ethernet5/2 | P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet29/2 | routed | - | 172.16.2.32/31 | default | 9214 | false | - | - |
 | Ethernet9/1 | P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet29/1 | routed | - | 172.16.32.0/31 | default | 9214 | false | - | - |
 | Ethernet10/1 | P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet29/1 | routed | - | 172.16.32.2/31 | default | 9214 | false | - | - |
 | Ethernet11/1 | P2P_LINK_TO_DC2-POD1-SPINE3_Ethernet29/1 | routed | - | 172.16.32.4/31 | default | 9214 | false | - | - |
@@ -235,30 +233,12 @@ interface Ethernet5/1
    ptp enable
    service-profile P2P-QOS-PROFILE
 !
-interface Ethernet6/1
-   description P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet29/1
+interface Ethernet5/2
+   description P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet29/2
    no shutdown
    mtu 9214
    no switchport
-   ip address 172.16.2.2/31
-   ptp enable
-   service-profile P2P-QOS-PROFILE
-!
-interface Ethernet7/1
-   description P2P_LINK_TO_DC1-POD2-SPINE3_Ethernet29/1
-   no shutdown
-   mtu 9214
-   no switchport
-   ip address 172.16.2.4/31
-   ptp enable
-   service-profile P2P-QOS-PROFILE
-!
-interface Ethernet8/1
-   description P2P_LINK_TO_DC1-POD2-SPINE4_Ethernet29/1
-   no shutdown
-   mtu 9214
-   no switchport
-   ip address 172.16.2.6/31
+   ip address 172.16.2.32/31
    ptp enable
    service-profile P2P-QOS-PROFILE
 !
@@ -366,13 +346,13 @@ no ip routing vrf mgmt
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| mgmt  | 0.0.0.0/0 |  10.6.1.1  |  -  |  1  |  -  |  -  |  - |
+| mgmt  | 0.0.0.0/0 |  10.6.0.1  |  -  |  1  |  -  |  -  |  - |
 
 ### Static Routes Device Configuration
 
 ```eos
 !
-ip route vrf mgmt 0.0.0.0/0 10.6.1.1
+ip route vrf mgmt 0.0.0.0/0 10.6.0.1
 ```
 
 ## Router BGP
@@ -410,9 +390,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | 172.16.1.5 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.16.1.7 | 65001.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.16.2.1 | 65001.200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.2.3 | 65001.200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.2.5 | 65001.200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.2.7 | 65001.200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.2.33 | 65001.200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.16.32.1 | 65002.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.16.32.3 | 65002.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.16.32.5 | 65002.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
@@ -453,15 +431,9 @@ router bgp 64101
    neighbor 172.16.2.1 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.2.1 remote-as 65001.200
    neighbor 172.16.2.1 description DC1-POD2-SPINE1_Ethernet29/1
-   neighbor 172.16.2.3 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.2.3 remote-as 65001.200
-   neighbor 172.16.2.3 description DC1-POD2-SPINE2_Ethernet29/1
-   neighbor 172.16.2.5 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.2.5 remote-as 65001.200
-   neighbor 172.16.2.5 description DC1-POD2-SPINE3_Ethernet29/1
-   neighbor 172.16.2.7 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.2.7 remote-as 65001.200
-   neighbor 172.16.2.7 description DC1-POD2-SPINE4_Ethernet29/1
+   neighbor 172.16.2.33 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.16.2.33 remote-as 65001.200
+   neighbor 172.16.2.33 description DC1-POD2-SPINE1_Ethernet29/2
    neighbor 172.16.32.1 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.32.1 remote-as 65002.100
    neighbor 172.16.32.1 description DC2-POD1-SPINE1_Ethernet29/1

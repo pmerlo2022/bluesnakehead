@@ -850,6 +850,6 @@ interface Loopback1010
   description Loopback created from raw_eos_cli under l3leaf defaults in DC2 POD1
 
 interface Loopback1111
-  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
+  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB in AMS.yml
 
 ```

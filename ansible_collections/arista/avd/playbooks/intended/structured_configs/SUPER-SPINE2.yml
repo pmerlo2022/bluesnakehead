@@ -39,19 +39,11 @@ router_bgp:
     172.16.2.65:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65001.200'
-      description: DC1-POD2-SPINE1_Ethernet30/1
-    172.16.2.67:
+      description: DC1-POD2-SPINE1_Ethernet29/3
+    172.16.2.97:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65001.200'
-      description: DC1-POD2-SPINE2_Ethernet30/1
-    172.16.2.69:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65001.200'
-      description: DC1-POD2-SPINE3_Ethernet30/1
-    172.16.2.71:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65001.200'
-      description: DC1-POD2-SPINE4_Ethernet30/1
+      description: DC1-POD2-SPINE1_Ethernet29/4
     172.16.32.65:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65002.100'
@@ -71,7 +63,7 @@ router_bgp:
 static_routes:
 - vrf: mgmt
   destination_address_prefix: 0.0.0.0/0
-  gateway: 10.6.1.1
+  gateway: 10.6.0.1
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -97,7 +89,7 @@ management_interfaces:
     shutdown: false
     vrf: mgmt
     ip_address: 10.6.0.2/24
-    gateway: 10.6.1.1
+    gateway: 10.6.0.1
     type: oob
 management_api_http:
   enable_vrfs:
@@ -152,11 +144,11 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.16.1.14/31
-  Ethernet5/1:
+  Ethernet5/3:
     peer: DC1-POD2-SPINE1
-    peer_interface: Ethernet30/1
+    peer_interface: Ethernet29/3
     peer_type: spine
-    description: P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet30/1
+    description: P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet29/3
     mtu: 9214
     service_profile: P2P-QOS-PROFILE
     ptp:
@@ -164,42 +156,18 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.16.2.64/31
-  Ethernet6/1:
-    peer: DC1-POD2-SPINE2
-    peer_interface: Ethernet30/1
+  Ethernet5/4:
+    peer: DC1-POD2-SPINE1
+    peer_interface: Ethernet29/4
     peer_type: spine
-    description: P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet30/1
+    description: P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet29/4
     mtu: 9214
     service_profile: P2P-QOS-PROFILE
     ptp:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.16.2.66/31
-  Ethernet7/1:
-    peer: DC1-POD2-SPINE3
-    peer_interface: Ethernet30/1
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-POD2-SPINE3_Ethernet30/1
-    mtu: 9214
-    service_profile: P2P-QOS-PROFILE
-    ptp:
-      enable: true
-    type: routed
-    shutdown: false
-    ip_address: 172.16.2.68/31
-  Ethernet8/1:
-    peer: DC1-POD2-SPINE4
-    peer_interface: Ethernet30/1
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-POD2-SPINE4_Ethernet30/1
-    mtu: 9214
-    service_profile: P2P-QOS-PROFILE
-    ptp:
-      enable: true
-    type: routed
-    shutdown: false
-    ip_address: 172.16.2.70/31
+    ip_address: 172.16.2.96/31
   Ethernet9/1:
     peer: DC2-POD1-SPINE1
     peer_interface: Ethernet30/1

@@ -1,4 +1,10 @@
 ---
+mgmt_gateway: 10.6.0.1
+mgmt_interface: Management0
+mgmt_interface_vrf: mgmt
+mgmt_destination_networks:
+  - 0.0.0.0/0
+
 super_spine:
   defaults:
     platform: 7280R
@@ -15,6 +21,12 @@ super_spine:
       platform: 7060
       bgp_as: 64101
       mgmt_ip: "{{ ansible_host }}/24"
+# Next four lines don't have an impact
+      mgmt_gateway: 10.6.10.1
+      mgmt_interface: Management0
+      mgmt_interface_vrf: mgmt
+      mgmt_destination_networks:
+        - 0.0.0.0/0
       # evpn_role: none
       # evpn_route_servers: []
     SUPER-SPINE2:

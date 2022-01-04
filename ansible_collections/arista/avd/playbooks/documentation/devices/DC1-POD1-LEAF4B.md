@@ -925,6 +925,6 @@ vrf instance mgmt
 ```eos
 !
 interface Loopback1111
-  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
+  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB in AMS.yml
 
 ```

@@ -185,7 +185,7 @@ management_api_http:
     mgmt: {}
   enable_https: true
 eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli
-  under platform_settings vEOS-LAB\n"
+  under platform_settings vEOS-LAB in AMS.yml\n"
 ethernet_interfaces:
   Ethernet1/1:
     peer: DC1-POD1-LEAF1A
