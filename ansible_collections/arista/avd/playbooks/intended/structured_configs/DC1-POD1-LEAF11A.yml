@@ -129,10 +129,34 @@ router_bgp:
         - 10167:10167
       redistribute_routes:
       - learned
+    200:
+      tenant: Cust_B
+      rd: 10.4.1.27:20200
+      route_targets:
+        both:
+        - 20200:20200
+      redistribute_routes:
+      - learned
+    233:
+      tenant: Cust_B
+      rd: 10.4.1.27:20233
+      route_targets:
+        both:
+        - 20233:20233
+      redistribute_routes:
+      - learned
+    267:
+      tenant: Cust_B
+      rd: 10.4.1.27:20267
+      route_targets:
+        both:
+        - 20267:20267
+      redistribute_routes:
+      - learned
 static_routes:
 - vrf: mgmt
   destination_address_prefix: 0.0.0.0/0
-  gateway: 10.64.1.1
+  gateway: 10.6.1.1
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -165,8 +189,8 @@ management_interfaces:
     description: oob_management
     shutdown: false
     vrf: mgmt
-    ip_address: 10.6.2.21/24
-    gateway: 10.64.1.1
+    ip_address: 10.6.1.40/24
+    gateway: 10.6.1.1
     type: oob
 management_api_http:
   enable_vrfs:
@@ -192,6 +216,21 @@ vlans:
     name: MLAG_iBGP_Cust_A_VRF
     trunk_groups:
     - LEAF_PEER_L3
+  666:
+    tenant: Cust_A
+    name: bitbucket
+  999:
+    tenant: Cust_A
+    name: vmotion
+  200:
+    tenant: Cust_B
+    name: Cust_B_Data
+  233:
+    tenant: Cust_B
+    name: Cust_B_M2
+  267:
+    tenant: Cust_B
+    name: Cust_B_M2C2
   3199:
     tenant: Cust_B
     name: MLAG_iBGP_Cust_B_opzone
@@ -252,6 +291,38 @@ vlan_interfaces:
     vrf: Cust_A_VRF
     ip_address: 172.20.1.48/31
     mtu: 9214
+  Vlan200:
+    tenant: Cust_B
+    tags:
+    - Cust_B_opzone
+    description: set from structured_config on svi (was Cust_B_OP_Zone_1)
+    shutdown: false
+    vrf: Cust_B_opzone
+    ip_address_virtual: 10.32.1.1/24
+    ip_helpers:
+      10.32.1.10: {}
+    struct_cfg:
+      description: set from structured_config on svi (was Cust_B_OP_Zone_1)
+  Vlan233:
+    tenant: Cust_B
+    tags:
+    - Cust_B_opzone
+    description: Cust_B_M2
+    shutdown: false
+    vrf: Cust_B_opzone
+    ip_address_virtual: 10.32.12.1/24
+    ip_helpers:
+      10.32.12.10: {}
+  Vlan267:
+    tenant: Cust_B
+    tags:
+    - Cust_B_opzone
+    description: Cust_B_M2C2
+    shutdown: true
+    vrf: Cust_B_opzone
+    ip_address_virtual: 10.32.11.1/24
+    ip_helpers:
+      10.32.11.10: {}
   Vlan3199:
     tenant: Cust_B
     type: underlay_peering
@@ -271,6 +342,36 @@ port_channel_interfaces:
     trunk_groups:
     - LEAF_PEER_L3
     - MLAG
+  Port-Channel11:
+    description: server-1_data
+    type: switched
+    shutdown: false
+    mode: access
+    mtu: 9000
+    vlans: 100
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: true
+    mlag: 11
+    service_profile: data
+    eos_cli: 'port-channel lacp fallback individual
+
+      '
+  Port-Channel61:
+    description: server-1_m2c2
+    type: switched
+    shutdown: false
+    mode: access
+    mtu: 1500
+    vlans: 67
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: true
+    mlag: 61
+    service_profile: m2c2
+    eos_cli: 'port-channel lacp fallback individual
+
+      '
 ethernet_interfaces:
   Ethernet15/1:
     peer: DC1-POD1-LEAF11B
@@ -340,12 +441,56 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.17.1.199/31
+  Ethernet1/1:
+    peer: server-1
+    peer_interface: eno1
+    peer_type: server
+    description: server-1_eno1
+    speed: 100g
+    mtu: 9000
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 100
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: true
+    channel_group:
+      id: 11
+      mode: active
+    flowcontrol:
+      received: true
+    service_profile: data
+    ptp:
+      enable: true
+  Ethernet6/1:
+    peer: server-1
+    peer_interface: eno3
+    peer_type: server
+    description: server-1_eno3
+    speed: forced 25gfull
+    mtu: 1500
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 67
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: true
+    channel_group:
+      id: 61
+      mode: active
+    flowcontrol:
+      received: true
+    service_profile: m2c2
+    ptp:
+      enable: true
 mlag_configuration:
   domain_id: RACK11_MLAG
   local_interface: Vlan4094
   peer_address: 172.20.1.49
   peer_address_heartbeat:
-    peer_ip: 10.6.2.21
+    peer_ip: 10.6.1.40
     vrf: mgmt
   dual_primary_detection_delay: 5
   peer_link: Port-Channel151
@@ -407,6 +552,12 @@ vxlan_interface:
           vni: 10133
         167:
           vni: 10167
+        200:
+          vni: 20200
+        233:
+          vni: 20233
+        267:
+          vni: 20267
       vrfs:
         Cust_A_VRF:
           vni: 100

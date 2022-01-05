@@ -72,7 +72,7 @@ tenants:
     mac_vrf_vni_base: 20000
     enable_mlag_ibgp_peering_vrfs: true
     vrfs:
-      Cust_B_opzone:
+      Cust_B_VRF:
         vrf_vni: 200
         svis:
           "200":

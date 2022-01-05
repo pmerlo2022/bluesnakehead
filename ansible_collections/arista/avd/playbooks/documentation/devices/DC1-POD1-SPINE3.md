@@ -46,7 +46,7 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management0 | oob_management | oob | mgmt | 10.6.1.3/24 | 10.64.1.1 |
+| Management0 | oob_management | oob | mgmt | 10.6.1.12/24 | 10.6.1.1 |
 
 #### IPv6
 
@@ -62,7 +62,7 @@ interface Management0
    description oob_management
    no shutdown
    vrf mgmt
-   ip address 10.6.1.3/24
+   ip address 10.6.1.12/24
 ```
 
 ## Management API HTTP
@@ -202,10 +202,6 @@ vlan internal order ascending range 1006 1199
 | Ethernet26/1 | P2P_LINK_TO_DC1-POD1-LEAF13B_Ethernet31/1 | routed | - | 172.17.1.236/31 | default | 9214 | false | - | - |
 | Ethernet27/1 | P2P_LINK_TO_DC1-POD1-LEAF14A_Ethernet31/1 | routed | - | 172.17.1.244/31 | default | 9214 | false | - | - |
 | Ethernet28/1 | P2P_LINK_TO_DC1-POD1-LEAF14B_Ethernet31/1 | routed | - | 172.17.1.252/31 | default | 9214 | false | - | - |
-| Ethernet29/1 | P2P_LINK_TO_SUPER-SPINE1_Ethernet3/1 | routed | - | 172.16.1.5/31 | default | 9214 | false | - | - |
-| Ethernet30/1 | P2P_LINK_TO_SUPER-SPINE2_Ethernet3/1 | routed | - | 172.16.1.13/31 | default | 9214 | false | - | - |
-| Ethernet31/1 | P2P_LINK_TO_SUPER-SPINE3_Ethernet3/1 | routed | - | 172.16.1.21/31 | default | 9214 | false | - | - |
-| Ethernet32/1 | P2P_LINK_TO_SUPER-SPINE4_Ethernet3/1 | routed | - | 172.16.1.29/31 | default | 9214 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -462,42 +458,6 @@ interface Ethernet28/1
    ip address 172.17.1.252/31
    ptp enable
    service-profile P2P-QOS-PROFILE
-!
-interface Ethernet29/1
-   description P2P_LINK_TO_SUPER-SPINE1_Ethernet3/1
-   no shutdown
-   mtu 9214
-   no switchport
-   ip address 172.16.1.5/31
-   ptp enable
-   service-profile P2P-QOS-PROFILE
-!
-interface Ethernet30/1
-   description P2P_LINK_TO_SUPER-SPINE2_Ethernet3/1
-   no shutdown
-   mtu 9214
-   no switchport
-   ip address 172.16.1.13/31
-   ptp enable
-   service-profile P2P-QOS-PROFILE
-!
-interface Ethernet31/1
-   description P2P_LINK_TO_SUPER-SPINE3_Ethernet3/1
-   no shutdown
-   mtu 9214
-   no switchport
-   ip address 172.16.1.21/31
-   ptp enable
-   service-profile P2P-QOS-PROFILE
-!
-interface Ethernet32/1
-   description P2P_LINK_TO_SUPER-SPINE4_Ethernet3/1
-   no shutdown
-   mtu 9214
-   no switchport
-   ip address 172.16.1.29/31
-   ptp enable
-   service-profile P2P-QOS-PROFILE
 ```
 
 ## Loopback Interfaces
@@ -567,13 +527,13 @@ no ip routing vrf mgmt
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| mgmt  | 0.0.0.0/0 |  10.64.1.1  |  -  |  1  |  -  |  -  |  - |
+| mgmt  | 0.0.0.0/0 |  10.6.1.1  |  -  |  1  |  -  |  -  |  - |
 
 ### Static Routes Device Configuration
 
 ```eos
 !
-ip route vrf mgmt 0.0.0.0/0 10.64.1.1
+ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 ```
 
 ## Router BGP
@@ -606,10 +566,6 @@ ip route vrf mgmt 0.0.0.0/0 10.64.1.1
 
 | Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
 | -------- | --------- | --- | -------------- | -------------- |
-| 172.16.1.4 | 64101 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.1.12 | 64102 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.1.20 | 64103 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.1.28 | 64104 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.1.37 | 65111.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.1.45 | 65111.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.1.53 | 65111.200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
@@ -660,18 +616,6 @@ router bgp 65001.100
    neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
-   neighbor 172.16.1.4 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.1.4 remote-as 64101
-   neighbor 172.16.1.4 description SUPER-SPINE1_Ethernet3/1
-   neighbor 172.16.1.12 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.1.12 remote-as 64102
-   neighbor 172.16.1.12 description SUPER-SPINE2_Ethernet3/1
-   neighbor 172.16.1.20 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.1.20 remote-as 64103
-   neighbor 172.16.1.20 description SUPER-SPINE3_Ethernet3/1
-   neighbor 172.16.1.28 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.1.28 remote-as 64104
-   neighbor 172.16.1.28 description SUPER-SPINE4_Ethernet3/1
    neighbor 172.17.1.37 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.1.37 remote-as 65111.100
    neighbor 172.17.1.37 description DC1-POD1-LEAF1A_Ethernet31/1

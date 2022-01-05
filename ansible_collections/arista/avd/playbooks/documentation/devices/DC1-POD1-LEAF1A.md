@@ -59,7 +59,7 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management0 | oob_management | oob | mgmt | 10.6.2.1/24 | 10.64.1.1 |
+| Management0 | oob_management | oob | mgmt | 10.6.1.20/24 | 10.6.1.1 |
 
 #### IPv6
 
@@ -75,7 +75,7 @@ interface Management0
    description oob_management
    no shutdown
    vrf mgmt
-   ip address 10.6.2.1/24
+   ip address 10.6.1.20/24
 ```
 
 ## Management API HTTP
@@ -157,7 +157,7 @@ mlag configuration
    domain-id RACK1_MLAG
    local-interface Vlan4094
    peer-address 172.20.1.9
-   peer-address heartbeat 10.6.2.1 vrf mgmt
+   peer-address heartbeat 10.6.1.20 vrf mgmt
    peer-link Port-Channel151
    dual-primary detection delay 5 action errdisable all-interfaces
    reload-delay mlag 300
@@ -226,6 +226,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+| Ethernet1/1 | server-1_eno1 | *access | *100 | *- | *- | 11 |
+| Ethernet6/1 | server-1_eno3 | *access | *67 | *- | *- | 61 |
 | Ethernet15/1 | MLAG_PEER_DC1-POD1-LEAF1B_Ethernet15/1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 151 |
 | Ethernet16/1 | MLAG_PEER_DC1-POD1-LEAF1B_Ethernet16/1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 151 |
 | Ethernet20 |  FIREWALL01_E0 | access | 100 | - | - | - |
@@ -246,6 +248,18 @@ vlan 4094
 ### Ethernet Interfaces Device Configuration
 
 ```eos
+!
+interface Ethernet1/1
+   description server-1_eno1
+   no shutdown
+   speed 100g
+   channel-group 11 mode active
+!
+interface Ethernet6/1
+   description server-1_eno3
+   no shutdown
+   speed forced 25gfull
+   channel-group 61 mode active
 !
 interface Ethernet15/1
    description MLAG_PEER_DC1-POD1-LEAF1B_Ethernet15/1
@@ -335,11 +349,41 @@ interface Ethernet32/1
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel11 | server-1_data | switched | access | 100 | - | - | - | - | 11 | - |
+| Port-Channel61 | server-1_m2c2 | switched | access | 67 | - | - | - | - | 61 | - |
 | Port-Channel151 | MLAG_PEER_DC1-POD1-LEAF1B_Po151 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
+!
+interface Port-Channel11
+   description server-1_data
+   no shutdown
+   mtu 9000
+   switchport
+   switchport access vlan 100
+   mlag 11
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
+   spanning-tree bpduguard enable
+   service-profile data
+   port-channel lacp fallback individual
+
+!
+interface Port-Channel61
+   description server-1_m2c2
+   no shutdown
+   mtu 1500
+   switchport
+   switchport access vlan 67
+   mlag 61
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
+   spanning-tree bpduguard enable
+   service-profile m2c2
+   port-channel lacp fallback individual
+
 !
 interface Port-Channel151
    description MLAG_PEER_DC1-POD1-LEAF1B_Po151
@@ -487,13 +531,13 @@ no ip routing vrf mgmt
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| mgmt  | 0.0.0.0/0 |  10.64.1.1  |  -  |  1  |  -  |  -  |  - |
+| mgmt  | 0.0.0.0/0 |  10.6.1.1  |  -  |  1  |  -  |  -  |  - |
 
 ### Static Routes Device Configuration
 
 ```eos
 !
-ip route vrf mgmt 0.0.0.0/0 10.64.1.1
+ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 ```
 
 ## Router BGP

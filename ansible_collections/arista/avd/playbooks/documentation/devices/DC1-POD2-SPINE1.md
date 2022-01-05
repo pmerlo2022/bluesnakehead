@@ -203,13 +203,9 @@ vlan internal order ascending range 1006 1199
 | Ethernet27/1 | P2P_LINK_TO_DC1-POD2-LEAF14A_Ethernet29/1 | routed | - | 172.17.2.208/31 | default | 9214 | false | - | - |
 | Ethernet28/1 | P2P_LINK_TO_DC1-POD2-LEAF14B_Ethernet29/1 | routed | - | 172.17.2.216/31 | default | 9214 | false | - | - |
 | Ethernet29/1 | P2P_LINK_TO_SUPER-SPINE1_Ethernet5/1 | routed | - | 172.16.2.1/31 | default | 9214 | false | - | - |
-| Ethernet29/2 | P2P_LINK_TO_SUPER-SPINE1_Ethernet5/2 | routed | - | 172.16.2.33/31 | default | 9214 | false | - | - |
-| Ethernet29/3 | P2P_LINK_TO_SUPER-SPINE2_Ethernet5/3 | routed | - | 172.16.2.65/31 | default | 9214 | false | - | - |
-| Ethernet29/4 | P2P_LINK_TO_SUPER-SPINE2_Ethernet5/4 | routed | - | 172.16.2.97/31 | default | 9214 | false | - | - |
-| Ethernet30/1 | P2P_LINK_TO_SUPER-SPINE3_Ethernet6/1 | routed | - | 172.16.2.129/31 | default | 9214 | false | - | - |
-| Ethernet30/2 | P2P_LINK_TO_SUPER-SPINE3_Ethernet6/2 | routed | - | 172.16.2.161/31 | default | 9214 | false | - | - |
-| Ethernet30/3 | P2P_LINK_TO_SUPER-SPINE4_Ethernet6/3 | routed | - | 172.16.2.193/31 | default | 9214 | false | - | - |
-| Ethernet30/4 | P2P_LINK_TO_SUPER-SPINE4_Ethernet6/4 | routed | - | 172.16.2.225/31 | default | 9214 | false | - | - |
+| Ethernet30/1 | P2P_LINK_TO_SUPER-SPINE2_Ethernet5/1 | routed | - | 172.16.2.65/31 | default | 9214 | false | - | - |
+| Ethernet31/1 | P2P_LINK_TO_SUPER-SPINE3_Ethernet5/1 | routed | - | 172.16.2.129/31 | default | 9214 | false | - | - |
+| Ethernet32/1 | P2P_LINK_TO_SUPER-SPINE4_Ethernet5/2 | routed | - | 172.16.2.193/31 | default | 9214 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -476,17 +472,8 @@ interface Ethernet29/1
    ptp enable
    service-profile P2P-QOS-PROFILE
 !
-interface Ethernet29/2
-   description P2P_LINK_TO_SUPER-SPINE1_Ethernet5/2
-   no shutdown
-   mtu 9214
-   no switchport
-   ip address 172.16.2.33/31
-   ptp enable
-   service-profile P2P-QOS-PROFILE
-!
-interface Ethernet29/3
-   description P2P_LINK_TO_SUPER-SPINE2_Ethernet5/3
+interface Ethernet30/1
+   description P2P_LINK_TO_SUPER-SPINE2_Ethernet5/1
    no shutdown
    mtu 9214
    no switchport
@@ -494,17 +481,8 @@ interface Ethernet29/3
    ptp enable
    service-profile P2P-QOS-PROFILE
 !
-interface Ethernet29/4
-   description P2P_LINK_TO_SUPER-SPINE2_Ethernet5/4
-   no shutdown
-   mtu 9214
-   no switchport
-   ip address 172.16.2.97/31
-   ptp enable
-   service-profile P2P-QOS-PROFILE
-!
-interface Ethernet30/1
-   description P2P_LINK_TO_SUPER-SPINE3_Ethernet6/1
+interface Ethernet31/1
+   description P2P_LINK_TO_SUPER-SPINE3_Ethernet5/1
    no shutdown
    mtu 9214
    no switchport
@@ -512,30 +490,12 @@ interface Ethernet30/1
    ptp enable
    service-profile P2P-QOS-PROFILE
 !
-interface Ethernet30/2
-   description P2P_LINK_TO_SUPER-SPINE3_Ethernet6/2
-   no shutdown
-   mtu 9214
-   no switchport
-   ip address 172.16.2.161/31
-   ptp enable
-   service-profile P2P-QOS-PROFILE
-!
-interface Ethernet30/3
-   description P2P_LINK_TO_SUPER-SPINE4_Ethernet6/3
+interface Ethernet32/1
+   description P2P_LINK_TO_SUPER-SPINE4_Ethernet5/2
    no shutdown
    mtu 9214
    no switchport
    ip address 172.16.2.193/31
-   ptp enable
-   service-profile P2P-QOS-PROFILE
-!
-interface Ethernet30/4
-   description P2P_LINK_TO_SUPER-SPINE4_Ethernet6/4
-   no shutdown
-   mtu 9214
-   no switchport
-   ip address 172.16.2.225/31
    ptp enable
    service-profile P2P-QOS-PROFILE
 ```
@@ -647,13 +607,9 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
 | -------- | --------- | --- | -------------- | -------------- |
 | 172.16.2.0 | 64101 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.2.32 | 64101 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.16.2.64 | 64102 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.2.96 | 64102 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.16.2.128 | 64103 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.2.160 | 64103 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.16.2.192 | 64104 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.2.224 | 64104 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.2.1 | 65112.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.2.9 | 65112.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.2.17 | 65112.200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
@@ -707,27 +663,15 @@ router bgp 65001.200
    neighbor 172.16.2.0 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.2.0 remote-as 64101
    neighbor 172.16.2.0 description SUPER-SPINE1_Ethernet5/1
-   neighbor 172.16.2.32 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.2.32 remote-as 64101
-   neighbor 172.16.2.32 description SUPER-SPINE1_Ethernet5/2
    neighbor 172.16.2.64 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.2.64 remote-as 64102
-   neighbor 172.16.2.64 description SUPER-SPINE2_Ethernet5/3
-   neighbor 172.16.2.96 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.2.96 remote-as 64102
-   neighbor 172.16.2.96 description SUPER-SPINE2_Ethernet5/4
+   neighbor 172.16.2.64 description SUPER-SPINE2_Ethernet5/1
    neighbor 172.16.2.128 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.2.128 remote-as 64103
-   neighbor 172.16.2.128 description SUPER-SPINE3_Ethernet6/1
-   neighbor 172.16.2.160 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.2.160 remote-as 64103
-   neighbor 172.16.2.160 description SUPER-SPINE3_Ethernet6/2
+   neighbor 172.16.2.128 description SUPER-SPINE3_Ethernet5/1
    neighbor 172.16.2.192 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.2.192 remote-as 64104
-   neighbor 172.16.2.192 description SUPER-SPINE4_Ethernet6/3
-   neighbor 172.16.2.224 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.2.224 remote-as 64104
-   neighbor 172.16.2.224 description SUPER-SPINE4_Ethernet6/4
+   neighbor 172.16.2.192 description SUPER-SPINE4_Ethernet5/2
    neighbor 172.17.2.1 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.2.1 remote-as 65112.100
    neighbor 172.17.2.1 description DC1-POD2-LEAF1A_Ethernet29/1

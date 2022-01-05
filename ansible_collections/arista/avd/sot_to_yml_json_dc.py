@@ -12,7 +12,8 @@ import traceback
 
 input_file = 'NULL'
 output_dir = '/tmp'
-monitoring_dir = "/opt/abj/source_of_truth/hosts"
+monitoring_dir = "/var/tmp/hosts"
+#monitoring_dir = "/opt/abj/source_of_truth/hosts"
 
 ##
 #
@@ -30,7 +31,7 @@ def csv_to_json(csvfile,directory):
 
         #convert each csv row into python dict
         for row in csvReader:
-          key = row['dc_name']
+          key = row['hostname']
           data[key] = row
 
     csvf.close()
@@ -53,11 +54,11 @@ def csv_to_yaml(csvFileInput, directory ):
         keys = next(csvOpen)
         for row in csvOpen:
             data = dict(zip(keys,row))
-            systemname = data['dc_name']
+            systemname = data['hostname']
             if (len(systemname) > 1):
 
-              outputYAML = directory+"/"+data['dc_name']+".yml"
-              outputJSON = directory+"/"+data['dc_name']+".json"
+              outputYAML = directory+"/"+data['hostname']+".yml"
+              outputJSON = directory+"/"+data['hostname']+".json"
               yaml = ruamel.yaml.YAML()
 
               yamlfile = open(outputYAML, 'w')

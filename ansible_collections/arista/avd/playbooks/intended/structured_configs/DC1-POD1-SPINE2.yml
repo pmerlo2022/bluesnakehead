@@ -133,26 +133,10 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65111.1400'
       description: DC1-POD1-LEAF14B_Ethernet30/1
-    172.16.1.2:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '64101'
-      description: SUPER-SPINE1_Ethernet2/1
-    172.16.1.10:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '64102'
-      description: SUPER-SPINE2_Ethernet2/1
-    172.16.1.18:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '64103'
-      description: SUPER-SPINE3_Ethernet2/1
-    172.16.1.26:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '64104'
-      description: SUPER-SPINE4_Ethernet2/1
 static_routes:
 - vrf: mgmt
   destination_address_prefix: 0.0.0.0/0
-  gateway: 10.64.1.1
+  gateway: 10.6.1.1
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -177,8 +161,8 @@ management_interfaces:
     description: oob_management
     shutdown: false
     vrf: mgmt
-    ip_address: 10.6.1.2/24
-    gateway: 10.64.1.1
+    ip_address: 10.6.1.11/24
+    gateway: 10.6.1.1
     type: oob
 management_api_http:
   enable_vrfs:
@@ -523,54 +507,6 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.17.1.250/31
-  Ethernet29/1:
-    peer: SUPER-SPINE1
-    peer_interface: Ethernet2/1
-    peer_type: super-spine
-    description: P2P_LINK_TO_SUPER-SPINE1_Ethernet2/1
-    mtu: 9214
-    service_profile: P2P-QOS-PROFILE
-    ptp:
-      enable: true
-    type: routed
-    shutdown: false
-    ip_address: 172.16.1.3/31
-  Ethernet30/1:
-    peer: SUPER-SPINE2
-    peer_interface: Ethernet2/1
-    peer_type: super-spine
-    description: P2P_LINK_TO_SUPER-SPINE2_Ethernet2/1
-    mtu: 9214
-    service_profile: P2P-QOS-PROFILE
-    ptp:
-      enable: true
-    type: routed
-    shutdown: false
-    ip_address: 172.16.1.11/31
-  Ethernet31/1:
-    peer: SUPER-SPINE3
-    peer_interface: Ethernet2/1
-    peer_type: super-spine
-    description: P2P_LINK_TO_SUPER-SPINE3_Ethernet2/1
-    mtu: 9214
-    service_profile: P2P-QOS-PROFILE
-    ptp:
-      enable: true
-    type: routed
-    shutdown: false
-    ip_address: 172.16.1.19/31
-  Ethernet32/1:
-    peer: SUPER-SPINE4
-    peer_interface: Ethernet2/1
-    peer_type: super-spine
-    description: P2P_LINK_TO_SUPER-SPINE4_Ethernet2/1
-    mtu: 9214
-    service_profile: P2P-QOS-PROFILE
-    ptp:
-      enable: true
-    type: routed
-    shutdown: false
-    ip_address: 172.16.1.27/31
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering

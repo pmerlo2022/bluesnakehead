@@ -4,8 +4,8 @@ pod_name: DC1_POD1
 # I take this to mean per leaf spine..
 # We are doing 2x100 each leaf to each spine
 max_l3leaf_to_spine_links: 4
-
-mgmt_gateway: 10.64.1.1
+# this mgmt info can't be nested under node types.
+mgmt_gateway: 10.6.1.1
 mgmt_interface: Management0
 mgmt_interface_vrf: mgmt
 mgmt_destination_networks:
@@ -22,7 +22,7 @@ spine:
     #USI maps to the SS listed above. S-to SSP from eth1 to eth17/1, 
     #Can't really use this, because every spine will try to map to SS's in the same order. 
     #It will overwrite the previous, so last in wins
-    uplink_switch_interfaces: ['Ethernet17/1', 'Ethernet17/2', 'Ethernet17/3', 'Ethernet17/4', 'Ethernet18/1', 'Ethernet18/2', 'Ethernet18/3', 'Ethernet18/4', 'Ethernet19/1', 'Ethernet19/2', 'Ethernet19/3', 'Ethernet19/4', 'Ethernet20/1', 'Ethernet20/2', 'Ethernet20/3', 'Ethernet20/4',]
+#    uplink_switch_interfaces: ['Ethernet17/1', 'Ethernet17/2', 'Ethernet17/3', 'Ethernet17/4', 'Ethernet18/1', 'Ethernet18/2', 'Ethernet18/3', 'Ethernet18/4', 'Ethernet19/1', 'Ethernet19/2', 'Ethernet19/3', 'Ethernet19/4', 'Ethernet20/1', 'Ethernet20/2', 'Ethernet20/3', 'Ethernet20/4',]
     #Is this uplink spine-superspine?
     max_uplink_switches: 32
     #this is uplink to supers. Supers are even, starting at zero
@@ -90,7 +90,8 @@ l3leaf:
 # filter matches tags specified in TENANT_NETWORKS.yml. This is where we associate vrfs/racks. Vlans in servers would match specific nodes. I'll have to check 'tag' capabilites there
     filter:
       always_include_vrfs_in_tenants: [ 'all' ] #Testing that we configure all VRFs even with no VLANs.
-      tags: [ Cust_A_opzone ]
+      tags: [ 'all' ]
+#      tags: [ Cust_A_opzone ]      
     mlag: true
     mlag_interfaces: [ Ethernet15/1, Ethernet16/1 ]    
     mlag_peer_l3_ipv4_pool: 172.19.1.0/24

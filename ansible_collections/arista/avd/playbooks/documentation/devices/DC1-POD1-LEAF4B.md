@@ -59,7 +59,7 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management0 | oob_management | oob | mgmt | 10.6.2.8/24 | 10.64.1.1 |
+| Management0 | oob_management | oob | mgmt | 10.6.1.27/24 | 10.6.1.1 |
 
 #### IPv6
 
@@ -75,7 +75,7 @@ interface Management0
    description oob_management
    no shutdown
    vrf mgmt
-   ip address 10.6.2.8/24
+   ip address 10.6.1.27/24
 ```
 
 ## Management API HTTP
@@ -157,7 +157,7 @@ mlag configuration
    domain-id RACK4_MLAG
    local-interface Vlan4094
    peer-address 172.20.1.20
-   peer-address heartbeat 10.6.2.8 vrf mgmt
+   peer-address heartbeat 10.6.1.27 vrf mgmt
    peer-link Port-Channel151
    dual-primary detection delay 5 action errdisable all-interfaces
    reload-delay mlag 300
@@ -208,6 +208,11 @@ vlan internal order ascending range 1006 1199
 | 100 | Cust_A_Data | - |
 | 133 | Cust_A_OP_M2 | - |
 | 167 | Cust_A_M2C2 | - |
+| 200 | Cust_B_Data | - |
+| 233 | Cust_B_M2 | - |
+| 267 | Cust_B_M2C2 | - |
+| 666 | bitbucket | - |
+| 999 | vmotion | - |
 | 3099 | MLAG_iBGP_Cust_A_VRF | LEAF_PEER_L3 |
 | 3199 | MLAG_iBGP_Cust_B_opzone | LEAF_PEER_L3 |
 | 4094 | MLAG_PEER | MLAG |
@@ -224,6 +229,21 @@ vlan 133
 !
 vlan 167
    name Cust_A_M2C2
+!
+vlan 200
+   name Cust_B_Data
+!
+vlan 233
+   name Cust_B_M2
+!
+vlan 267
+   name Cust_B_M2C2
+!
+vlan 666
+   name bitbucket
+!
+vlan 999
+   name vmotion
 !
 vlan 3099
    name MLAG_iBGP_Cust_A_VRF
@@ -248,10 +268,10 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+| Ethernet1/1 | server-1_eno2 | *access | *100 | *- | *- | 11 |
+| Ethernet6/1 | server-1_eno4 | *access | *67 | *- | *- | 61 |
 | Ethernet9/1 | server-3_eno4 | *access | *67 | *- | *- | 91 |
 | Ethernet10/1 | server-2_eno4 | *access | *67 | *- | *- | 101 |
-| Ethernet12/1 | server-1_eno4 | *access | *67 | *- | *- | 121 |
-| Ethernet13/1 | server-1_eno2 | *access | *100 | *- | *- | 131 |
 | Ethernet15/1 | MLAG_PEER_DC1-POD1-LEAF4A_Ethernet15/1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 151 |
 | Ethernet16/1 | MLAG_PEER_DC1-POD1-LEAF4A_Ethernet16/1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 151 |
 
@@ -270,6 +290,18 @@ vlan 4094
 
 ```eos
 !
+interface Ethernet1/1
+   description server-1_eno2
+   no shutdown
+   speed 100g
+   channel-group 11 mode active
+!
+interface Ethernet6/1
+   description server-1_eno4
+   no shutdown
+   speed forced 25gfull
+   channel-group 61 mode active
+!
 interface Ethernet9/1
    description server-3_eno4
    no shutdown
@@ -279,18 +311,6 @@ interface Ethernet10/1
    description server-2_eno4
    no shutdown
    channel-group 101 mode active
-!
-interface Ethernet12/1
-   description server-1_eno4
-   no shutdown
-   speed forced 25gfull
-   channel-group 121 mode active
-!
-interface Ethernet13/1
-   description server-1_eno2
-   no shutdown
-   speed 100g
-   channel-group 131 mode active
 !
 interface Ethernet15/1
    description MLAG_PEER_DC1-POD1-LEAF4A_Ethernet15/1
@@ -347,15 +367,43 @@ interface Ethernet32/1
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel11 | server-1_data | switched | access | 100 | - | - | - | - | 11 | - |
+| Port-Channel61 | server-1_m2c2 | switched | access | 67 | - | - | - | - | 61 | - |
 | Port-Channel91 | server-3_PortChannel | switched | access | 67 | - | - | - | - | 91 | - |
 | Port-Channel101 | server-2_PortChannel | switched | access | 67 | - | - | - | - | 101 | - |
-| Port-Channel121 | server-1_m2c2 | switched | access | 67 | - | - | - | - | 121 | - |
-| Port-Channel131 | server-1_data | switched | access | 100 | - | - | - | - | 131 | - |
 | Port-Channel151 | MLAG_PEER_DC1-POD1-LEAF4A_Po151 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
+!
+interface Port-Channel11
+   description server-1_data
+   no shutdown
+   mtu 9000
+   switchport
+   switchport access vlan 100
+   mlag 11
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
+   spanning-tree bpduguard enable
+   service-profile data
+   port-channel lacp fallback individual
+
+!
+interface Port-Channel61
+   description server-1_m2c2
+   no shutdown
+   mtu 1500
+   switchport
+   switchport access vlan 67
+   mlag 61
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
+   spanning-tree bpduguard enable
+   service-profile m2c2
+   port-channel lacp fallback individual
+
 !
 interface Port-Channel91
    description server-3_PortChannel
@@ -374,34 +422,6 @@ interface Port-Channel101
    switchport access vlan 67
    mlag 101
    service-profile foo
-   port-channel lacp fallback individual
-
-!
-interface Port-Channel121
-   description server-1_m2c2
-   no shutdown
-   mtu 1500
-   switchport
-   switchport access vlan 67
-   mlag 121
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
-   spanning-tree bpduguard enable
-   service-profile m2c2
-   port-channel lacp fallback individual
-
-!
-interface Port-Channel131
-   description server-1_data
-   no shutdown
-   mtu 9000
-   switchport
-   switchport access vlan 100
-   mlag 131
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
-   spanning-tree bpduguard enable
-   service-profile data
    port-channel lacp fallback individual
 
 !
@@ -459,6 +479,9 @@ interface Loopback1
 | Vlan100 |  set from structured_config on svi (was Cust_A_OP_Zone_1)  |  Cust_A_VRF  |  -  |  false  |
 | Vlan133 |  Cust_A_OP_M2  |  Cust_A_VRF  |  -  |  false  |
 | Vlan167 |  Cust_A_M2C2  |  Cust_A_VRF  |  -  |  true  |
+| Vlan200 |  set from structured_config on svi (was Cust_B_OP_Zone_1)  |  Cust_B_opzone  |  -  |  false  |
+| Vlan233 |  Cust_B_M2  |  Cust_B_opzone  |  -  |  false  |
+| Vlan267 |  Cust_B_M2C2  |  Cust_B_opzone  |  -  |  true  |
 | Vlan3099 |  MLAG_PEER_L3_iBGP: vrf Cust_A_VRF  |  Cust_A_VRF  |  9214  |  false  |
 | Vlan3199 |  MLAG_PEER_L3_iBGP: vrf Cust_B_opzone  |  Cust_B_opzone  |  9214  |  false  |
 | Vlan4094 |  MLAG_PEER  |  default  |  9214  |  false  |
@@ -470,6 +493,9 @@ interface Loopback1
 | Vlan100 |  Cust_A_VRF  |  -  |  10.0.10.1/24  |  -  |  -  |  -  |  -  |
 | Vlan133 |  Cust_A_VRF  |  -  |  10.1.12.1/24  |  -  |  -  |  -  |  -  |
 | Vlan167 |  Cust_A_VRF  |  -  |  10.1.11.1/24  |  -  |  -  |  -  |  -  |
+| Vlan200 |  Cust_B_opzone  |  -  |  10.32.1.1/24  |  -  |  -  |  -  |  -  |
+| Vlan233 |  Cust_B_opzone  |  -  |  10.32.12.1/24  |  -  |  -  |  -  |  -  |
+| Vlan267 |  Cust_B_opzone  |  -  |  10.32.11.1/24  |  -  |  -  |  -  |  -  |
 | Vlan3099 |  Cust_A_VRF  |  172.20.1.21/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan3199 |  Cust_B_opzone  |  172.20.1.21/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  172.20.1.21/31  |  -  |  -  |  -  |  -  |  -  |
@@ -504,6 +530,27 @@ interface Vlan167
    vrf Cust_A_VRF
    ip address virtual 10.1.11.1/24
    ip helper-address 10.1.11.10
+!
+interface Vlan200
+   description set from structured_config on svi (was Cust_B_OP_Zone_1)
+   no shutdown
+   vrf Cust_B_opzone
+   ip address virtual 10.32.1.1/24
+   ip helper-address 10.32.1.10
+!
+interface Vlan233
+   description Cust_B_M2
+   no shutdown
+   vrf Cust_B_opzone
+   ip address virtual 10.32.12.1/24
+   ip helper-address 10.32.12.10
+!
+interface Vlan267
+   description Cust_B_M2C2
+   shutdown
+   vrf Cust_B_opzone
+   ip address virtual 10.32.11.1/24
+   ip helper-address 10.32.11.10
 !
 interface Vlan3099
    description MLAG_PEER_L3_iBGP: vrf Cust_A_VRF
@@ -544,6 +591,9 @@ interface Vlan4094
 | 100 | 10100 | - |
 | 133 | 10133 | - |
 | 167 | 10167 | - |
+| 200 | 20200 | - |
+| 233 | 20233 | - |
+| 267 | 20267 | - |
 
 #### VRF to VNI Mappings
 
@@ -564,6 +614,9 @@ interface Vxlan1
    vxlan vlan 100 vni 10100
    vxlan vlan 133 vni 10133
    vxlan vlan 167 vni 10167
+   vxlan vlan 200 vni 20200
+   vxlan vlan 233 vni 20233
+   vxlan vlan 267 vni 20267
    vxlan vrf Cust_A_VRF vni 100
    vxlan vrf Cust_B_opzone vni 200
 ```
@@ -627,13 +680,13 @@ no ip routing vrf mgmt
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| mgmt  | 0.0.0.0/0 |  10.64.1.1  |  -  |  1  |  -  |  -  |  - |
+| mgmt  | 0.0.0.0/0 |  10.6.1.1  |  -  |  1  |  -  |  -  |  - |
 
 ### Static Routes Device Configuration
 
 ```eos
 !
-ip route vrf mgmt 0.0.0.0/0 10.64.1.1
+ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 ```
 
 ## Router BGP
@@ -709,6 +762,9 @@ ip route vrf mgmt 0.0.0.0/0 10.64.1.1
 | 100 | 10.4.1.14:10100 | 10100:10100 | - | - | learned |
 | 133 | 10.4.1.14:10133 | 10133:10133 | - | - | learned |
 | 167 | 10.4.1.14:10167 | 10167:10167 | - | - | learned |
+| 200 | 10.4.1.14:20200 | 20200:20200 | - | - | learned |
+| 233 | 10.4.1.14:20233 | 20233:20233 | - | - | learned |
+| 267 | 10.4.1.14:20267 | 20267:20267 | - | - | learned |
 
 #### Router BGP EVPN VRFs
 
@@ -776,6 +832,21 @@ router bgp 65111.400
    vlan 167
       rd 10.4.1.14:10167
       route-target both 10167:10167
+      redistribute learned
+   !
+   vlan 200
+      rd 10.4.1.14:20200
+      route-target both 20200:20200
+      redistribute learned
+   !
+   vlan 233
+      rd 10.4.1.14:20233
+      route-target both 20233:20233
+      redistribute learned
+   !
+   vlan 267
+      rd 10.4.1.14:20267
+      route-target both 20267:20267
       redistribute learned
    !
    address-family evpn
