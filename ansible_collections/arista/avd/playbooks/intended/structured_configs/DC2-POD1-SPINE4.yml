@@ -1,6 +1,6 @@
 router_bgp:
-  as: '65002.100'
-  router_id: 10.4.58.4
+  as: '64804'
+  router_id: 10.4.64.14
   bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
@@ -21,138 +21,138 @@ router_bgp:
     connected:
       route_map: RM-CONN-2-BGP
   neighbors:
-    172.17.32.7:
+    172.17.64.159:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65211.100'
+      remote_as: '65101'
       description: DC2-POD1-LEAF1A_Ethernet32/1
-    172.17.32.15:
+    172.17.64.167:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65211.100'
+      remote_as: '65101'
       description: DC2-POD1-LEAF1B_Ethernet32/1
-    172.17.32.23:
+    172.17.64.183:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.200'
+      remote_as: '65102'
       description: DC2-POD1-LEAF2A_Ethernet32/1
-    172.17.32.31:
+    172.17.64.191:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.200'
+      remote_as: '65102'
       description: DC2-POD1-LEAF2B_Ethernet32/1
-    172.17.32.39:
+    172.17.64.199:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.300'
+      remote_as: '65103'
       description: DC2-POD1-LEAF3A_Ethernet32/1
-    172.17.32.47:
+    172.17.64.207:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.300'
+      remote_as: '65103'
       description: DC2-POD1-LEAF3B_Ethernet32/1
-    172.17.32.55:
+    172.17.64.215:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.400'
+      remote_as: '65104'
       description: DC2-POD1-LEAF4A_Ethernet32/1
-    172.17.32.63:
+    172.17.64.223:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.400'
+      remote_as: '65104'
       description: DC2-POD1-LEAF4B_Ethernet32/1
-    172.17.32.71:
+    172.17.64.231:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.500'
+      remote_as: '65105'
       description: DC2-POD1-LEAF5A_Ethernet32/1
-    172.17.32.79:
+    172.17.64.239:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.500'
+      remote_as: '65105'
       description: DC2-POD1-LEAF5B_Ethernet32/1
-    172.17.32.87:
+    172.17.64.247:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.600'
+      remote_as: '65106'
       description: DC2-POD1-LEAF6A_Ethernet32/1
-    172.17.32.95:
+    172.17.64.255:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.600'
+      remote_as: '65106'
       description: DC2-POD1-LEAF6B_Ethernet32/1
-    172.17.32.103:
+    172.17.65.7:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.700'
+      remote_as: '65107'
       description: DC2-POD1-LEAF7A_Ethernet32/1
-    172.17.32.111:
+    172.17.65.15:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.700'
+      remote_as: '65107'
       description: DC2-POD1-LEAF7B_Ethernet32/1
-    172.17.32.119:
+    172.17.65.23:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.800'
+      remote_as: '65108'
       description: DC2-POD1-LEAF8A_Ethernet32/1
-    172.17.32.127:
+    172.17.65.31:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.800'
+      remote_as: '65108'
       description: DC2-POD1-LEAF8B_Ethernet32/1
-    172.17.32.135:
+    172.17.65.39:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.900'
+      remote_as: '65109'
       description: DC2-POD1-LEAF9A_Ethernet32/1
-    172.17.32.143:
+    172.17.65.47:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.900'
+      remote_as: '65109'
       description: DC2-POD1-LEAF9B_Ethernet32/1
-    172.17.32.151:
+    172.17.65.55:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65211.1000'
+      remote_as: '65110'
       description: DC2-POD1-LEAF10A_Ethernet32/1
-    172.17.32.159:
+    172.17.65.63:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65211.1000'
+      remote_as: '65110'
       description: DC2-POD1-LEAF10B_Ethernet32/1
-    172.17.32.167:
+    172.17.65.71:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.1100'
+      remote_as: '65111'
       description: DC2-POD1-LEAF11A_Ethernet32/1
-    172.17.32.175:
+    172.17.65.79:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.1100'
+      remote_as: '65111'
       description: DC2-POD1-LEAF11B_Ethernet32/1
-    172.17.32.183:
+    172.17.65.87:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.1200'
+      remote_as: '65112'
       description: DC2-POD1-LEAF12A_Ethernet32/1
-    172.17.32.191:
+    172.17.65.95:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.1200'
+      remote_as: '65112'
       description: DC2-POD1-LEAF12B_Ethernet32/1
-    172.17.32.199:
+    172.17.65.103:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.1300'
+      remote_as: '65113'
       description: DC2-POD1-LEAF13A_Ethernet32/1
-    172.17.32.207:
+    172.17.65.111:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.1300'
+      remote_as: '65113'
       description: DC2-POD1-LEAF13B_Ethernet32/1
-    172.17.32.215:
+    172.17.65.119:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.1400'
+      remote_as: '65114'
       description: DC2-POD1-LEAF14A_Ethernet32/1
-    172.17.32.223:
+    172.17.65.127:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65112.1400'
+      remote_as: '65114'
       description: DC2-POD1-LEAF14B_Ethernet32/1
-    172.16.32.6:
+    172.16.64.26:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '64101'
+      remote_as: '64501'
       description: SUPER-SPINE1_Ethernet12/1
-    172.16.32.70:
+    172.16.64.90:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '64102'
+      remote_as: '64502'
       description: SUPER-SPINE2_Ethernet12/1
-    172.16.32.134:
+    172.16.64.154:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '64103'
+      remote_as: '64503'
       description: SUPER-SPINE3_Ethernet12/1
-    172.16.32.198:
+    172.16.64.218:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '64104'
+      remote_as: '64504'
       description: SUPER-SPINE4_Ethernet12/1
 static_routes:
 - vrf: mgmt
   destination_address_prefix: 0.0.0.0/0
-  gateway: 10.6.1.1
+  gateway: 10.6.65.1
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -177,8 +177,8 @@ management_interfaces:
     description: oob_management
     shutdown: false
     vrf: mgmt
-    ip_address: 10.6.65.4/24
-    gateway: 10.6.1.1
+    ip_address: 10.6.65.13/24
+    gateway: 10.6.65.1
     type: oob
 management_api_http:
   enable_vrfs:
@@ -198,7 +198,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.6/31
+    ip_address: 172.17.64.158/31
   Ethernet2/1:
     peer: DC2-POD1-LEAF1B
     peer_interface: Ethernet32/1
@@ -210,7 +210,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.14/31
+    ip_address: 172.17.64.166/31
   Ethernet3/1:
     peer: DC2-POD1-LEAF2A
     peer_interface: Ethernet32/1
@@ -222,7 +222,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.22/31
+    ip_address: 172.17.64.182/31
   Ethernet4/1:
     peer: DC2-POD1-LEAF2B
     peer_interface: Ethernet32/1
@@ -234,7 +234,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.30/31
+    ip_address: 172.17.64.190/31
   Ethernet5/1:
     peer: DC2-POD1-LEAF3A
     peer_interface: Ethernet32/1
@@ -246,7 +246,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.38/31
+    ip_address: 172.17.64.198/31
   Ethernet6/1:
     peer: DC2-POD1-LEAF3B
     peer_interface: Ethernet32/1
@@ -258,7 +258,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.46/31
+    ip_address: 172.17.64.206/31
   Ethernet7/1:
     peer: DC2-POD1-LEAF4A
     peer_interface: Ethernet32/1
@@ -270,7 +270,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.54/31
+    ip_address: 172.17.64.214/31
   Ethernet8/1:
     peer: DC2-POD1-LEAF4B
     peer_interface: Ethernet32/1
@@ -282,7 +282,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.62/31
+    ip_address: 172.17.64.222/31
   Ethernet9/1:
     peer: DC2-POD1-LEAF5A
     peer_interface: Ethernet32/1
@@ -294,7 +294,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.70/31
+    ip_address: 172.17.64.230/31
   Ethernet10/1:
     peer: DC2-POD1-LEAF5B
     peer_interface: Ethernet32/1
@@ -306,7 +306,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.78/31
+    ip_address: 172.17.64.238/31
   Ethernet11/1:
     peer: DC2-POD1-LEAF6A
     peer_interface: Ethernet32/1
@@ -318,7 +318,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.86/31
+    ip_address: 172.17.64.246/31
   Ethernet12/1:
     peer: DC2-POD1-LEAF6B
     peer_interface: Ethernet32/1
@@ -330,7 +330,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.94/31
+    ip_address: 172.17.64.254/31
   Ethernet13/1:
     peer: DC2-POD1-LEAF7A
     peer_interface: Ethernet32/1
@@ -342,7 +342,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.102/31
+    ip_address: 172.17.65.6/31
   Ethernet14/1:
     peer: DC2-POD1-LEAF7B
     peer_interface: Ethernet32/1
@@ -354,7 +354,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.110/31
+    ip_address: 172.17.65.14/31
   Ethernet15/1:
     peer: DC2-POD1-LEAF8A
     peer_interface: Ethernet32/1
@@ -366,7 +366,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.118/31
+    ip_address: 172.17.65.22/31
   Ethernet16/1:
     peer: DC2-POD1-LEAF8B
     peer_interface: Ethernet32/1
@@ -378,7 +378,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.126/31
+    ip_address: 172.17.65.30/31
   Ethernet17/1:
     peer: DC2-POD1-LEAF9A
     peer_interface: Ethernet32/1
@@ -390,7 +390,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.134/31
+    ip_address: 172.17.65.38/31
   Ethernet18/1:
     peer: DC2-POD1-LEAF9B
     peer_interface: Ethernet32/1
@@ -402,7 +402,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.142/31
+    ip_address: 172.17.65.46/31
   Ethernet19/1:
     peer: DC2-POD1-LEAF10A
     peer_interface: Ethernet32/1
@@ -414,7 +414,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.150/31
+    ip_address: 172.17.65.54/31
   Ethernet20/1:
     peer: DC2-POD1-LEAF10B
     peer_interface: Ethernet32/1
@@ -426,7 +426,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.158/31
+    ip_address: 172.17.65.62/31
   Ethernet21/1:
     peer: DC2-POD1-LEAF11A
     peer_interface: Ethernet32/1
@@ -438,7 +438,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.166/31
+    ip_address: 172.17.65.70/31
   Ethernet22/1:
     peer: DC2-POD1-LEAF11B
     peer_interface: Ethernet32/1
@@ -450,7 +450,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.174/31
+    ip_address: 172.17.65.78/31
   Ethernet23/1:
     peer: DC2-POD1-LEAF12A
     peer_interface: Ethernet32/1
@@ -462,7 +462,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.182/31
+    ip_address: 172.17.65.86/31
   Ethernet24/1:
     peer: DC2-POD1-LEAF12B
     peer_interface: Ethernet32/1
@@ -474,7 +474,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.190/31
+    ip_address: 172.17.65.94/31
   Ethernet25/1:
     peer: DC2-POD1-LEAF13A
     peer_interface: Ethernet32/1
@@ -486,7 +486,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.198/31
+    ip_address: 172.17.65.102/31
   Ethernet26/1:
     peer: DC2-POD1-LEAF13B
     peer_interface: Ethernet32/1
@@ -498,7 +498,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.206/31
+    ip_address: 172.17.65.110/31
   Ethernet27/1:
     peer: DC2-POD1-LEAF14A
     peer_interface: Ethernet32/1
@@ -510,7 +510,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.214/31
+    ip_address: 172.17.65.118/31
   Ethernet28/1:
     peer: DC2-POD1-LEAF14B
     peer_interface: Ethernet32/1
@@ -522,7 +522,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.32.222/31
+    ip_address: 172.17.65.126/31
   Ethernet29/1:
     peer: SUPER-SPINE1
     peer_interface: Ethernet12/1
@@ -534,7 +534,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.16.32.7/31
+    ip_address: 172.16.64.27/31
   Ethernet30/1:
     peer: SUPER-SPINE2
     peer_interface: Ethernet12/1
@@ -546,7 +546,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.16.32.71/31
+    ip_address: 172.16.64.91/31
   Ethernet31/1:
     peer: SUPER-SPINE3
     peer_interface: Ethernet12/1
@@ -558,7 +558,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.16.32.135/31
+    ip_address: 172.16.64.155/31
   Ethernet32/1:
     peer: SUPER-SPINE4
     peer_interface: Ethernet12/1
@@ -570,17 +570,17 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.16.32.199/31
+    ip_address: 172.16.64.219/31
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     shutdown: false
-    ip_address: 10.4.58.4/32
+    ip_address: 10.4.64.14/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:
       10:
-        action: permit 10.4.58.0/24 eq 32
+        action: permit 10.4.64.0/24 eq 32
 route_maps:
   RM-CONN-2-BGP:
     sequence_numbers:

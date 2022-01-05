@@ -8,7 +8,7 @@ mgmt_destination_networks:
 super_spine:
   defaults:
     platform: 7280R
-    bgp_as: 65100
+    bgp_as: 64500
     loopback_ipv4_pool: 10.4.27.0/24
     bgp_defaults:
       - 'no bgp default ipv4-unicast'
@@ -17,9 +17,9 @@ super_spine:
       - 'graceful-restart'
   nodes:
     SUPER-SPINE1:
-      id: 1
+      id: 10
       platform: 7060
-      bgp_as: 64101
+      bgp_as: 64501
       mgmt_ip: "{{ ansible_host }}/24"
 # Next four lines don't have an impact
       mgmt_gateway: 10.6.10.1
@@ -30,20 +30,20 @@ super_spine:
       # evpn_role: none
       # evpn_route_servers: []
     SUPER-SPINE2:
-      id: 2
-      bgp_as: 64102      
+      id: 11
+      bgp_as: 64502      
       mgmt_ip: "{{ ansible_host }}/24"
       # evpn_role: none
       # evpn_route_servers: []
     SUPER-SPINE3:
-      id: 3
-      bgp_as: 64103
+      id: 12
+      bgp_as: 64503
       mgmt_ip: "{{ ansible_host }}/24"
     SUPER-SPINE4:
-      id: 4
-      bgp_as: 64104
+      id: 13
+      bgp_as: 64504
       mgmt_ip: "{{ ansible_host }}/24"
     SUPER-SPINE5:
-      id: 5
-      bgp_as: 64105
+      id: 14
+      bgp_as: 64505
       mgmt_ip: "{{ ansible_host }}/24"

@@ -1,6 +1,6 @@
 router_bgp:
-  as: '64103'
-  router_id: 10.4.27.3
+  as: '64503'
+  router_id: 10.4.27.12
   bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
@@ -20,53 +20,53 @@ router_bgp:
     connected:
       route_map: RM-CONN-2-BGP
   neighbors:
-    172.16.1.17:
+    172.16.0.35:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65001.100'
+      remote_as: '64601'
       description: DC1-POD1-SPINE1_Ethernet31/1
-    172.16.1.19:
+    172.16.0.37:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65001.102'
+      remote_as: '64602'
       description: DC1-POD1-SPINE2_Ethernet31/1
-    172.16.1.21:
+    172.16.0.39:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65001.100'
+      remote_as: '64603'
       description: DC1-POD1-SPINE3_Ethernet31/1
-    172.16.1.23:
+    172.16.0.41:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65001.100'
+      remote_as: '64604'
       description: DC1-POD1-SPINE4_Ethernet31/1
-    172.16.2.129:
+    172.16.32.147:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65001.200'
+      remote_as: '64701'
       description: DC1-POD2-SPINE1_Ethernet31/1
-    172.16.2.131:
+    172.16.32.151:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65001.200'
+      remote_as: '64702'
       description: DC1-POD2-SPINE2_Ethernet31/1
-    172.16.2.133:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65001.200'
-      description: DC1-POD2-SPINE3_Ethernet31/1
-    172.16.2.135:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65001.200'
-      description: DC1-POD2-SPINE4_Ethernet31/1
-    172.16.32.129:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65002.100'
-      description: DC2-POD1-SPINE1_Ethernet31/1
-    172.16.32.131:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65002.100'
-      description: DC2-POD1-SPINE2_Ethernet31/1
     172.16.32.133:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65002.100'
-      description: DC2-POD1-SPINE3_Ethernet31/1
+      remote_as: '64703'
+      description: DC1-POD2-SPINE3_Ethernet31/1
     172.16.32.135:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65002.100'
+      remote_as: '64704'
+      description: DC1-POD2-SPINE4_Ethernet31/1
+    172.16.64.147:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '64801'
+      description: DC2-POD1-SPINE1_Ethernet31/1
+    172.16.64.151:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '64802'
+      description: DC2-POD1-SPINE2_Ethernet31/1
+    172.16.64.153:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '64803'
+      description: DC2-POD1-SPINE3_Ethernet31/1
+    172.16.64.155:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '64804'
       description: DC2-POD1-SPINE4_Ethernet31/1
 static_routes:
 - vrf: mgmt
@@ -96,7 +96,7 @@ management_interfaces:
     description: oob_management
     shutdown: false
     vrf: mgmt
-    ip_address: 10.6.0.3/24
+    ip_address: 10.6.0.12/24
     gateway: 10.6.0.1
     type: oob
 management_api_http:
@@ -115,7 +115,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.16.1.16/31
+    ip_address: 172.16.0.34/31
   Ethernet2/1:
     peer: DC1-POD1-SPINE2
     peer_interface: Ethernet31/1
@@ -127,7 +127,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.16.1.18/31
+    ip_address: 172.16.0.36/31
   Ethernet3/1:
     peer: DC1-POD1-SPINE3
     peer_interface: Ethernet31/1
@@ -139,7 +139,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.16.1.20/31
+    ip_address: 172.16.0.38/31
   Ethernet4/1:
     peer: DC1-POD1-SPINE4
     peer_interface: Ethernet31/1
@@ -151,7 +151,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.16.1.22/31
+    ip_address: 172.16.0.40/31
   Ethernet5/1:
     peer: DC1-POD2-SPINE1
     peer_interface: Ethernet31/1
@@ -163,7 +163,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.16.2.128/31
+    ip_address: 172.16.32.146/31
   Ethernet6/1:
     peer: DC1-POD2-SPINE2
     peer_interface: Ethernet31/1
@@ -175,7 +175,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.16.2.130/31
+    ip_address: 172.16.32.150/31
   Ethernet7/1:
     peer: DC1-POD2-SPINE3
     peer_interface: Ethernet31/1
@@ -187,7 +187,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.16.2.132/31
+    ip_address: 172.16.32.132/31
   Ethernet8/1:
     peer: DC1-POD2-SPINE4
     peer_interface: Ethernet31/1
@@ -199,7 +199,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.16.2.134/31
+    ip_address: 172.16.32.134/31
   Ethernet9/1:
     peer: DC2-POD1-SPINE1
     peer_interface: Ethernet31/1
@@ -211,7 +211,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.16.32.128/31
+    ip_address: 172.16.64.146/31
   Ethernet10/1:
     peer: DC2-POD1-SPINE2
     peer_interface: Ethernet31/1
@@ -223,7 +223,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.16.32.130/31
+    ip_address: 172.16.64.150/31
   Ethernet11/1:
     peer: DC2-POD1-SPINE3
     peer_interface: Ethernet31/1
@@ -235,7 +235,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.16.32.132/31
+    ip_address: 172.16.64.152/31
   Ethernet12/1:
     peer: DC2-POD1-SPINE4
     peer_interface: Ethernet31/1
@@ -247,12 +247,12 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.16.32.134/31
+    ip_address: 172.16.64.154/31
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     shutdown: false
-    ip_address: 10.4.27.3/32
+    ip_address: 10.4.27.12/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:

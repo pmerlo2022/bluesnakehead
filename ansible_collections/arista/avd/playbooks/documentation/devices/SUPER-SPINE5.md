@@ -44,7 +44,7 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management0 | oob_management | oob | mgmt | 10.6.0.5/24 | 10.6.0.1 |
+| Management0 | oob_management | oob | mgmt | 10.6.0.14/24 | 10.6.0.1 |
 
 #### IPv6
 
@@ -60,7 +60,7 @@ interface Management0
    description oob_management
    no shutdown
    vrf mgmt
-   ip address 10.6.0.5/24
+   ip address 10.6.0.14/24
 ```
 
 ## Management API HTTP
@@ -165,7 +165,7 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 10.4.27.5/32 |
+| Loopback0 | EVPN_Overlay_Peering | default | 10.4.27.14/32 |
 
 #### IPv6
 
@@ -181,7 +181,7 @@ vlan internal order ascending range 1006 1199
 interface Loopback0
    description EVPN_Overlay_Peering
    no shutdown
-   ip address 10.4.27.5/32
+   ip address 10.4.27.14/32
 ```
 
 # Routing
@@ -239,7 +239,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.0.1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 64105|  10.4.27.5 |
+| 64505|  10.4.27.14 |
 
 | BGP Tuning |
 | ---------- |
@@ -269,8 +269,8 @@ ip route vrf mgmt 0.0.0.0/0 10.6.0.1
 
 ```eos
 !
-router bgp 64105
-   router-id 10.4.27.5
+router bgp 64505
+   router-id 10.4.27.14
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    graceful-restart restart-time 300

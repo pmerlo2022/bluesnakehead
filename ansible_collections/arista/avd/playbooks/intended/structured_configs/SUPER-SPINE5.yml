@@ -1,6 +1,6 @@
 router_bgp:
-  as: '64105'
-  router_id: 10.4.27.5
+  as: '64505'
+  router_id: 10.4.27.14
   bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
@@ -47,7 +47,7 @@ management_interfaces:
     description: oob_management
     shutdown: false
     vrf: mgmt
-    ip_address: 10.6.0.5/24
+    ip_address: 10.6.0.14/24
     gateway: 10.6.0.1
     type: oob
 management_api_http:
@@ -58,7 +58,7 @@ loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     shutdown: false
-    ip_address: 10.4.27.5/32
+    ip_address: 10.4.27.14/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:

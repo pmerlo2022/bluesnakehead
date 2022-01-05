@@ -1,6 +1,6 @@
 router_bgp:
-  as: '65112.1100'
-  router_id: 10.4.2.23
+  as: '65011'
+  router_id: 10.4.33.42
   bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
@@ -10,7 +10,7 @@ router_bgp:
   peer_groups:
     MLAG-IPv4-UNDERLAY-PEER:
       type: ipv4
-      remote_as: '65112.1100'
+      remote_as: '65011'
       next_hop_self: true
       password: vnEaG8gMeQf3d3cN6PktXQ==
       maximum_routes: 12000
@@ -39,35 +39,25 @@ router_bgp:
       EVPN-OVERLAY-PEERS:
         activate: false
   neighbors:
-    172.20.2.41:
+    172.19.33.79:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: DC1-POD2-LEAF11B
-    172.17.2.160:
+    172.17.33.56:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65001.200'
+      remote_as: '64701'
       description: DC1-POD2-SPINE1_Ethernet21/1
-    172.17.2.162:
+    172.17.33.58:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65001.200'
+      remote_as: '64702'
       description: DC1-POD2-SPINE2_Ethernet21/1
-    172.17.2.164:
+    172.17.33.60:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65001.200'
+      remote_as: '64703'
       description: DC1-POD2-SPINE3_Ethernet21/1
-    172.17.2.166:
+    172.17.33.62:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65001.200'
+      remote_as: '64704'
       description: DC1-POD2-SPINE4_Ethernet21/1
-    10.4.2.3:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-POD2-LEAF1A
-      remote_as: '65112.100'
-      route_map_out: RM-EVPN-FILTER-AS65112.100
-    10.4.2.4:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-POD2-LEAF1B
-      remote_as: '65112.100'
-      route_map_out: RM-EVPN-FILTER-AS65112.100
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
@@ -85,8 +75,8 @@ router_bgp:
           only: true
   vrfs:
     Cust_A_VRF:
-      router_id: 10.4.2.23
-      rd: 10.4.2.23:100
+      router_id: 10.4.33.42
+      rd: 10.4.33.42:100
       route_targets:
         import:
           evpn:
@@ -95,13 +85,13 @@ router_bgp:
           evpn:
           - 100:100
       neighbors:
-        172.20.2.41:
+        172.19.33.79:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
-    Cust_B_opzone:
-      router_id: 10.4.2.23
-      rd: 10.4.2.23:200
+    Cust_B_VRF:
+      router_id: 10.4.33.42
+      rd: 10.4.33.42:200
       route_targets:
         import:
           evpn:
@@ -110,14 +100,14 @@ router_bgp:
           evpn:
           - 200:200
       neighbors:
-        172.20.2.41:
+        172.19.33.79:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
   vlans:
     100:
       tenant: Cust_A
-      rd: 10.4.2.23:10100
+      rd: 10.4.33.42:10100
       route_targets:
         both:
         - 10100:10100
@@ -125,7 +115,7 @@ router_bgp:
       - learned
     133:
       tenant: Cust_A
-      rd: 10.4.2.23:10133
+      rd: 10.4.33.42:10133
       route_targets:
         both:
         - 10133:10133
@@ -133,7 +123,7 @@ router_bgp:
       - learned
     167:
       tenant: Cust_A
-      rd: 10.4.2.23:10167
+      rd: 10.4.33.42:10167
       route_targets:
         both:
         - 10167:10167
@@ -141,7 +131,7 @@ router_bgp:
       - learned
     200:
       tenant: Cust_B
-      rd: 10.4.2.23:20200
+      rd: 10.4.33.42:20200
       route_targets:
         both:
         - 20200:20200
@@ -149,7 +139,7 @@ router_bgp:
       - learned
     233:
       tenant: Cust_B
-      rd: 10.4.2.23:20233
+      rd: 10.4.33.42:20233
       route_targets:
         both:
         - 20233:20233
@@ -157,7 +147,7 @@ router_bgp:
       - learned
     267:
       tenant: Cust_B
-      rd: 10.4.2.23:20267
+      rd: 10.4.33.42:20267
       route_targets:
         both:
         - 20267:20267
@@ -166,7 +156,7 @@ router_bgp:
 static_routes:
 - vrf: mgmt
   destination_address_prefix: 0.0.0.0/0
-  gateway: 10.6.1.1
+  gateway: 10.6.33.1
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -191,7 +181,7 @@ vrfs:
   Cust_A_VRF:
     tenant: Cust_A
     ip_routing: true
-  Cust_B_opzone:
+  Cust_B_VRF:
     tenant: Cust_B
     ip_routing: true
 management_interfaces:
@@ -199,8 +189,8 @@ management_interfaces:
     description: oob_management
     shutdown: false
     vrf: mgmt
-    ip_address: 10.6.34.21/24
-    gateway: 10.6.1.1
+    ip_address: 10.6.33.40/24
+    gateway: 10.6.33.1
     type: oob
 management_api_http:
   enable_vrfs:
@@ -245,14 +235,14 @@ vlans:
     name: Cust_B_M2C2
   3199:
     tenant: Cust_B
-    name: MLAG_iBGP_Cust_B_opzone
+    name: MLAG_iBGP_Cust_B_VRF
     trunk_groups:
     - LEAF_PEER_L3
 vlan_interfaces:
   Vlan4094:
     description: MLAG_PEER
     shutdown: false
-    ip_address: 172.20.2.40/31
+    ip_address: 172.19.33.78/31
     no_autostate: true
     mtu: 9214
   Vlan100:
@@ -301,7 +291,7 @@ vlan_interfaces:
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf Cust_A_VRF'
     vrf: Cust_A_VRF
-    ip_address: 172.20.2.40/31
+    ip_address: 172.19.33.78/31
     mtu: 9214
   Vlan200:
     tenant: Cust_B
@@ -309,7 +299,7 @@ vlan_interfaces:
     - Cust_B_opzone
     description: set from structured_config on svi (was Cust_B_OP_Zone_1)
     shutdown: false
-    vrf: Cust_B_opzone
+    vrf: Cust_B_VRF
     ip_address_virtual: 10.32.1.1/24
     ip_helpers:
       10.32.1.10: {}
@@ -321,7 +311,7 @@ vlan_interfaces:
     - Cust_B_opzone
     description: Cust_B_M2
     shutdown: false
-    vrf: Cust_B_opzone
+    vrf: Cust_B_VRF
     ip_address_virtual: 10.32.12.1/24
     ip_helpers:
       10.32.12.10: {}
@@ -331,7 +321,7 @@ vlan_interfaces:
     - Cust_B_opzone
     description: Cust_B_M2C2
     shutdown: true
-    vrf: Cust_B_opzone
+    vrf: Cust_B_VRF
     ip_address_virtual: 10.32.11.1/24
     ip_helpers:
       10.32.11.10: {}
@@ -339,9 +329,9 @@ vlan_interfaces:
     tenant: Cust_B
     type: underlay_peering
     shutdown: false
-    description: 'MLAG_PEER_L3_iBGP: vrf Cust_B_opzone'
-    vrf: Cust_B_opzone
-    ip_address: 172.20.2.40/31
+    description: 'MLAG_PEER_L3_iBGP: vrf Cust_B_VRF'
+    vrf: Cust_B_VRF
+    ip_address: 172.19.33.78/31
     mtu: 9214
 port_channel_interfaces:
   Port-Channel151:
@@ -386,7 +376,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.2.161/31
+    ip_address: 172.17.33.57/31
   Ethernet30/1:
     peer: DC1-POD2-SPINE2
     peer_interface: Ethernet21/1
@@ -398,7 +388,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.2.163/31
+    ip_address: 172.17.33.59/31
   Ethernet31/1:
     peer: DC1-POD2-SPINE3
     peer_interface: Ethernet21/1
@@ -410,7 +400,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.2.165/31
+    ip_address: 172.17.33.61/31
   Ethernet32/1:
     peer: DC1-POD2-SPINE4
     peer_interface: Ethernet21/1
@@ -422,13 +412,13 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.2.167/31
+    ip_address: 172.17.33.63/31
 mlag_configuration:
   domain_id: RACK11_MLAG
   local_interface: Vlan4094
-  peer_address: 172.20.2.41
+  peer_address: 172.19.33.79
   peer_address_heartbeat:
-    peer_ip: 10.6.34.21
+    peer_ip: 10.6.33.40
     vrf: mgmt
   dual_primary_detection_delay: 5
   peer_link: Port-Channel151
@@ -449,30 +439,22 @@ route_maps:
         type: permit
         match:
         - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-  RM-EVPN-FILTER-AS65112.100:
-    sequence_numbers:
-      10:
-        type: deny
-        match:
-        - as 65112.100
-      20:
-        type: permit
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     shutdown: false
-    ip_address: 10.4.2.23/32
+    ip_address: 10.4.33.42/32
   Loopback1:
     description: VTEP_VXLAN_Tunnel_Source
     shutdown: false
-    ip_address: 10.5.2.23/32
+    ip_address: 10.5.33.42/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:
       10:
-        action: permit 10.4.2.0/24 eq 32
+        action: permit 10.4.33.0/24 eq 32
       20:
-        action: permit 10.5.2.0/24 eq 32
+        action: permit 10.5.33.0/24 eq 32
 router_bfd:
   multihop:
     interval: 300
@@ -483,7 +465,7 @@ ip_igmp_snooping:
   vlans:
     100:
       enabled: true
-ip_virtual_router_mac_address: 00:1c:73:00:dc:01
+ip_virtual_router_mac_address: 00:1c:73:00:dc:12
 vxlan_interface:
   Vxlan1:
     description: DC1-POD2-LEAF11A_VTEP
@@ -507,5 +489,5 @@ vxlan_interface:
       vrfs:
         Cust_A_VRF:
           vni: 100
-        Cust_B_opzone:
+        Cust_B_VRF:
           vni: 200
