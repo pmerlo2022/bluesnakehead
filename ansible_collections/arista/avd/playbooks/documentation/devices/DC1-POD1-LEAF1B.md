@@ -230,8 +230,8 @@ vlan 4094
 | Ethernet6/1 | server-1_eno4 | *access | *67 | *- | *- | 61 |
 | Ethernet15/1 | MLAG_PEER_DC1-POD1-LEAF1A_Ethernet15/1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 151 |
 | Ethernet16/1 | MLAG_PEER_DC1-POD1-LEAF1A_Ethernet16/1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 151 |
-| Ethernet20 |  FIREWALL01_E1 | access | 100 | - | - | - |
 | Ethernet21 |  ROUTER01_Mgmt_Eth1 | access | 100 | - | - | - |
+| Ethernet28/1 |  FIREWALL01_E1 | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -239,7 +239,7 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet28/1 | P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet28/1 | routed | - | 200.200.200.204/24 | default | 9214 | false | - | - |
+| Ethernet28/1 | FIREWALL01_E1 | switched | - | 200.200.200.102/31 | default | 9214 | false | - | - |
 | Ethernet29/1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet2/1 | routed | - | 172.17.0.161/31 | default | 9214 | false | - | - |
 | Ethernet30/1 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet2/1 | routed | - | 172.17.0.163/31 | default | 9214 | false | - | - |
 | Ethernet31/1 | P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet2/1 | routed | - | 172.17.0.165/31 | default | 9214 | false | - | - |
@@ -271,18 +271,6 @@ interface Ethernet16/1
    no shutdown
    channel-group 151 mode active
 !
-interface Ethernet20
-   description FIREWALL01_E1
-   no shutdown
-   switchport
-   switchport access vlan 100
-   switchport mode access
-   service-profile foo
-   comment
-   Comment created from raw_eos_cli under profile TENANT_A
-   EOF
-
-!
 interface Ethernet21
    description ROUTER01_Mgmt_Eth1
    no shutdown
@@ -296,12 +284,12 @@ interface Ethernet21
 
 !
 interface Ethernet28/1
-   description P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet28/1
+   description FIREWALL01_E1
    no shutdown
    mac security profile MACSEC_PROFILE
    mtu 9214
-   no switchport
-   ip address 200.200.200.204/24
+   switchport
+   ip address 200.200.200.102/31
    ptp enable
 !
 interface Ethernet29/1
@@ -597,7 +585,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | 172.17.0.164 | 64603 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.0.166 | 64604 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.19.1.38 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
-| 200.200.200.104 | 64101 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 200.200.200.103 | 64202 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
@@ -651,11 +639,11 @@ router bgp 64901
    neighbor 172.17.0.166 description DC1-POD1-SPINE4_Ethernet2/1
    neighbor 172.19.1.38 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 172.19.1.38 description DC1-POD1-LEAF1A
-   neighbor 200.200.200.104 peer group IPv4-UNDERLAY-PEERS
-   neighbor 200.200.200.104 remote-as 64101
-   neighbor 200.200.200.104 local-as 64102 no-prepend replace-as
-   neighbor 200.200.200.104 description DC1-POD1-LEAF1A
-   neighbor 200.200.200.104 bfd
+   neighbor 200.200.200.103 peer group IPv4-UNDERLAY-PEERS
+   neighbor 200.200.200.103 remote-as 64202
+   neighbor 200.200.200.103 local-as 64201 no-prepend replace-as
+   neighbor 200.200.200.103 description FIREWALL01
+   neighbor 200.200.200.103 bfd
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

@@ -58,11 +58,11 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '64804'
       description: DC2-POD1-SPINE4_Ethernet2/1
-    200.200.200.102:
-      remote_as: '65101'
-      description: DC2-POD1-LEAF1A
+    200.200.200.100:
+      remote_as: '65202'
+      description: FIREWALL01
       peer_group: IPv4-UNDERLAY-PEERS
-      local_as: '65102'
+      local_as: '65201'
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
@@ -70,6 +70,8 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
+    route:
+      import_match_failure_action: discard
   address_family_rtc:
     peer_groups:
       EVPN-OVERLAY-PEERS:
@@ -339,14 +341,16 @@ ethernet_interfaces:
     shutdown: false
     ip_address: 172.17.64.167/31
   Ethernet28/1:
-    peer: DC2-POD1-LEAF1A
-    peer_interface: Ethernet28/1
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet28/1
+    peer: FIREWALL01
+    peer_interface: E4
+    peer_type: other
+    description: P2P_LINK_TO_FIREWALL01_E4
     type: routed
     shutdown: false
-    mtu: 1180
-    ip_address: 200.200.200.202/24
+    mtu: 9214
+    ip_address: 200.200.200.99/31
+    ptp:
+      enable: true
 mlag_configuration:
   domain_id: RACK1_MLAG
   local_interface: Vlan4094

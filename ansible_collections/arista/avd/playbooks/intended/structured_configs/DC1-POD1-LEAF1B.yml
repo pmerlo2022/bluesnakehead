@@ -58,12 +58,12 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '64604'
       description: DC1-POD1-SPINE4_Ethernet2/1
-    200.200.200.104:
-      remote_as: '64101'
-      description: DC1-POD1-LEAF1A
+    200.200.200.103:
+      remote_as: '64202'
+      description: FIREWALL01
       peer_group: IPv4-UNDERLAY-PEERS
       bfd: true
-      local_as: '64102'
+      local_as: '64201'
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
@@ -242,35 +242,18 @@ ethernet_interfaces:
     shutdown: false
     ip_address: 172.17.0.167/31
   Ethernet28/1:
-    peer: DC1-POD1-LEAF1A
-    peer_interface: Ethernet28/1
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet28/1
-    type: routed
-    shutdown: false
-    mtu: 9214
-    ip_address: 200.200.200.204/24
-    mac_security:
-      profile: MACSEC_PROFILE
-    ptp:
-      enable: true
-  Ethernet20:
     peer: FIREWALL01
     peer_interface: E1
     peer_type: firewall
     description: FIREWALL01_E1
     type: switched
     shutdown: false
-    mode: access
-    vlans: 100
-    service_profile: foo
-    eos_cli: 'comment
-
-      Comment created from raw_eos_cli under profile TENANT_A
-
-      EOF
-
-      '
+    mtu: 9214
+    ip_address: 200.200.200.102/31
+    mac_security:
+      profile: MACSEC_PROFILE
+    ptp:
+      enable: true
   Ethernet21:
     peer: ROUTER01
     peer_interface: Mgmt_Eth1

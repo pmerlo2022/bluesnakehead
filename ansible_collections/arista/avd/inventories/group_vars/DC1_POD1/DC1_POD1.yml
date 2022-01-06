@@ -223,9 +223,6 @@ l3leaf:
 #      spanning_tree_priority: 4096
       nodes:
         DC1-POD1-LEAF4A:
-#          structured_config:
-#            domain_list:
-#              - structured-config.set.on.node
           id: 26
           mgmt_ip: "{{ ansible_host }}/24"
           uplink_switch_interfaces: [ Ethernet7/1, Ethernet7/1, Ethernet7/1, Ethernet7/1 ]
@@ -236,7 +233,6 @@ l3leaf:
     RACK5_MLAG:
       platform: vEOS-LAB
       bgp_as: "64905"
-#      evpn_route_servers: [ DC1-POD1-LEAF1A, DC1-POD1-LEAF1B ]
       #mlag_interfaces: [ Ethernet5, Ethernet6 ]
       mlag_dual_primary_detection: true
       mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.

@@ -436,6 +436,7 @@ router bgp 64501
    graceful-restart
    maximum-paths 16 ecmp 16
    neighbor IPv4-UNDERLAY-PEERS peer group
+   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.16.0.19 peer group IPv4-UNDERLAY-PEERS

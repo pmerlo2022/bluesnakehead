@@ -228,6 +228,7 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet15/1 | MLAG_PEER_DC1-POD2-LEAF1A_Ethernet15/1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 151 |
 | Ethernet16/1 | MLAG_PEER_DC1-POD2-LEAF1A_Ethernet16/1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 151 |
+| Ethernet28/2 |  FIREWALL01_E4 | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -253,6 +254,11 @@ interface Ethernet16/1
    description MLAG_PEER_DC1-POD2-LEAF1A_Ethernet16/1
    no shutdown
    channel-group 151 mode active
+!
+interface Ethernet28/2
+   description FIREWALL01_E4
+   no shutdown
+   switchport
 !
 interface Ethernet29/1
    description P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet2/1

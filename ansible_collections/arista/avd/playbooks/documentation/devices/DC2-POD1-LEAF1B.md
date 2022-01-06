@@ -257,7 +257,7 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet28/1 | P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet28/1 | routed | - | 200.200.200.202/24 | default | 1180 | false | - | - |
+| Ethernet28/1 | P2P_LINK_TO_FIREWALL01_E4 | routed | - | 200.200.200.99/31 | default | 9214 | false | - | - |
 | Ethernet29/1 | P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet2/1 | routed | - | 172.17.64.161/31 | default | 9214 | false | - | - |
 | Ethernet30/1 | P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet2/1 | routed | - | 172.17.64.163/31 | default | 9214 | false | - | - |
 | Ethernet31/1 | P2P_LINK_TO_DC2-POD1-SPINE3_Ethernet2/1 | routed | - | 172.17.64.165/31 | default | 9214 | false | - | - |
@@ -278,11 +278,12 @@ interface Ethernet16/1
    channel-group 151 mode active
 !
 interface Ethernet28/1
-   description P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet28/1
+   description P2P_LINK_TO_FIREWALL01_E4
    no shutdown
-   mtu 1180
+   mtu 9214
    no switchport
-   ip address 200.200.200.202/24
+   ip address 200.200.200.99/31
+   ptp enable
 !
 interface Ethernet29/1
    description P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet2/1
@@ -618,11 +619,13 @@ ip route vrf mgmt 0.0.0.0/0 10.6.65.1
 | 172.17.64.164 | 64803 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.17.64.166 | 64804 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.19.65.38 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
-| 200.200.200.102 | 65101 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 200.200.200.100 | 65202 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 172.19.65.38 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Cust_A_VRF | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
 | 172.19.65.38 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Cust_B_VRF | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
 
 ### Router BGP EVPN Address Family
+
+- VPN import pruning is __enabled__
 
 #### Router BGP EVPN MAC-VRFs
 
@@ -685,10 +688,10 @@ router bgp 65101
    neighbor 172.17.64.166 description DC2-POD1-SPINE4_Ethernet2/1
    neighbor 172.19.65.38 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 172.19.65.38 description DC2-POD1-LEAF1A
-   neighbor 200.200.200.102 peer group IPv4-UNDERLAY-PEERS
-   neighbor 200.200.200.102 remote-as 65101
-   neighbor 200.200.200.102 local-as 65102 no-prepend replace-as
-   neighbor 200.200.200.102 description DC2-POD1-LEAF1A
+   neighbor 200.200.200.100 peer group IPv4-UNDERLAY-PEERS
+   neighbor 200.200.200.100 remote-as 65202
+   neighbor 200.200.200.100 local-as 65201 no-prepend replace-as
+   neighbor 200.200.200.100 description FIREWALL01
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan 200
@@ -708,6 +711,7 @@ router bgp 65101
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
+      route import match-failure action discard
    !
    address-family rt-membership
       neighbor EVPN-OVERLAY-PEERS activate

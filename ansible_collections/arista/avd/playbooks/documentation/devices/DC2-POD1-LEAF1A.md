@@ -257,7 +257,7 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet28/1 | P2P_LINK_TO_DC2-POD1-LEAF1B_Ethernet28/1 | routed | - | 200.200.200.102/24 | default | 1180 | false | - | - |
+| Ethernet28/1 | P2P_LINK_TO_FIREWALL01_E3 | routed | - | 200.200.200.101/31 | default | 1180 | false | - | - |
 | Ethernet29/1 | P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet1/1 | routed | - | 172.17.64.153/31 | default | 9214 | false | - | - |
 | Ethernet30/1 | P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet1/1 | routed | - | 172.17.64.155/31 | default | 9214 | false | - | - |
 | Ethernet31/1 | P2P_LINK_TO_DC2-POD1-SPINE3_Ethernet1/1 | routed | - | 172.17.64.157/31 | default | 9214 | false | - | - |
@@ -278,11 +278,11 @@ interface Ethernet16/1
    channel-group 151 mode active
 !
 interface Ethernet28/1
-   description P2P_LINK_TO_DC2-POD1-LEAF1B_Ethernet28/1
+   description P2P_LINK_TO_FIREWALL01_E3
    no shutdown
    mtu 1180
    no switchport
-   ip address 200.200.200.102/24
+   ip address 200.200.200.101/31
 !
 interface Ethernet29/1
    description P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet1/1
@@ -624,6 +624,8 @@ ip route vrf mgmt 0.0.0.0/0 10.6.65.1
 
 ### Router BGP EVPN Address Family
 
+- VPN import pruning is __enabled__
+
 #### Router BGP EVPN MAC-VRFs
 
 ##### VLAN Based
@@ -687,7 +689,7 @@ router bgp 65101
    neighbor 172.19.65.39 description DC2-POD1-LEAF1B
    neighbor 200.200.200.202 peer group IPv4-UNDERLAY-PEERS
    neighbor 200.200.200.202 remote-as 65102
-   neighbor 200.200.200.202 description DC2-POD1-LEAF1B
+   neighbor 200.200.200.202 description FIREWALL01
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan 200
@@ -707,6 +709,7 @@ router bgp 65101
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
+      route import match-failure action discard
    !
    address-family rt-membership
       neighbor EVPN-OVERLAY-PEERS activate
