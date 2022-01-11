@@ -39,6 +39,8 @@ spine:
       id: 10
       bgp_as: "64601"
       mgmt_ip: "{{ ansible_host }}/24"
+# This mac will be used in dhpcd.conf
+      mac_address: '0c:1d:c0:1d:62:01'
       evpn_role: none
       #This switch used local 1/1 to 4/1, and mapped each one to 1/1 on the SS
       uplink_switch_interfaces: ['Ethernet1/1', 'Ethernet1/1', 'Ethernet1/1', 'Ethernet1/1']
