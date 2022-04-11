@@ -6,7 +6,7 @@ router_bgp:
   - distance bgp 20 200 200
   - graceful-restart restart-time 300
   - graceful-restart
-  - maximum-paths 16 ecmp 16
+  - maximum-paths 4 ecmp 4
   peer_groups:
     IPv4-UNDERLAY-PEERS:
       type: ipv4
@@ -24,19 +24,19 @@ router_bgp:
     172.16.0.27:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '64601'
-      description: DC1-POD1-SPINE1_Ethernet30/1
+      description: DC1-POD1-SPINE1_Ethernet30/2
     172.16.0.29:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '64602'
-      description: DC1-POD1-SPINE2_Ethernet30/1
+      description: DC1-POD1-SPINE2_Ethernet30/2
     172.16.0.31:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '64603'
-      description: DC1-POD1-SPINE3_Ethernet30/1
+      description: DC1-POD1-SPINE3_Ethernet30/2
     172.16.0.33:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '64604'
-      description: DC1-POD1-SPINE4_Ethernet30/1
+      description: DC1-POD1-SPINE4_Ethernet30/2
     172.16.32.83:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '64701'
@@ -107,9 +107,9 @@ management_api_http:
 ethernet_interfaces:
   Ethernet1/1:
     peer: DC1-POD1-SPINE1
-    peer_interface: Ethernet30/1
+    peer_interface: Ethernet30/2
     peer_type: spine
-    description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet30/1
+    description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet30/2
     mtu: 9214
     service_profile: P2P-QOS-PROFILE
     ptp:
@@ -119,9 +119,9 @@ ethernet_interfaces:
     ip_address: 172.16.0.26/31
   Ethernet2/1:
     peer: DC1-POD1-SPINE2
-    peer_interface: Ethernet30/1
+    peer_interface: Ethernet30/2
     peer_type: spine
-    description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet30/1
+    description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet30/2
     mtu: 9214
     service_profile: P2P-QOS-PROFILE
     ptp:
@@ -131,9 +131,9 @@ ethernet_interfaces:
     ip_address: 172.16.0.28/31
   Ethernet3/1:
     peer: DC1-POD1-SPINE3
-    peer_interface: Ethernet30/1
+    peer_interface: Ethernet30/2
     peer_type: spine
-    description: P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet30/1
+    description: P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet30/2
     mtu: 9214
     service_profile: P2P-QOS-PROFILE
     ptp:
@@ -143,9 +143,9 @@ ethernet_interfaces:
     ip_address: 172.16.0.30/31
   Ethernet4/1:
     peer: DC1-POD1-SPINE4
-    peer_interface: Ethernet30/1
+    peer_interface: Ethernet30/2
     peer_type: spine
-    description: P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet30/1
+    description: P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet30/2
     mtu: 9214
     service_profile: P2P-QOS-PROFILE
     ptp:

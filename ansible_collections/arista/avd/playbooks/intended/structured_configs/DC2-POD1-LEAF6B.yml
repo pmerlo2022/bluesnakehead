@@ -6,7 +6,7 @@ router_bgp:
   - distance bgp 20 200 200
   - graceful-restart restart-time 300
   - graceful-restart
-  - maximum-paths 16 ecmp 16
+  - maximum-paths 4 ecmp 4
   peer_groups:
     MLAG-IPv4-UNDERLAY-PEER:
       type: ipv4
@@ -196,9 +196,8 @@ management_api_http:
   enable_vrfs:
     mgmt: {}
   enable_https: true
-eos_cli: "interface Loopback1010\n  description Loopback created from raw_eos_cli
-  under l3leaf defaults in DC2 POD1\n\ninterface Loopback1111\n  description Loopback
-  created from raw_eos_cli under platform_settings vEOS-LAB in AMS.yml\n"
+eos_cli: "interface Loopback1010\n  description Loopback created from raw_eos_cli under l3leaf defaults in DC2 POD1\n\ninterface Loopback1111\n\
+  \  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB in AMS.yml\n"
 vlans:
   4094:
     tenant: system
@@ -432,8 +431,7 @@ route_maps:
         type: permit
         set:
         - origin incomplete
-        description: Make routes learned over MLAG Peer-link less preferred on spines
-          to ensure optimal routing
+        description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
   RM-CONN-2-BGP:
     sequence_numbers:
       10:

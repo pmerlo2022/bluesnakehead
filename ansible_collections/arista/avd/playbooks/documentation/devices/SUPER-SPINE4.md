@@ -1,6 +1,5 @@
 # SUPER-SPINE4
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -34,7 +33,6 @@
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -69,15 +67,14 @@ interface Management0
 ### Management API HTTP Summary
 
 | HTTP | HTTPS |
-| ---------- | ---------- |
-| default | true |
+| ---- | ----- |
+| False | True |
 
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
 | mgmt | - | - |
-
 
 ### Management API HTTP Configuration
 
@@ -131,9 +128,6 @@ snmp-server location AMS SUPER-SPINE4
 
 STP mode: **none**
 
-### Global Spanning-Tree Settings
-
-
 ## Spanning Tree Device Configuration
 
 ```eos
@@ -173,10 +167,10 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1/1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet32/1 | routed | - | 172.16.0.42/31 | default | 9214 | false | - | - |
-| Ethernet2/1 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet32/1 | routed | - | 172.16.0.44/31 | default | 9214 | false | - | - |
-| Ethernet3/1 | P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet32/1 | routed | - | 172.16.0.46/31 | default | 9214 | false | - | - |
-| Ethernet4/1 | P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet32/1 | routed | - | 172.16.0.48/31 | default | 9214 | false | - | - |
+| Ethernet1/1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet32/2 | routed | - | 172.16.0.42/31 | default | 9214 | false | - | - |
+| Ethernet2/1 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet32/2 | routed | - | 172.16.0.44/31 | default | 9214 | false | - | - |
+| Ethernet3/1 | P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet32/2 | routed | - | 172.16.0.46/31 | default | 9214 | false | - | - |
+| Ethernet4/1 | P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet32/2 | routed | - | 172.16.0.48/31 | default | 9214 | false | - | - |
 | Ethernet5/2 | P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet32/1 | routed | - | 172.16.32.210/31 | default | 9214 | false | - | - |
 | Ethernet6/1 | P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet32/1 | routed | - | 172.16.32.214/31 | default | 9214 | false | - | - |
 | Ethernet7/1 | P2P_LINK_TO_DC1-POD2-SPINE3_Ethernet32/1 | routed | - | 172.16.32.196/31 | default | 9214 | false | - | - |
@@ -191,7 +185,7 @@ vlan internal order ascending range 1006 1199
 ```eos
 !
 interface Ethernet1/1
-   description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet32/1
+   description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet32/2
    no shutdown
    mtu 9214
    no switchport
@@ -200,7 +194,7 @@ interface Ethernet1/1
    service-profile P2P-QOS-PROFILE
 !
 interface Ethernet2/1
-   description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet32/1
+   description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet32/2
    no shutdown
    mtu 9214
    no switchport
@@ -209,7 +203,7 @@ interface Ethernet2/1
    service-profile P2P-QOS-PROFILE
 !
 interface Ethernet3/1
-   description P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet32/1
+   description P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet32/2
    no shutdown
    mtu 9214
    no switchport
@@ -218,7 +212,7 @@ interface Ethernet3/1
    service-profile P2P-QOS-PROFILE
 !
 interface Ethernet4/1
-   description P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet32/1
+   description P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet32/2
    no shutdown
    mtu 9214
    no switchport
@@ -342,7 +336,8 @@ service routing protocols model multi-agent
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| mgmt | false |
+| default | true |
+| mgmt | false |
 
 ### IP Routing Device Configuration
 
@@ -357,8 +352,8 @@ no ip routing vrf mgmt
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false || mgmt | false |
-
+| default | false |
+| mgmt | false |
 
 ## Static Routes
 
@@ -389,7 +384,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.0.1
 | distance bgp 20 200 200 |
 | graceful-restart restart-time 300 |
 | graceful-restart |
-| maximum-paths 16 ecmp 16 |
+| maximum-paths 4 ecmp 4 |
 
 ### Router BGP Peer Groups
 
@@ -403,26 +398,20 @@ ip route vrf mgmt 0.0.0.0/0 10.6.0.1
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
-| -------- | --------- | --- | -------------- | -------------- |
-| 172.16.0.43 | 64601 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.0.45 | 64602 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.0.47 | 64603 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.0.49 | 64604 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.32.197 | 64703 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.32.199 | 64704 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.32.211 | 64701 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.32.215 | 64702 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.64.211 | 64801 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.64.215 | 64802 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.64.217 | 64803 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.16.64.219 | 64804 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-
-### Router BGP EVPN Address Family
-
-#### Router BGP EVPN MAC-VRFs
-
-#### Router BGP EVPN VRFs
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- |
+| 172.16.0.43 | 64601 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.16.0.45 | 64602 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.16.0.47 | 64603 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.16.0.49 | 64604 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.16.32.197 | 64703 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.16.32.199 | 64704 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.16.32.211 | 64701 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.16.32.215 | 64702 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.16.64.211 | 64801 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.16.64.215 | 64802 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.16.64.217 | 64803 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.16.64.219 | 64804 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
 
 ### Router BGP Device Configuration
 
@@ -434,23 +423,23 @@ router bgp 64504
    distance bgp 20 200 200
    graceful-restart restart-time 300
    graceful-restart
-   maximum-paths 16 ecmp 16
+   maximum-paths 4 ecmp 4
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.16.0.43 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.0.43 remote-as 64601
-   neighbor 172.16.0.43 description DC1-POD1-SPINE1_Ethernet32/1
+   neighbor 172.16.0.43 description DC1-POD1-SPINE1_Ethernet32/2
    neighbor 172.16.0.45 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.0.45 remote-as 64602
-   neighbor 172.16.0.45 description DC1-POD1-SPINE2_Ethernet32/1
+   neighbor 172.16.0.45 description DC1-POD1-SPINE2_Ethernet32/2
    neighbor 172.16.0.47 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.0.47 remote-as 64603
-   neighbor 172.16.0.47 description DC1-POD1-SPINE3_Ethernet32/1
+   neighbor 172.16.0.47 description DC1-POD1-SPINE3_Ethernet32/2
    neighbor 172.16.0.49 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.0.49 remote-as 64604
-   neighbor 172.16.0.49 description DC1-POD1-SPINE4_Ethernet32/1
+   neighbor 172.16.0.49 description DC1-POD1-SPINE4_Ethernet32/2
    neighbor 172.16.32.197 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.32.197 remote-as 64703
    neighbor 172.16.32.197 description DC1-POD2-SPINE3_Ethernet32/1

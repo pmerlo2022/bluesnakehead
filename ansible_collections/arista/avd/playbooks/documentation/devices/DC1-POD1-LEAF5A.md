@@ -1,6 +1,5 @@
 # DC1-POD1-LEAF5A
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -48,7 +47,6 @@
 - [Quality Of Service](#quality-of-service)
 - [EOS CLI](#eos-cli)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -83,15 +81,14 @@ interface Management0
 ### Management API HTTP Summary
 
 | HTTP | HTTPS |
-| ---------- | ---------- |
-| default | true |
+| ---- | ----- |
+| False | True |
 
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
 | mgmt | - | - |
-
 
 ### Management API HTTP Configuration
 
@@ -172,8 +169,8 @@ STP mode: **rstp**
 
 ### Global Spanning-Tree Settings
 
-Global RSTP priority: 4096
-Spanning Tree disabled for VLANs: **4094**
+- Global RSTP priority: 4096
+- Spanning Tree disabled for VLANs: **4094**
 
 ## Spanning Tree Device Configuration
 
@@ -279,10 +276,14 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet29/1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet9/1 | routed | - | 172.17.0.217/31 | default | 9214 | false | - | - |
-| Ethernet30/1 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet9/1 | routed | - | 172.17.0.219/31 | default | 9214 | false | - | - |
-| Ethernet31/1 | P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet9/1 | routed | - | 172.17.0.221/31 | default | 9214 | false | - | - |
-| Ethernet32/1 | P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet9/1 | routed | - | 172.17.0.223/31 | default | 9214 | false | - | - |
+| Ethernet29/1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet5/1 | routed | - | 172.17.3.97/31 | default | 9214 | false | - | - |
+| Ethernet29/2 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet5/2 | routed | - | 172.17.3.99/31 | default | 9214 | false | - | - |
+| Ethernet30/1 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5/1 | routed | - | 172.17.3.101/31 | default | 9214 | false | - | - |
+| Ethernet30/2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5/2 | routed | - | 172.17.3.103/31 | default | 9214 | false | - | - |
+| Ethernet31/1 | P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet5/1 | routed | - | 172.17.3.105/31 | default | 9214 | false | - | - |
+| Ethernet31/2 | P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet5/2 | routed | - | 172.17.3.107/31 | default | 9214 | false | - | - |
+| Ethernet32/1 | P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet5/2 | routed | - | 172.17.3.109/31 | default | 9214 | false | - | - |
+| Ethernet32/2 | P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet5/2 | routed | - | 172.17.3.111/31 | default | 9214 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -311,38 +312,82 @@ interface Ethernet16/1
    channel-group 151 mode active
 !
 interface Ethernet29/1
-   description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet9/1
+   description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet5/1
    no shutdown
+   speed forced 100g
    mtu 9214
    no switchport
-   ip address 172.17.0.217/31
+   ip address 172.17.3.97/31
+   ptp enable
+   service-profile P2P-QOS-PROFILE
+!
+interface Ethernet29/2
+   description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet5/2
+   no shutdown
+   speed forced 100g
+   mtu 9214
+   no switchport
+   ip address 172.17.3.99/31
    ptp enable
    service-profile P2P-QOS-PROFILE
 !
 interface Ethernet30/1
-   description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet9/1
+   description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5/1
    no shutdown
+   speed forced 100g
    mtu 9214
    no switchport
-   ip address 172.17.0.219/31
+   ip address 172.17.3.101/31
+   ptp enable
+   service-profile P2P-QOS-PROFILE
+!
+interface Ethernet30/2
+   description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5/2
+   no shutdown
+   speed forced 100g
+   mtu 9214
+   no switchport
+   ip address 172.17.3.103/31
    ptp enable
    service-profile P2P-QOS-PROFILE
 !
 interface Ethernet31/1
-   description P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet9/1
+   description P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet5/1
    no shutdown
+   speed forced 100g
    mtu 9214
    no switchport
-   ip address 172.17.0.221/31
+   ip address 172.17.3.105/31
+   ptp enable
+   service-profile P2P-QOS-PROFILE
+!
+interface Ethernet31/2
+   description P2P_LINK_TO_DC1-POD1-SPINE3_Ethernet5/2
+   no shutdown
+   speed forced 100g
+   mtu 9214
+   no switchport
+   ip address 172.17.3.107/31
    ptp enable
    service-profile P2P-QOS-PROFILE
 !
 interface Ethernet32/1
-   description P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet9/1
+   description P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet5/2
    no shutdown
+   speed forced 100g
    mtu 9214
    no switchport
-   ip address 172.17.0.223/31
+   ip address 172.17.3.109/31
+   ptp enable
+   service-profile P2P-QOS-PROFILE
+!
+interface Ethernet32/2
+   description P2P_LINK_TO_DC1-POD1-SPINE4_Ethernet5/2
+   no shutdown
+   speed forced 100g
+   mtu 9214
+   no switchport
+   ip address 172.17.3.111/31
    ptp enable
    service-profile P2P-QOS-PROFILE
 ```
@@ -371,8 +416,8 @@ interface Port-Channel11
    switchport access vlan 100
    mlag 11
    spanning-tree portfast
-   spanning-tree bpdufilter enable
    spanning-tree bpduguard enable
+   spanning-tree bpdufilter enable
    service-profile data
    port-channel lacp fallback individual
 
@@ -385,8 +430,8 @@ interface Port-Channel61
    switchport access vlan 67
    mlag 61
    spanning-tree portfast
-   spanning-tree bpdufilter enable
    spanning-tree bpduguard enable
+   spanning-tree bpdufilter enable
    service-profile m2c2
    port-channel lacp fallback individual
 
@@ -544,29 +589,29 @@ interface Vlan4094
 
 ### VXLAN Interface Summary
 
-#### Source Interface: Loopback1
+| Setting | Value |
+| ------- | ----- |
+| Source Interface | Loopback1 |
+| UDP port | 4789 |
+| EVPN MLAG Shared Router MAC | mlag-system-id |
 
-#### UDP port: 4789
+#### VLAN to VNI, Flood List and Multicast Group Mappings
 
-#### EVPN MLAG Shared Router MAC : mlag-system-id
+| VLAN | VNI | Flood List | Multicast Group |
+| ---- | --- | ---------- | --------------- |
+| 100 | 10100 | - | - |
+| 133 | 10133 | - | - |
+| 167 | 10167 | - | - |
+| 200 | 20200 | - | - |
+| 233 | 20233 | - | - |
+| 267 | 20267 | - | - |
 
-#### VLAN to VNI and Flood List Mappings
+#### VRF to VNI and Multicast Group Mappings
 
-| VLAN | VNI | Flood List |
-| ---- | --- | ---------- |
-| 100 | 10100 | - |
-| 133 | 10133 | - |
-| 167 | 10167 | - |
-| 200 | 20200 | - |
-| 233 | 20233 | - |
-| 267 | 20267 | - |
-
-#### VRF to VNI Mappings
-
-| VLAN | VNI |
-| ---- | --- |
-| Cust_A_VRF | 100 |
-| Cust_B_VRF | 200 |
+| VRF | VNI | Multicast Group |
+| ---- | --- | --------------- |
+| Cust_A_VRF | 100 | - |
+| Cust_B_VRF | 200 | - |
 
 ### VXLAN Interface Device Configuration
 
@@ -616,7 +661,8 @@ ip virtual-router mac-address 00:1c:73:00:dc:11
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| Cust_A_VRF | true |
+| default | true |
+| Cust_A_VRF | true |
 | Cust_B_VRF | true |
 | mgmt | false |
 
@@ -635,10 +681,10 @@ no ip routing vrf mgmt
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false || Cust_A_VRF | false |
+| default | false |
+| Cust_A_VRF | false |
 | Cust_B_VRF | false |
 | mgmt | false |
-
 
 ## Static Routes
 
@@ -669,7 +715,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | distance bgp 20 200 200 |
 | graceful-restart restart-time 300 |
 | graceful-restart |
-| maximum-paths 16 ecmp 16 |
+| maximum-paths 4 ecmp 4 |
 
 ### Router BGP Peer Groups
 
@@ -680,7 +726,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | Address Family | evpn |
 | Next-hop unchanged | True |
 | Source | Loopback0 |
-| Bfd | true |
+| BFD | True |
 | Ebgp multihop | 5 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
@@ -705,23 +751,31 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
-| -------- | --------- | --- | -------------- | -------------- |
-| 172.17.0.216 | 64601 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.17.0.218 | 64602 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.17.0.220 | 64603 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.17.0.222 | 64604 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.19.1.55 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
-| 172.19.1.55 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Cust_A_VRF | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
-| 172.19.1.55 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Cust_B_VRF | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- |
+| 172.17.3.96 | 64601 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.17.3.98 | 64601 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.17.3.100 | 64602 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.17.3.102 | 64602 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.17.3.104 | 64603 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.17.3.106 | 64603 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.17.3.108 | 64604 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.17.3.110 | 64604 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.19.1.55 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - |
+| 172.19.1.55 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Cust_A_VRF | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - |
+| 172.19.1.55 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Cust_B_VRF | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - |
 
 ### Router BGP EVPN Address Family
 
 - VPN import pruning is __enabled__
 
-#### Router BGP EVPN MAC-VRFs
+#### EVPN Peer Groups
 
-##### VLAN Based
+| Peer Group | Activate |
+| ---------- | -------- |
+| EVPN-OVERLAY-PEERS | True |
+
+### Router BGP VLANs
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
@@ -732,7 +786,7 @@ ip route vrf mgmt 0.0.0.0/0 10.6.1.1
 | 233 | 10.4.1.30:20233 | 20233:20233 | - | - | learned |
 | 267 | 10.4.1.30:20267 | 20267:20267 | - | - | learned |
 
-#### Router BGP EVPN VRFs
+### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
@@ -749,7 +803,7 @@ router bgp 64905
    distance bgp 20 200 200
    graceful-restart restart-time 300
    graceful-restart
-   maximum-paths 16 ecmp 16
+   maximum-paths 4 ecmp 4
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
@@ -769,18 +823,30 @@ router bgp 64905
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
-   neighbor 172.17.0.216 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.0.216 remote-as 64601
-   neighbor 172.17.0.216 description DC1-POD1-SPINE1_Ethernet9/1
-   neighbor 172.17.0.218 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.0.218 remote-as 64602
-   neighbor 172.17.0.218 description DC1-POD1-SPINE2_Ethernet9/1
-   neighbor 172.17.0.220 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.0.220 remote-as 64603
-   neighbor 172.17.0.220 description DC1-POD1-SPINE3_Ethernet9/1
-   neighbor 172.17.0.222 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.0.222 remote-as 64604
-   neighbor 172.17.0.222 description DC1-POD1-SPINE4_Ethernet9/1
+   neighbor 172.17.3.96 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.3.96 remote-as 64601
+   neighbor 172.17.3.96 description DC1-POD1-SPINE1_Ethernet5/1
+   neighbor 172.17.3.98 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.3.98 remote-as 64601
+   neighbor 172.17.3.98 description DC1-POD1-SPINE1_Ethernet5/2
+   neighbor 172.17.3.100 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.3.100 remote-as 64602
+   neighbor 172.17.3.100 description DC1-POD1-SPINE2_Ethernet5/1
+   neighbor 172.17.3.102 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.3.102 remote-as 64602
+   neighbor 172.17.3.102 description DC1-POD1-SPINE2_Ethernet5/2
+   neighbor 172.17.3.104 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.3.104 remote-as 64603
+   neighbor 172.17.3.104 description DC1-POD1-SPINE3_Ethernet5/1
+   neighbor 172.17.3.106 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.3.106 remote-as 64603
+   neighbor 172.17.3.106 description DC1-POD1-SPINE3_Ethernet5/2
+   neighbor 172.17.3.108 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.3.108 remote-as 64604
+   neighbor 172.17.3.108 description DC1-POD1-SPINE4_Ethernet5/2
+   neighbor 172.17.3.110 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.3.110 remote-as 64604
+   neighbor 172.17.3.110 description DC1-POD1-SPINE4_Ethernet5/2
    neighbor 172.19.1.55 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 172.19.1.55 description DC1-POD1-LEAF5B
    redistribute connected route-map RM-CONN-2-BGP
@@ -869,17 +935,21 @@ router bfd
 
 ### IP IGMP Snooping Summary
 
-IGMP snooping is globally enabled.
+| IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
+| ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
+| Enabled | - | - | - | - | - |
 
+#### IP IGMP Snooping Vlan Summary
 
-| VLAN | IGMP Snooping |
-| --- | --------------- |
-| 100 | enabled |
+| Vlan | IGMP Snooping | Fast Leave | Max Groups | Proxy |
+| ---- | ------------- | ---------- | ---------- | ----- |
+| 100 | True | - | - | - |
 
 ### IP IGMP Snooping Device Configuration
 
 ```eos
 !
+ip igmp snooping vlan 100
 ```
 
 # Filters
