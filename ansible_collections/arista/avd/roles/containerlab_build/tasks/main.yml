@@ -1,0 +1,36 @@
+---
+- hosts: AMS
+  gather_facts: no
+
+  tasks:
+# tasks file for creating container inventory
+
+#- name: Create required output directories if not present
+#  file:
+#    path: "{{ item }}"
+#    state: directory
+#    mode: 0775
+#  loop:{{ structured_cvp_dir }}
+#    - "{{ structured_dir }}"
+#    - "{{ eos_config_dir }}"
+#    - "{{ structured_cvp_dir }}"
+#  delegate_to: localhost
+#  run_once: true
+
+  - name: Build inventory.csv
+    template:
+      src: ../templates/inventory_csv.j2
+      dest: "/ABJ/home/chadb/AVD-ContainerLab/avd-quickstart-containerlab/AMS/inventory.csv"
+      mode: 0755
+    tags: [clab]
+    delegate_to: localhost
+#    run_once: true
+  - name: Build tenants.csv
+    template:
+      src: ../templates/tenants_csv.j2
+      dest: "/ABJ/home/chadb/AVD-ContainerLab/avd-quickstart-containerlab/AMS/tenants.csv"
+      mode: 0755
+    tags: [clab]
+    delegate_to: localhost
+
+
