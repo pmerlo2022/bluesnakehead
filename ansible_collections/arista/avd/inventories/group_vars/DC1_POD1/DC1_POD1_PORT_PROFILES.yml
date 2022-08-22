@@ -1,6 +1,19 @@
 ---
 # Consider making these based on a hw profile
 port_profiles:
+
+  # Profile to be used for unused ports
+  UNUSED_PORT:
+    mode: access
+    vlans: 999
+    spanning_tree_bpduguard: "enabled"
+    spanning_tree_portfast: edge
+    storm_control:
+      broadcast:
+        level: 10
+    structured_config:
+      shutdown: true
+
   NESTED_TENANT_A:
     parent_profile: TENANT_A
     raw_eos_cli: |
@@ -12,8 +25,7 @@ port_profiles:
         comment
         Comment created from raw_eos_cli under port_channel on profile NESTED_TENANT_A
         EOF
-  # This "TENANT" not be to be confused with Tenant in Tenant networks.
-  # May wish to change this to more role relevant. Thoughts?
+# This "TENANT" not be to be confused with Tenant in Tenant networks. May wish to change this to more role relevant. Thoughts?
   TENANT_A:
     # parent_profile:
     # speed: < interface_speed | forced interface_speed | auto interface_speed >
@@ -59,7 +71,7 @@ port_profiles:
 
   TENANT_B:
     mode: access
-    vlans: "68"
+    vlans: "67"
     qos_profile: "foo"
     port_channel:
       raw_eos_cli: port-channel lacp fallback individual
@@ -119,54 +131,10 @@ port_profiles:
     #   mtu here overrides parent
     mtu: 1500
     speed: forced 25gfull
-    vlans: "68"
+    vlans: "67"
     qos_profile: "m2c2"
     port_channel:
       description: m2c2
       state: present
       mode: active
       raw_eos_cli: port-channel lacp fallback individual
-
-# Is this actual compute or an L2 switch? Seems to be Leafs listed
-# what is the scope? How do I make this a template?
-# This seems to be literal. Server-1 is one server. Need to check out profiles up above.
-servers:
-
-  # "server-1" is prepended to the port-channel description
-  server-dc1-pod2-1:
-    # This is only used in snmp location data
-    rack: RackDC2_P1_R4
-    adapters:
-      - server_ports: [eno1, eno2]
-        switch_ports: [Ethernet13/1, Ethernet13/1]
-        switches: [DC1-POD2-LEAF4A, DC1-POD2-LEAF4B]
-        profile: TENANT_C_DATA
-      # Any partial entries seem to override anythingn in the profile.
-      # So a description-only here causes nothing to be entered
-      #        port_channel:
-      #          description: Server-1 Data
-      #          #short_esi: 0303:0202:0101 // https://avd.sh/en/latest/roles/eos_designs/doc/connected-endpoints.html
-      - server_ports: [eno3, eno4]
-        switch_ports: [Ethernet12/1, Ethernet12/1]
-        switches: [DC1-POD2-LEAF4A, DC1-POD2-LEAF4B]
-        profile: TENANT_C_M2C2
-  #        structured_config:
-  #          description: Set using structured_config on server adapter
-  #        port_channel:
-  #          structured_config:
-  #            description: Set using structured_config on server adapter port-channel
-  #          description: Server-1 M2C2
-  #        raw_eos_cli: |
-  #          comment
-  #          Comment created from raw_eos_cli under adapter for switch Eth17
-  #          EOF
-
-  # This is concise and works:
-  # But still is a per-server entry. Thousands of these?
-  server-dc1-pod2-2:
-    rack: RackDC1_P1_R4
-    adapters:
-      - server_ports: [eno3, eno4]
-        switch_ports: [Ethernet10/1, Ethernet10/1]
-        switches: [DC1-POD2-LEAF2A, DC1-POD2-LEAF2B]
-        profile: TENANT_B

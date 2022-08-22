@@ -2,6 +2,6 @@
 
 dc_name: DC2
 
-evpn_prevent_readvertise_to_server : false
+# evpn_prevent_readvertise_to_server: false
 
-evpn_import_pruning: true
+# evpn_import_pruning: true
